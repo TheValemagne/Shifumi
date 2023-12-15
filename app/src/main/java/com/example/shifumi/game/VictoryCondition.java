@@ -1,5 +1,8 @@
 package com.example.shifumi.game;
 
+/**
+ * Conteneur pour une condition de victoire
+ */
 public class VictoryCondition {
     public final Choice opponentChoice;
     public final Choice victoryChoice;

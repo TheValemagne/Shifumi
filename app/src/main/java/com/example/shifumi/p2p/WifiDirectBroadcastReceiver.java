@@ -1,5 +1,6 @@
 package com.example.shifumi.p2p;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager;
+import android.util.Log;
 
 public class WifiDirectBroadcastReceiver extends BroadcastReceiver {
 
@@ -22,6 +24,7 @@ public class WifiDirectBroadcastReceiver extends BroadcastReceiver {
         this.peerToPeerManager = peerToPeerManager;
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
@@ -30,18 +33,22 @@ public class WifiDirectBroadcastReceiver extends BroadcastReceiver {
             // Determine if Wi-Fi P2P mode is enabled or disabled
             int state = intent.getIntExtra(WifiP2pManager.EXTRA_WIFI_STATE, -1);
             if (state == WifiP2pManager.WIFI_P2P_STATE_ENABLED) {
+                Log.d("Connexion", "Connected");
                 // Wi-Fi P2P is enabled
             } else {
+                Log.d("Connexion", "Disconnected");
                 // Wi-Fi P2P is not enabled
             }
 
         } else if (WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION.equals(action)) {
+            Log.d("Connexion", "peers changed");
             // Request available peers from the Wi-Fi P2P manager
             if (wifiP2pManager != null) {
                 wifiP2pManager.requestPeers(channel, peerListListener);
             }
 
         } else if (WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION.equals(action)) {
+            Log.d("Connexion", "Connection_changed_action");
             // Respond to new connection or disconnections
             if (wifiP2pManager == null) {
                 return;
@@ -58,6 +65,7 @@ public class WifiDirectBroadcastReceiver extends BroadcastReceiver {
             }
 
         } else if (WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION.equals(action)) {
+            Log.d("Connexion", "this device");
             // Respond to this device's wifi state changing
             // For example, obtain the device's details
             WifiP2pDevice device = intent.getParcelableExtra(WifiP2pManager.EXTRA_WIFI_P2P_DEVICE);
@@ -71,7 +79,7 @@ public class WifiDirectBroadcastReceiver extends BroadcastReceiver {
             // Handle the list of available peers
             if (peers.getDeviceList().size() > 0) {
                 // Connect to the first available peer (you might want to show a list to the user)
-                WifiP2pDevice peer = peers.getDeviceList().iterator().next();
+                String peer = peers.getDeviceList().iterator().next().toString();
                 peerToPeerManager.connectToPeer(peer);
             }
         }

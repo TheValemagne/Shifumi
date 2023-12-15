@@ -1,5 +1,6 @@
 package com.example.shifumi.p2p;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
@@ -34,6 +35,7 @@ public class PeerToPeerManager {
             // (Note: This is not included in this example)
         }
 
+        @SuppressLint("MissingPermission")
         public void discoverPeers() {
             wifiP2pManager.discoverPeers(channel, new WifiP2pManager.ActionListener() {
                 @Override
@@ -48,23 +50,25 @@ public class PeerToPeerManager {
             });
         }
 
-        public void connectToPeer(WifiP2pDevice device) {
-            WifiP2pConfig config = new WifiP2pConfig();
-            config.deviceAddress = device.deviceAddress;
+    @SuppressLint("MissingPermission")
+    public void connectToPeer(String ipAddress) {
+        WifiP2pConfig config = new WifiP2pConfig();
+        config.deviceAddress = ipAddress;
 
-            wifiP2pManager.connect(channel, config, new WifiP2pManager.ActionListener() {
-                @Override
-                public void onSuccess() {
-                    // Connection initiated successfully
-                }
+        wifiP2pManager.connect(channel, config, new WifiP2pManager.ActionListener() {
+            @Override
+            public void onSuccess() {
+                // Connection initiated successfully
+            }
 
-                @Override
-                public void onFailure(int reason) {
-                    // Connection failed
-                }
-            });
-        }
+            @Override
+            public void onFailure(int reason) {
+                // Connection failed
+            }
+        });
+    }
 
+        @SuppressLint("MissingPermission")
         public void createGroup() {
             wifiP2pManager.createGroup(channel, new WifiP2pManager.ActionListener() {
                 @Override

@@ -1,11 +1,16 @@
 package com.example.shifumi.p2p;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
+import android.content.pm.PackageManager;
 import android.net.wifi.p2p.WifiP2pConfig;
-import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pManager;
-import android.os.Looper;
+import android.os.Build;
+import android.Manifest;
+import android.util.Log;
+
+import androidx.core.app.ActivityCompat;
+
+import com.example.shifumi.MainActivity;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,23 +21,16 @@ import java.net.Socket;
 public class PeerToPeerManager {
         private WifiP2pManager wifiP2pManager;
         private WifiP2pManager.Channel channel;
-        private Context context;
         private ServerSocket serverSocket;
         private Socket socket;
         private InputStream inputStream;
         private OutputStream outputStream;
 
-        public PeerToPeerManager(Context context) {
-            this.context = context;
-            initializeWifiDirect();
-        }
+        private MainActivity activity;
 
-        private void initializeWifiDirect() {
-            wifiP2pManager = (WifiP2pManager) context.getSystemService(Context.WIFI_P2P_SERVICE);
-            channel = wifiP2pManager.initialize(context, Looper.getMainLooper(), null);
-
-            // Register Wi-Fi Direct broadcast receiver in your activity to receive Wi-Fi Direct events.
-            // (Note: This is not included in this example)
+        public PeerToPeerManager(WifiP2pManager manager, WifiP2pManager.Channel channel) {
+            this.wifiP2pManager = manager;
+            this.channel = channel;
         }
 
         @SuppressLint("MissingPermission")

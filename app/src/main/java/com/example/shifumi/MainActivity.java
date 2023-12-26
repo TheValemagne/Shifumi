@@ -2,7 +2,8 @@ package com.example.shifumi;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.Context;
 import android.Manifest;
@@ -12,24 +13,44 @@ import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.shifumi.p2p.PeerToPeerManager;
 import com.example.shifumi.p2p.WifiDirectBroadcastReceiver;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MainActivity extends AppCompatActivity {
     private WifiDirectBroadcastReceiver wifiReceiver;
+
+    public PeerToPeerManager getPeerToPeerManager() {
+        return peerToPeerManager;
+    }
+
+    private PeerToPeerManager peerToPeerManager;
     private IntentFilter intentFilter;
-    private static final int PERMISSIONS_REQUEST_CODE = 1001;
+    public static final int PERMISSIONS_REQUEST_CODE = 1001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initPeerToPeer();
+        showFragment();
+    }
+
+    private void showFragment() {
+        if(this.getSupportFragmentManager().findFragmentById(R.id.main_frame) != null) {
+            return;
+        }
+
+        Fragment startScreen = new StartScreenFragment();
+        this.getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_frame, startScreen)
+                .commit();
+    }
+
+    private void initPeerToPeer() {
         intentFilter = new IntentFilter();
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
@@ -39,9 +60,10 @@ public class MainActivity extends AppCompatActivity {
 
         WifiP2pManager wifiP2pManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         WifiP2pManager.Channel wifiChannel = wifiP2pManager.initialize(this, getMainLooper(), null);
-        wifiReceiver = new WifiDirectBroadcastReceiver(wifiP2pManager, wifiChannel, new PeerToPeerManager(wifiP2pManager, wifiChannel));
+        peerToPeerManager = new PeerToPeerManager(wifiP2pManager, wifiChannel, this);
+
+        wifiReceiver = new WifiDirectBroadcastReceiver(wifiP2pManager, wifiChannel, peerToPeerManager, this);
         registerReceiver(wifiReceiver, intentFilter);
-        requestPermissions();
     }
 
     @Override
@@ -54,25 +76,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         unregisterReceiver(wifiReceiver);
-    }
-
-    private void requestPermissions() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.NEARBY_WIFI_DEVICES) != PackageManager.PERMISSION_GRANTED &&
-                    ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-                Log.w("P2P", "Permission not granted " + this.getClass().getName());
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.NEARBY_WIFI_DEVICES, Manifest.permission.ACCESS_FINE_LOCATION}, 0);
-                return;
-            }
-        } else  {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED) {
-                Log.w("P2P", "Permission not granted DDDDDDDDD: " + this.getClass().getName());
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
-                return;
-            }
-        }
     }
 
     @Override

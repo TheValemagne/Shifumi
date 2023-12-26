@@ -1,52 +1,65 @@
 package com.example.shifumi.p2p;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Build;
-import android.Manifest;
 import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
 
 import com.example.shifumi.MainActivity;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.io.Serializable;
 
 public class PeerToPeerManager {
-        private WifiP2pManager wifiP2pManager;
-        private WifiP2pManager.Channel channel;
-        private ServerSocket serverSocket;
-        private Socket socket;
-        private InputStream inputStream;
-        private OutputStream outputStream;
+    private WifiP2pManager wifiP2pManager;
+    private WifiP2pManager.Channel channel;
+    private MainActivity mainActivity;
 
-        private MainActivity activity;
+    private Server server;
 
-        public PeerToPeerManager(WifiP2pManager manager, WifiP2pManager.Channel channel) {
-            this.wifiP2pManager = manager;
-            this.channel = channel;
+    public PeerToPeerManager(WifiP2pManager manager, WifiP2pManager.Channel channel, MainActivity mainActivity) {
+        this.wifiP2pManager = manager;
+        this.channel = channel;
+        this.mainActivity = mainActivity;
+    }
+
+    private void requestPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ActivityCompat.checkSelfPermission(mainActivity, Manifest.permission.NEARBY_WIFI_DEVICES) != PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(mainActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                Log.w("P2P", "Permission not granted " + this.getClass().getName());
+                ActivityCompat.requestPermissions(mainActivity, new String[]{Manifest.permission.NEARBY_WIFI_DEVICES, Manifest.permission.ACCESS_FINE_LOCATION}, mainActivity.PERMISSIONS_REQUEST_CODE);
+            }
+        } else  {
+            if (ActivityCompat.checkSelfPermission(mainActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                Log.w("P2P", "Permission not granted : " + this.getClass().getName());
+                ActivityCompat.requestPermissions(mainActivity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, mainActivity.PERMISSIONS_REQUEST_CODE);
+            }
         }
+    }
 
-        @SuppressLint("MissingPermission")
-        public void discoverPeers() {
-            wifiP2pManager.discoverPeers(channel, new WifiP2pManager.ActionListener() {
-                @Override
-                public void onSuccess() {
-                    // Wi-Fi Direct discovery started successfully
-                }
+    @SuppressLint("MissingPermission")
+    public void discoverPeers() {
+        requestPermissions();
+        wifiP2pManager.discoverPeers(channel, new WifiP2pManager.ActionListener() {
+            @Override
+            public void onSuccess() {
+                // Wi-Fi Direct discovery started successfully
+                Log.d("P2P Manager", "discoverPeers Success");
+            }
 
-                @Override
-                public void onFailure(int reasonCode) {
-                    // Wi-Fi Direct discovery failed
-                }
-            });
-        }
+            @Override
+            public void onFailure(int reasonCode) {
+                // Wi-Fi Direct discovery failed
+                Log.d("P2P Manager", "discoverPeers faillure " + reasonCode);
+            }
+        });
+    }
 
     @SuppressLint("MissingPermission")
     public void connectToPeer(String ipAddress) {
@@ -66,85 +79,27 @@ public class PeerToPeerManager {
         });
     }
 
-        @SuppressLint("MissingPermission")
-        public void createGroup() {
-            wifiP2pManager.createGroup(channel, new WifiP2pManager.ActionListener() {
-                @Override
-                public void onSuccess() {
-                    // Group created successfully
-                }
-
-                @Override
-                public void onFailure(int reason) {
-                    // Group creation failed
-                }
-            });
-        }
-
-        public void startServer() {
-            try {
-                serverSocket = new ServerSocket(8888);
-                new Thread(new ServerThread()).start();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        private class ServerThread implements Runnable {
+    @SuppressLint("MissingPermission")
+    public void createGroup() {
+        wifiP2pManager.createGroup(channel, new WifiP2pManager.ActionListener() {
             @Override
-            public void run() {
-                try {
-                    socket = serverSocket.accept();
-                    initializeStreams();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            public void onSuccess() {
+                // Group created successfully
             }
-        }
 
-        public void initializeStreams() {
-            try {
-                inputStream = socket.getInputStream();
-                outputStream = socket.getOutputStream();
-            } catch (IOException e) {
-                e.printStackTrace();
+            @Override
+            public void onFailure(int reason) {
+                // Group creation failed
             }
-        }
+        });
+    }
 
-        public void sendData(byte[] data) {
-            try {
-                outputStream.write(data);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+    public void startServer() {
+        server = new Server();
+        server.start();
+    }
 
-        public byte[] receiveData() {
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-            try {
-                bytesRead = inputStream.read(buffer);
-                if (bytesRead != -1) {
-                    byte[] data = new byte[bytesRead];
-                    System.arraycopy(buffer, 0, data, 0, bytesRead);
-                    return data;
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        public void closeConnection() {
-            try {
-                if (serverSocket != null) {
-                    serverSocket.close();
-                }
-                if (socket != null) {
-                    socket.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+    public void closeServer() {
+        server.closeConnection();
+    }
 }

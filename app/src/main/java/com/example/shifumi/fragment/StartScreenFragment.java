@@ -14,7 +14,6 @@ import android.widget.Button;
 import com.example.shifumi.MainActivity;
 import com.example.shifumi.R;
 import com.example.shifumi.StartButtonListener;
-import com.example.shifumi.p2p.PeerToPeerManager;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,6 +38,7 @@ public class StartScreenFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         MainActivity main = (MainActivity) this.getActivity();
 
+        assert main != null;
         startButton = main.findViewById(R.id.startButton);
         startButton.setOnClickListener(new StartButtonListener(main));
     }

@@ -6,7 +6,6 @@ import android.widget.Button;
 import androidx.fragment.app.Fragment;
 
 import com.example.shifumi.fragment.WifiDevicesFragment;
-import com.example.shifumi.p2p.PeerToPeerManager;
 
 public class StartButtonListener implements Button.OnClickListener {
     private final MainActivity mainActivity;

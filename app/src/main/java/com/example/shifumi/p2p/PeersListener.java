@@ -22,7 +22,7 @@ public class PeersListener implements WifiP2pManager.PeerListListener {
         Fragment fragment = mainActivity.getSupportFragmentManager()
                 .findFragmentById(R.id.main_frame);
 
-        if (fragment == null || !(fragment instanceof WifiDevicesFragment)) {
+        if (!(fragment instanceof WifiDevicesFragment)) {
             return;
         }
 

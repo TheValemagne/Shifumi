@@ -58,13 +58,13 @@ public class MainActivity extends AppCompatActivity {
         peerToPeerManager = new PeerToPeerManager(wifiP2pManager, wifiChannel, this);
 
         wifiReceiver = new WifiDirectBroadcastReceiver(wifiP2pManager, wifiChannel, peerToPeerManager, this);
-        registerReceiver(wifiReceiver, intentFilter, Context.RECEIVER_NOT_EXPORTED);
+        registerReceiver(wifiReceiver, intentFilter);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        registerReceiver(wifiReceiver, intentFilter, Context.RECEIVER_NOT_EXPORTED);
+        registerReceiver(wifiReceiver, intentFilter);
     }
 
     @Override

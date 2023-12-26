@@ -5,20 +5,19 @@ import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.shifumi.fragment.WifiDevicesFragment;
 import com.example.shifumi.p2p.PeerToPeerManager;
 
 public class StartButtonListener implements Button.OnClickListener {
-    private PeerToPeerManager peerToPeerManager;
-    private MainActivity mainActivity;
+    private final MainActivity mainActivity;
 
-    public StartButtonListener(MainActivity mainActivity, PeerToPeerManager peerToPeerManager) {
+    public StartButtonListener(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
-        this.peerToPeerManager = peerToPeerManager;
     }
 
     @Override
     public void onClick(View v) {
-        peerToPeerManager.discoverPeers();
+        mainActivity.getPeerToPeerManager().discoverPeers();
 
         Fragment deviceList = new WifiDevicesFragment();
 

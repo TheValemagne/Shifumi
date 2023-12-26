@@ -1,21 +1,16 @@
 package com.example.shifumi;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import android.content.Context;
-import android.Manifest;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.net.wifi.p2p.WifiP2pManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.shifumi.fragment.StartScreenFragment;
 import com.example.shifumi.p2p.PeerToPeerManager;
 import com.example.shifumi.p2p.WifiDirectBroadcastReceiver;
 
@@ -63,13 +58,13 @@ public class MainActivity extends AppCompatActivity {
         peerToPeerManager = new PeerToPeerManager(wifiP2pManager, wifiChannel, this);
 
         wifiReceiver = new WifiDirectBroadcastReceiver(wifiP2pManager, wifiChannel, peerToPeerManager, this);
-        registerReceiver(wifiReceiver, intentFilter);
+        registerReceiver(wifiReceiver, intentFilter, Context.RECEIVER_NOT_EXPORTED);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        registerReceiver(wifiReceiver, intentFilter);
+        registerReceiver(wifiReceiver, intentFilter, Context.RECEIVER_NOT_EXPORTED);
     }
 
     @Override
@@ -78,8 +73,9 @@ public class MainActivity extends AppCompatActivity {
         unregisterReceiver(wifiReceiver);
     }
 
+
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PERMISSIONS_REQUEST_CODE) {
             // Handle the result of the permission request

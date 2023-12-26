@@ -1,8 +1,7 @@
-package com.example.shifumi;
+package com.example.shifumi.fragment;
 
 import android.content.Context;
 import android.net.wifi.p2p.WifiP2pDevice;
-import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -13,11 +12,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ViewSwitcher;
 
-import com.example.shifumi.placeholder.PlaceholderContent;
+import com.example.shifumi.MainActivity;
+import com.example.shifumi.R;
+import com.example.shifumi.WifiPeerListRecyclerViewAdapter;
+import com.example.shifumi.placeholder.WifiDeviceContent;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -28,6 +31,12 @@ public class WifiDevicesFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
+
+    public Collection<WifiP2pDevice> getPeers() {
+        return peers;
+    }
+
+    private Collection<WifiP2pDevice> peers;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -47,15 +56,42 @@ public class WifiDevicesFragment extends Fragment {
     }
 
     public void updateData(Collection<WifiP2pDevice> peers) {
-        RecyclerView recyclerView = (RecyclerView) getView();
+        ViewSwitcher viewSwitcher = (ViewSwitcher) getView();
+        switchView(viewSwitcher, peers.size());
+
+        assert viewSwitcher != null;
+        View displayedView = viewSwitcher.getCurrentView();
+
+        if (!(displayedView instanceof RecyclerView)) {
+            return;
+        }
+
+        RecyclerView recyclerView = (RecyclerView) displayedView;
+
         WifiPeerListRecyclerViewAdapter adapter = (WifiPeerListRecyclerViewAdapter) recyclerView.getAdapter();
 
-        adapter.updateData(PlaceholderContent.placeholderItemsMapper(peers));
+        assert adapter != null;
+        adapter.updateData(WifiDeviceContent.placeholderItemsMapper(peers));
+        this.peers.clear();
+        this.peers.addAll(peers);
+    }
+
+    private void switchView(ViewSwitcher viewSwitcher, int devicesCount) {
+        if (devicesCount == 0 && viewSwitcher.getCurrentView().getId() == R.id.devices_list) {
+            viewSwitcher.showNext();
+            return;
+        }
+
+        if (devicesCount > 0 && viewSwitcher.getCurrentView().getId() == R.id.text_empty) {
+            viewSwitcher.showNext();
+        }
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        peers = new ArrayList<>();
 
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
@@ -68,18 +104,30 @@ public class WifiDevicesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_wifi_device_list, container, false);
 
         // Set the adapter
-        if (view instanceof RecyclerView) {
+        if (view instanceof ViewSwitcher) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            
+            ViewSwitcher viewSwitcher = (ViewSwitcher) view;
+            RecyclerView recyclerView = getRecyclerView(viewSwitcher);
+
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new WifiPeerListRecyclerViewAdapter(PlaceholderContent.ITEMS));
+
+            MainActivity mainActivity = (MainActivity) getActivity();
+            assert mainActivity != null;
+            recyclerView.setAdapter(new WifiPeerListRecyclerViewAdapter(WifiDeviceContent.placeholderItemsMapper(peers), mainActivity.getPeerToPeerManager()));
         }
 
         return view;
+    }
+
+    private static RecyclerView getRecyclerView(ViewSwitcher viewSwitcher) {
+        if (viewSwitcher.getCurrentView() instanceof RecyclerView) {
+            return (RecyclerView) viewSwitcher.getCurrentView();
+        }
+
+        return (RecyclerView) viewSwitcher.getNextView();
     }
 }

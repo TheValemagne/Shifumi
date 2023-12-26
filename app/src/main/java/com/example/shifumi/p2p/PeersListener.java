@@ -3,39 +3,34 @@ package com.example.shifumi.p2p;
 import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pManager;
 
+import androidx.fragment.app.Fragment;
+
 import com.example.shifumi.MainActivity;
 import com.example.shifumi.R;
-import com.example.shifumi.WifiDevicesFragment;
-import com.example.shifumi.placeholder.PlaceholderContent;
+import com.example.shifumi.fragment.WifiDevicesFragment;
 
 public class PeersListener implements WifiP2pManager.PeerListListener {
-    private MainActivity mainActivity;
-    private PeerToPeerManager peerToPeerManager;
+    private final MainActivity mainActivity;
 
-    public PeersListener(MainActivity mainActivity, PeerToPeerManager peerToPeerManager) {
+    public PeersListener(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
-        this.peerToPeerManager = peerToPeerManager;
     }
 
     @Override
     public void onPeersAvailable(WifiP2pDeviceList peers) {
         // Handle the list of available peers
-        System.out.println("TEST " + peers.getDeviceList());
+        Fragment fragment = mainActivity.getSupportFragmentManager()
+                .findFragmentById(R.id.main_frame);
 
-        if(!peers.equals(PlaceholderContent.ITEMS)) {
-            WifiDevicesFragment fragment = (WifiDevicesFragment) mainActivity.getSupportFragmentManager()
-                    .findFragmentById(R.id.main_frame);
-
-            fragment.updateData(peers.getDeviceList());
+        if (fragment == null || !(fragment instanceof WifiDevicesFragment)) {
+            return;
         }
 
-        // TODO empty list -> refresh button with discorverPeers
+        WifiDevicesFragment wifiDevicesFragment = (WifiDevicesFragment) fragment;
 
-        if (peers.getDeviceList().size() > 0) {
-            //PlaceholderContent.updateItems(peers);
-            // Connect to the first available peer (you might want to show a list to the user)
-            //String peer = peers.getDeviceList().iterator().next().toString();
-            //peerToPeerManager.connectToPeer(peer);
+        if(!peers.getDeviceList().equals(wifiDevicesFragment.getPeers())) {
+            ((WifiDevicesFragment) fragment).updateData(peers.getDeviceList());
         }
+
     }
 }

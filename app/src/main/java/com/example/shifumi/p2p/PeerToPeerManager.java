@@ -7,17 +7,16 @@ import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Build;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 
 import com.example.shifumi.MainActivity;
 
-import java.io.Serializable;
-
 public class PeerToPeerManager {
-    private WifiP2pManager wifiP2pManager;
-    private WifiP2pManager.Channel channel;
-    private MainActivity mainActivity;
+    private final WifiP2pManager wifiP2pManager;
+    private final WifiP2pManager.Channel channel;
+    private final MainActivity mainActivity;
 
     private Server server;
 
@@ -33,12 +32,12 @@ public class PeerToPeerManager {
                     ActivityCompat.checkSelfPermission(mainActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
                 Log.w("P2P", "Permission not granted " + this.getClass().getName());
-                ActivityCompat.requestPermissions(mainActivity, new String[]{Manifest.permission.NEARBY_WIFI_DEVICES, Manifest.permission.ACCESS_FINE_LOCATION}, mainActivity.PERMISSIONS_REQUEST_CODE);
+                ActivityCompat.requestPermissions(mainActivity, new String[]{Manifest.permission.NEARBY_WIFI_DEVICES, Manifest.permission.ACCESS_FINE_LOCATION}, MainActivity.PERMISSIONS_REQUEST_CODE);
             }
         } else  {
             if (ActivityCompat.checkSelfPermission(mainActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 Log.w("P2P", "Permission not granted : " + this.getClass().getName());
-                ActivityCompat.requestPermissions(mainActivity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, mainActivity.PERMISSIONS_REQUEST_CODE);
+                ActivityCompat.requestPermissions(mainActivity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MainActivity.PERMISSIONS_REQUEST_CODE);
             }
         }
     }
@@ -70,11 +69,13 @@ public class PeerToPeerManager {
             @Override
             public void onSuccess() {
                 // Connection initiated successfully
+                Toast.makeText(mainActivity, "Connexion réussie", Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onFailure(int reason) {
                 // Connection failed
+                Toast.makeText(mainActivity, "Erreur de connexion", Toast.LENGTH_LONG).show();
             }
         });
     }

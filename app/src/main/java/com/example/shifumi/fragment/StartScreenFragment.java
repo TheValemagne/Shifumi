@@ -1,4 +1,4 @@
-package com.example.shifumi;
+package com.example.shifumi.fragment;
 
 import android.os.Bundle;
 
@@ -11,6 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.shifumi.MainActivity;
+import com.example.shifumi.R;
+import com.example.shifumi.StartButtonListener;
 import com.example.shifumi.p2p.PeerToPeerManager;
 
 /**
@@ -19,7 +22,6 @@ import com.example.shifumi.p2p.PeerToPeerManager;
  */
 public class StartScreenFragment extends Fragment {
     protected Button startButton;
-    private PeerToPeerManager peerToPeerManager;
 
     public StartScreenFragment() {
         // Required empty public constructor
@@ -36,9 +38,8 @@ public class StartScreenFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         MainActivity main = (MainActivity) this.getActivity();
-        peerToPeerManager = main.getPeerToPeerManager();
 
         startButton = main.findViewById(R.id.startButton);
-        startButton.setOnClickListener(new StartButtonListener(main, peerToPeerManager));
+        startButton.setOnClickListener(new StartButtonListener(main));
     }
 }

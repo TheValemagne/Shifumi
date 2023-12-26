@@ -16,10 +16,10 @@ public class WifiDirectBroadcastReceiver extends BroadcastReceiver {
 
     private static final String TAG = "WifiDirectBroadcastReceiver";
 
-    private WifiP2pManager wifiP2pManager;
-    private WifiP2pManager.Channel channel;
-    private MainActivity mainActivity;
-    private PeerToPeerManager peerToPeerManager;
+    private final WifiP2pManager wifiP2pManager;
+    private final WifiP2pManager.Channel channel;
+    private final MainActivity mainActivity;
+    private final PeerToPeerManager peerToPeerManager;
     // Listener to handle peer list changes
     private WifiP2pManager.PeerListListener peerListListener;
 
@@ -37,7 +37,7 @@ public class WifiDirectBroadcastReceiver extends BroadcastReceiver {
     }
 
     private void initPeerToPeerListener() {
-        this.peerListListener = new PeersListener(mainActivity, peerToPeerManager);
+        this.peerListListener = new PeersListener(mainActivity);
     }
 
     @SuppressLint("MissingPermission")
@@ -50,18 +50,15 @@ public class WifiDirectBroadcastReceiver extends BroadcastReceiver {
             int state = intent.getIntExtra(WifiP2pManager.EXTRA_WIFI_STATE, -1);
 
             if (state == WifiP2pManager.WIFI_P2P_STATE_ENABLED) {
-                Log.d(TAG, "Connected");
                 Toast.makeText(mainActivity, "WiFi Direct activé", Toast.LENGTH_LONG).show();
                 // Wi-Fi P2P is enabled
             } else {
-                Log.d("Connexion", "Disconnected");
                 Toast.makeText(mainActivity, "WiFi Direct déactivé", Toast.LENGTH_LONG).show();
                 // Wi-Fi P2P is not enabled
             }
 
         } else if (WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION.equals(action)) {
             Log.d(TAG, "peers changed");
-            Toast.makeText(mainActivity, "Peers changed", Toast.LENGTH_LONG).show();
             // Request available peers from the Wi-Fi P2P manager
             if (wifiP2pManager != null) {
                 wifiP2pManager.requestPeers(channel, peerListListener);
@@ -75,6 +72,7 @@ public class WifiDirectBroadcastReceiver extends BroadcastReceiver {
             }
 
             WifiP2pInfo wifiP2pInfo = intent.getParcelableExtra(WifiP2pManager.EXTRA_WIFI_P2P_INFO);
+            assert wifiP2pInfo != null;
             if (wifiP2pInfo.groupFormed && wifiP2pInfo.isGroupOwner) {
                 // This device is the group owner (server)
                 peerToPeerManager.startServer();

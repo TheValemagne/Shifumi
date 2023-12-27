@@ -4,13 +4,15 @@ import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.net.NetworkInfo;
 import android.net.wifi.p2p.WifiP2pDevice;
-import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.example.shifumi.MainActivity;
+import com.example.shifumi.p2p.listener.ConnectionInfoListener;
+import com.example.shifumi.p2p.listener.PeersListener;
 
 public class WifiDirectBroadcastReceiver extends BroadcastReceiver {
 
@@ -71,16 +73,9 @@ public class WifiDirectBroadcastReceiver extends BroadcastReceiver {
                 return;
             }
 
-            WifiP2pInfo wifiP2pInfo = intent.getParcelableExtra(WifiP2pManager.EXTRA_WIFI_P2P_INFO);
-            assert wifiP2pInfo != null;
-            if (wifiP2pInfo.groupFormed && wifiP2pInfo.isGroupOwner) {
-                // This device is the group owner (server)
-                peerToPeerManager.startServer();
-
-            } else if (wifiP2pInfo.groupFormed) {
-                // This device is a client
-                peerToPeerManager.connectToPeer(wifiP2pInfo.groupOwnerAddress.getHostAddress());
-            }
+            NetworkInfo networkInfo = intent.getParcelableExtra(WifiP2pManager.EXTRA_NETWORK_INFO);
+            if (networkInfo.isConnected())
+                this.wifiP2pManager.requestConnectionInfo(channel, new ConnectionInfoListener(mainActivity, peerToPeerManager));
 
         } else if (WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION.equals(action)) {
             Log.d(TAG, "this device");

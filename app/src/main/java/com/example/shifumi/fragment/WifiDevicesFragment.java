@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,20 +17,19 @@ import android.widget.ViewSwitcher;
 
 import com.example.shifumi.MainActivity;
 import com.example.shifumi.R;
-import com.example.shifumi.WifiPeerListRecyclerViewAdapter;
+import com.example.shifumi.databinding.FragmentWifiDeviceListBinding;
+import com.example.shifumi.fragment.adapter.WifiPeerListRecyclerViewAdapter;
 import com.example.shifumi.placeholder.WifiDeviceContent;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * A fragment representing a list of Items.
  */
 public class WifiDevicesFragment extends Fragment {
-
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private int mColumnCount = 1;
 
     public Collection<WifiP2pDevice> getPeers() {
@@ -67,7 +67,6 @@ public class WifiDevicesFragment extends Fragment {
         }
 
         RecyclerView recyclerView = (RecyclerView) displayedView;
-
         WifiPeerListRecyclerViewAdapter adapter = (WifiPeerListRecyclerViewAdapter) recyclerView.getAdapter();
 
         assert adapter != null;
@@ -82,7 +81,7 @@ public class WifiDevicesFragment extends Fragment {
             return;
         }
 
-        if (devicesCount > 0 && viewSwitcher.getCurrentView().getId() == R.id.text_empty) {
+        if (devicesCount > 0 && viewSwitcher.getCurrentView().getId() == R.id.emptyBox) {
             viewSwitcher.showNext();
         }
     }
@@ -99,26 +98,26 @@ public class WifiDevicesFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_wifi_device_list, container, false);
+        com.example.shifumi.databinding.FragmentWifiDeviceListBinding binding = FragmentWifiDeviceListBinding.inflate(inflater, container, false);
+        ViewSwitcher view = binding.getRoot();
+
+        binding.reloadButton.setOnClickListener(v -> ((MainActivity) requireActivity()).getPeerToPeerManager().discoverPeers());
 
         // Set the adapter
-        if (view instanceof ViewSwitcher) {
-            Context context = view.getContext();
-            ViewSwitcher viewSwitcher = (ViewSwitcher) view;
-            RecyclerView recyclerView = getRecyclerView(viewSwitcher);
+        Context context = view.getContext();
+        RecyclerView recyclerView = getRecyclerView(view);
 
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-
-            MainActivity mainActivity = (MainActivity) getActivity();
-            assert mainActivity != null;
-            recyclerView.setAdapter(new WifiPeerListRecyclerViewAdapter(WifiDeviceContent.placeholderItemsMapper(peers), mainActivity.getPeerToPeerManager()));
+        if (mColumnCount <= 1) {
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        } else {
+            recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
+
+        MainActivity mainActivity = (MainActivity) getActivity();
+        assert mainActivity != null;
+        recyclerView.setAdapter(new WifiPeerListRecyclerViewAdapter(WifiDeviceContent.placeholderItemsMapper(peers), mainActivity.getPeerToPeerManager()));
 
         return view;
     }

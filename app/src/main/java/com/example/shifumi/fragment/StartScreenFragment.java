@@ -13,7 +13,7 @@ import android.widget.Button;
 
 import com.example.shifumi.MainActivity;
 import com.example.shifumi.R;
-import com.example.shifumi.StartButtonListener;
+import com.example.shifumi.fragment.listener.StartButtonListener;
 
 /**
  * A simple {@link Fragment} subclass.

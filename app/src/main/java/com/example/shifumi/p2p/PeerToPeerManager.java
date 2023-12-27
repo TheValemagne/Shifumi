@@ -7,13 +7,16 @@ import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Build;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 
 import com.example.shifumi.MainActivity;
+import com.example.shifumi.p2p.listener.DisconnectListener;
+import com.example.shifumi.p2p.listener.DiscoverPeersListener;
+import com.example.shifumi.p2p.listener.PeerConnectionListener;
 
 public class PeerToPeerManager {
+    private final static String TAG = "P2P Manager";
     private final WifiP2pManager wifiP2pManager;
     private final WifiP2pManager.Channel channel;
     private final MainActivity mainActivity;
@@ -31,12 +34,12 @@ public class PeerToPeerManager {
             if (ActivityCompat.checkSelfPermission(mainActivity, Manifest.permission.NEARBY_WIFI_DEVICES) != PackageManager.PERMISSION_GRANTED &&
                     ActivityCompat.checkSelfPermission(mainActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-                Log.w("P2P", "Permission not granted " + this.getClass().getName());
+                Log.w(TAG, "Permission not granted " + this.getClass().getName());
                 ActivityCompat.requestPermissions(mainActivity, new String[]{Manifest.permission.NEARBY_WIFI_DEVICES, Manifest.permission.ACCESS_FINE_LOCATION}, MainActivity.PERMISSIONS_REQUEST_CODE);
             }
         } else  {
             if (ActivityCompat.checkSelfPermission(mainActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                Log.w("P2P", "Permission not granted : " + this.getClass().getName());
+                Log.w(TAG, "Permission not granted : " + this.getClass().getName());
                 ActivityCompat.requestPermissions(mainActivity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MainActivity.PERMISSIONS_REQUEST_CODE);
             }
         }
@@ -45,19 +48,7 @@ public class PeerToPeerManager {
     @SuppressLint("MissingPermission")
     public void discoverPeers() {
         requestPermissions();
-        wifiP2pManager.discoverPeers(channel, new WifiP2pManager.ActionListener() {
-            @Override
-            public void onSuccess() {
-                // Wi-Fi Direct discovery started successfully
-                Log.d("P2P Manager", "discoverPeers Success");
-            }
-
-            @Override
-            public void onFailure(int reasonCode) {
-                // Wi-Fi Direct discovery failed
-                Log.d("P2P Manager", "discoverPeers faillure " + reasonCode);
-            }
-        });
+        wifiP2pManager.discoverPeers(channel, new DiscoverPeersListener());
     }
 
     @SuppressLint("MissingPermission")
@@ -65,19 +56,7 @@ public class PeerToPeerManager {
         WifiP2pConfig config = new WifiP2pConfig();
         config.deviceAddress = ipAddress;
 
-        wifiP2pManager.connect(channel, config, new WifiP2pManager.ActionListener() {
-            @Override
-            public void onSuccess() {
-                // Connection initiated successfully
-                Toast.makeText(mainActivity, "Connexion réussie", Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onFailure(int reason) {
-                // Connection failed
-                Toast.makeText(mainActivity, "Erreur de connexion", Toast.LENGTH_LONG).show();
-            }
-        });
+        wifiP2pManager.connect(channel, config, new PeerConnectionListener(mainActivity));
     }
 
     @SuppressLint("MissingPermission")
@@ -93,6 +72,20 @@ public class PeerToPeerManager {
                 // Group creation failed
             }
         });
+    }
+
+    public void disconnect() {
+        if (wifiP2pManager != null && channel != null) {
+            if (ActivityCompat.checkSelfPermission(mainActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+
+            wifiP2pManager.requestGroupInfo(channel, new DisconnectListener(wifiP2pManager, channel));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+                channel.close();
+            }
+
+        }
     }
 
     public void startServer() {

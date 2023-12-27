@@ -1,10 +1,12 @@
-package com.example.shifumi;
+package com.example.shifumi.fragment.listener;
 
 import android.view.View;
 import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.shifumi.MainActivity;
+import com.example.shifumi.R;
 import com.example.shifumi.fragment.WifiDevicesFragment;
 
 public class StartButtonListener implements Button.OnClickListener {

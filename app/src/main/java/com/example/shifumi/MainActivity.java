@@ -30,7 +30,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initPeerToPeer();
+        intentFilter = new IntentFilter();
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
+        intentFilter.addAction(WifiP2pManager.EXTRA_WIFI_P2P_INFO);
+
+        registerReceiver(wifiReceiver, intentFilter);
+
+        initWifiDirectConnection();
         showFragment();
     }
 
@@ -45,20 +54,12 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
-    private void initPeerToPeer() {
-        intentFilter = new IntentFilter();
-        intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
-        intentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
-        intentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
-        intentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
-        intentFilter.addAction(WifiP2pManager.EXTRA_WIFI_P2P_INFO);
-
+    private void initWifiDirectConnection() {
         WifiP2pManager wifiP2pManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         WifiP2pManager.Channel wifiChannel = wifiP2pManager.initialize(this, getMainLooper(), null);
         peerToPeerManager = new PeerToPeerManager(wifiP2pManager, wifiChannel, this);
 
         wifiReceiver = new WifiDirectBroadcastReceiver(wifiP2pManager, wifiChannel, peerToPeerManager, this);
-        registerReceiver(wifiReceiver, intentFilter);
     }
 
     @Override
@@ -82,5 +83,13 @@ public class MainActivity extends AppCompatActivity {
             // For simplicity, you can assume that the permissions are granted, but in a real app, you should check each permission.
             Toast.makeText(this, "Permissions granted", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // TODO déconnexion des peers à la fin de l'application
+
+        peerToPeerManager.disconnect();
     }
 }

@@ -1,4 +1,4 @@
-package com.example.shifumi;
+package com.example.shifumi.fragment.adapter;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,7 +15,6 @@ import java.util.List;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link WifiDeviceItem}.
- * TODO: Replace the implementation with code for your data type.
  */
 public class WifiPeerListRecyclerViewAdapter extends RecyclerView.Adapter<WifiPeerListRecyclerViewAdapter.ViewHolder> {
 

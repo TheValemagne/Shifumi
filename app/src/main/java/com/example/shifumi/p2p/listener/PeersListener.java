@@ -1,4 +1,4 @@
-package com.example.shifumi.p2p;
+package com.example.shifumi.p2p.listener;
 
 import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pManager;

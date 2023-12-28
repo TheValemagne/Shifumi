@@ -1,4 +1,4 @@
-package com.example.shifumi.p2p;
+package com.example.shifumi.network;
 
 import android.util.Log;
 

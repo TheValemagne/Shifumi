@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * {@link RecyclerView.Adapter} that can display a {@link WifiDeviceItem}.
  */
-public class WifiPeerListRecyclerViewAdapter extends RecyclerView.Adapter<WifiPeerListRecyclerViewAdapter.ViewHolder> {
+public final class WifiPeerListRecyclerViewAdapter extends RecyclerView.Adapter<WifiPeerListRecyclerViewAdapter.ViewHolder> {
 
     private final List<WifiDeviceItem> mValues;
     private final PeerToPeerManager peerToPeerManager;

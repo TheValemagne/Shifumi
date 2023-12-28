@@ -11,24 +11,29 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.example.shifumi.fragment.StartScreenFragment;
+import com.example.shifumi.game.Game;
 import com.example.shifumi.p2p.PeerToPeerManager;
 import com.example.shifumi.p2p.WifiDirectBroadcastReceiver;
 
 public class MainActivity extends AppCompatActivity {
+    private IntentFilter intentFilter;
+    public static final int PERMISSIONS_REQUEST_CODE = 1001;
     private WifiDirectBroadcastReceiver wifiReceiver;
-
+    private PeerToPeerManager peerToPeerManager;
     public PeerToPeerManager getPeerToPeerManager() {
         return peerToPeerManager;
     }
-
-    private PeerToPeerManager peerToPeerManager;
-    private IntentFilter intentFilter;
-    public static final int PERMISSIONS_REQUEST_CODE = 1001;
+    private Game game;
+    public Game getGame() {
+        return game;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        game = new Game();
 
         intentFilter = new IntentFilter();
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);

@@ -1,4 +1,4 @@
-package com.example.shifumi.p2p;
+package com.example.shifumi.network;
 
 import android.util.Log;
 
@@ -10,7 +10,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class ClientHandler extends Thread{
+public final class ClientHandler extends Thread{
     private static final String TAG = "ClientHandler";
     private final int clientId;
     private final Socket socket;

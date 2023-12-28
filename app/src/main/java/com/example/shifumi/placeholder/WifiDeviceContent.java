@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class WifiDeviceContent {
+public final class WifiDeviceContent {
 
     public static List<WifiDeviceItem> placeholderItemsMapper(Collection<WifiP2pDevice> peers) {
         List<WifiP2pDevice> wifiP2pDevices = new ArrayList<>(peers);

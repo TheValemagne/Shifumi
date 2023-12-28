@@ -1,4 +1,4 @@
-package com.example.shifumi.p2p;
+package com.example.shifumi.network;
 
 import android.util.Log;
 
@@ -11,13 +11,13 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 
-public class Client extends Thread {
+public final class Client extends Thread {
     private static final String TAG = "Client";
     private final InetAddress groupOwnerAddress;
     private final ObjectOutputStream outgoingFlow;
     private final ObjectInputStream incomingFlow;
     private final Game game;
-    private Socket socket;
+    private final Socket socket;
     private Choice ownChoice;
     private final Object ownChoiceLock = new Object();
     private Choice opponentChoice;

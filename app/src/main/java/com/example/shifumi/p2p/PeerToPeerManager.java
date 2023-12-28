@@ -12,11 +12,12 @@ import androidx.core.app.ActivityCompat;
 
 import com.example.shifumi.MainActivity;
 import com.example.shifumi.game.Game;
+import com.example.shifumi.network.Server;
 import com.example.shifumi.p2p.listener.DisconnectListener;
 import com.example.shifumi.p2p.listener.DiscoverPeersListener;
 import com.example.shifumi.p2p.listener.PeerConnectionListener;
 
-public class PeerToPeerManager {
+public final class PeerToPeerManager {
     private final static String TAG = "P2P Manager";
     private final WifiP2pManager wifiP2pManager;
     private final WifiP2pManager.Channel channel;

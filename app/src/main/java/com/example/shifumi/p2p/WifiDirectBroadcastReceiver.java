@@ -14,10 +14,8 @@ import com.example.shifumi.MainActivity;
 import com.example.shifumi.p2p.listener.ConnectionInfoListener;
 import com.example.shifumi.p2p.listener.PeersListener;
 
-public class WifiDirectBroadcastReceiver extends BroadcastReceiver {
-
+public final class WifiDirectBroadcastReceiver extends BroadcastReceiver {
     private static final String TAG = "WifiDirectBroadcastReceiver";
-
     private final WifiP2pManager wifiP2pManager;
     private final WifiP2pManager.Channel channel;
     private final MainActivity mainActivity;
@@ -45,6 +43,10 @@ public class WifiDirectBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
+
+        if(action == null) {
+            return;
+        }
 
         switch (action) {
             case WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION:
@@ -78,6 +80,8 @@ public class WifiDirectBroadcastReceiver extends BroadcastReceiver {
         }
 
         NetworkInfo networkInfo = intent.getParcelableExtra(WifiP2pManager.EXTRA_NETWORK_INFO);
+        assert networkInfo != null;
+
         if (networkInfo.isConnected())
             this.wifiP2pManager.requestConnectionInfo(channel, new ConnectionInfoListener(mainActivity, peerToPeerManager));
     }

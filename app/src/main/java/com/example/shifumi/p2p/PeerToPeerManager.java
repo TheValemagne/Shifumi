@@ -23,7 +23,9 @@ public class PeerToPeerManager {
 
     private Server server;
 
-    public PeerToPeerManager(WifiP2pManager manager, WifiP2pManager.Channel channel, MainActivity mainActivity) {
+    public PeerToPeerManager(WifiP2pManager manager,
+                             WifiP2pManager.Channel channel,
+                             MainActivity mainActivity) {
         this.wifiP2pManager = manager;
         this.channel = channel;
         this.mainActivity = mainActivity;
@@ -35,12 +37,14 @@ public class PeerToPeerManager {
                     ActivityCompat.checkSelfPermission(mainActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
                 Log.w(TAG, "Permission not granted " + this.getClass().getName());
-                ActivityCompat.requestPermissions(mainActivity, new String[]{Manifest.permission.NEARBY_WIFI_DEVICES, Manifest.permission.ACCESS_FINE_LOCATION}, MainActivity.PERMISSIONS_REQUEST_CODE);
+                ActivityCompat.requestPermissions(mainActivity,
+                        new String[]{Manifest.permission.NEARBY_WIFI_DEVICES, Manifest.permission.ACCESS_FINE_LOCATION}, MainActivity.PERMISSIONS_REQUEST_CODE);
             }
-        } else  {
+        } else {
             if (ActivityCompat.checkSelfPermission(mainActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 Log.w(TAG, "Permission not granted : " + this.getClass().getName());
-                ActivityCompat.requestPermissions(mainActivity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MainActivity.PERMISSIONS_REQUEST_CODE);
+                ActivityCompat.requestPermissions(mainActivity,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MainActivity.PERMISSIONS_REQUEST_CODE);
             }
         }
     }

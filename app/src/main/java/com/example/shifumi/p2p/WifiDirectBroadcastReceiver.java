@@ -22,7 +22,6 @@ public class WifiDirectBroadcastReceiver extends BroadcastReceiver {
     private final WifiP2pManager.Channel channel;
     private final MainActivity mainActivity;
     private final PeerToPeerManager peerToPeerManager;
-    // Listener to handle peer list changes
     private WifiP2pManager.PeerListListener peerListListener;
 
     public WifiDirectBroadcastReceiver(WifiP2pManager manager,
@@ -47,41 +46,52 @@ public class WifiDirectBroadcastReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
 
-        if (WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION.equals(action)) {
-            // Determine if Wi-Fi P2P mode is enabled or disabled
-            int state = intent.getIntExtra(WifiP2pManager.EXTRA_WIFI_STATE, -1);
+        switch (action) {
+            case WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION:
+                onStateChangedAction(intent);
+                break;
+            case WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION:
+                Log.d(TAG, "peers changed");
+                // Request available peers from the Wi-Fi P2P manager
+                if (wifiP2pManager != null) {
+                    wifiP2pManager.requestPeers(channel, peerListListener);
+                }
 
-            if (state == WifiP2pManager.WIFI_P2P_STATE_ENABLED) {
-                Toast.makeText(mainActivity, "WiFi Direct activé", Toast.LENGTH_LONG).show();
-                // Wi-Fi P2P is enabled
-            } else {
-                Toast.makeText(mainActivity, "WiFi Direct déactivé", Toast.LENGTH_LONG).show();
-                // Wi-Fi P2P is not enabled
-            }
+                break;
+            case WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION:
+                onConnectionChangedAction(intent);
+                break;
+            case WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION:
+                Log.d(TAG, "this device");
+                // Respond to this device's wifi state changing
+                // For example, obtain the device's details
+                WifiP2pDevice device = intent.getParcelableExtra(WifiP2pManager.EXTRA_WIFI_P2P_DEVICE);
+                break;
+        }
+    }
 
-        } else if (WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION.equals(action)) {
-            Log.d(TAG, "peers changed");
-            // Request available peers from the Wi-Fi P2P manager
-            if (wifiP2pManager != null) {
-                wifiP2pManager.requestPeers(channel, peerListListener);
-            }
+    private void onConnectionChangedAction(Intent intent) {
+        Log.d(TAG, "Connection_changed_action");
+        // Respond to new connection or disconnections
+        if (wifiP2pManager == null) {
+            return;
+        }
 
-        } else if (WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION.equals(action)) {
-            Log.d("Connexion", "Connection_changed_action");
-            // Respond to new connection or disconnections
-            if (wifiP2pManager == null) {
-                return;
-            }
+        NetworkInfo networkInfo = intent.getParcelableExtra(WifiP2pManager.EXTRA_NETWORK_INFO);
+        if (networkInfo.isConnected())
+            this.wifiP2pManager.requestConnectionInfo(channel, new ConnectionInfoListener(mainActivity, peerToPeerManager));
+    }
 
-            NetworkInfo networkInfo = intent.getParcelableExtra(WifiP2pManager.EXTRA_NETWORK_INFO);
-            if (networkInfo.isConnected())
-                this.wifiP2pManager.requestConnectionInfo(channel, new ConnectionInfoListener(mainActivity, peerToPeerManager));
+    private void onStateChangedAction(Intent intent) {
+        // Determine if Wi-Fi P2P mode is enabled or disabled
+        int state = intent.getIntExtra(WifiP2pManager.EXTRA_WIFI_STATE, -1);
 
-        } else if (WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION.equals(action)) {
-            Log.d(TAG, "this device");
-            // Respond to this device's wifi state changing
-            // For example, obtain the device's details
-            WifiP2pDevice device = intent.getParcelableExtra(WifiP2pManager.EXTRA_WIFI_P2P_DEVICE);
+        if (state == WifiP2pManager.WIFI_P2P_STATE_ENABLED) {
+            Toast.makeText(mainActivity, "WiFi Direct activé", Toast.LENGTH_LONG).show();
+            // Wi-Fi P2P is enabled
+        } else {
+            Toast.makeText(mainActivity, "WiFi Direct déactivé", Toast.LENGTH_LONG).show();
+            // Wi-Fi P2P is not enabled
         }
     }
 }

@@ -23,7 +23,6 @@ import com.example.shifumi.placeholder.WifiDeviceContent;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Objects;
 
 /**
  * A fragment representing a list of Items.
@@ -100,11 +99,17 @@ public class WifiDevicesFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        com.example.shifumi.databinding.FragmentWifiDeviceListBinding binding = FragmentWifiDeviceListBinding.inflate(inflater, container, false);
+        FragmentWifiDeviceListBinding binding = FragmentWifiDeviceListBinding.inflate(inflater, container, false);
         ViewSwitcher view = binding.getRoot();
 
         binding.reloadButton.setOnClickListener(v -> ((MainActivity) requireActivity()).getPeerToPeerManager().discoverPeers());
 
+        initRecyclerView(view);
+
+        return view;
+    }
+
+    private void initRecyclerView(ViewSwitcher view) {
         // Set the adapter
         Context context = view.getContext();
         RecyclerView recyclerView = getRecyclerView(view);
@@ -117,9 +122,8 @@ public class WifiDevicesFragment extends Fragment {
 
         MainActivity mainActivity = (MainActivity) getActivity();
         assert mainActivity != null;
-        recyclerView.setAdapter(new WifiPeerListRecyclerViewAdapter(WifiDeviceContent.placeholderItemsMapper(peers), mainActivity.getPeerToPeerManager()));
-
-        return view;
+        recyclerView.setAdapter(new WifiPeerListRecyclerViewAdapter(WifiDeviceContent.placeholderItemsMapper(peers),
+                mainActivity.getPeerToPeerManager()));
     }
 
     private static RecyclerView getRecyclerView(ViewSwitcher viewSwitcher) {

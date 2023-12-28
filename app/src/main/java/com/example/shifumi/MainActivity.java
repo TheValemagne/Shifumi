@@ -37,14 +37,13 @@ public class MainActivity extends AppCompatActivity {
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
         intentFilter.addAction(WifiP2pManager.EXTRA_WIFI_P2P_INFO);
 
-        registerReceiver(wifiReceiver, intentFilter);
-
         initWifiDirectConnection();
+        registerReceiver(wifiReceiver, intentFilter);
         showFragment();
     }
 
     private void showFragment() {
-        if(this.getSupportFragmentManager().findFragmentById(R.id.main_frame) != null) {
+        if (this.getSupportFragmentManager().findFragmentById(R.id.main_frame) != null) {
             return;
         }
 

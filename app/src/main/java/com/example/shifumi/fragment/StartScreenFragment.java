@@ -13,6 +13,7 @@ import android.widget.Button;
 
 import com.example.shifumi.MainActivity;
 import com.example.shifumi.R;
+import com.example.shifumi.databinding.FragmentStartScreenBinding;
 import com.example.shifumi.fragment.listener.StartButtonListener;
 
 /**
@@ -30,16 +31,10 @@ public class StartScreenFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_start_screen, container, false);
+        FragmentStartScreenBinding binding = FragmentStartScreenBinding.inflate(inflater, container, false);
+        binding.startButton.setOnClickListener(new StartButtonListener((MainActivity) this.requireActivity()));
+
+        return binding.getRoot();
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        MainActivity main = (MainActivity) this.getActivity();
-
-        assert main != null;
-        startButton = main.findViewById(R.id.startButton);
-        startButton.setOnClickListener(new StartButtonListener(main));
-    }
 }

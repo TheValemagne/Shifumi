@@ -11,6 +11,7 @@ import android.util.Log;
 import androidx.core.app.ActivityCompat;
 
 import com.example.shifumi.MainActivity;
+import com.example.shifumi.game.Game;
 import com.example.shifumi.p2p.listener.DisconnectListener;
 import com.example.shifumi.p2p.listener.DiscoverPeersListener;
 import com.example.shifumi.p2p.listener.PeerConnectionListener;
@@ -92,8 +93,8 @@ public class PeerToPeerManager {
         }
     }
 
-    public void startServer() {
-        server = new Server();
+    public void startServer(Game game) {
+        server = new Server(game);
         server.start();
     }
 

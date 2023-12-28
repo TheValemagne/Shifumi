@@ -6,6 +6,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.shifumi.MainActivity;
+import com.example.shifumi.game.Game;
 import com.example.shifumi.p2p.PeerToPeerManager;
 
 public class ConnectionInfoListener implements WifiP2pManager.ConnectionInfoListener{
@@ -25,7 +26,7 @@ public class ConnectionInfoListener implements WifiP2pManager.ConnectionInfoList
         if(info.isGroupOwner) {
             //serveur
             Log.d("Serveur", "Addresse groupOwner " + info.groupOwnerAddress.toString());
-            peerToPeerManager.startServer();
+            peerToPeerManager.startServer(new Game());
         } else {
             // client
             Log.d("Client", "Address groupOwner " + info.groupOwnerAddress.toString());

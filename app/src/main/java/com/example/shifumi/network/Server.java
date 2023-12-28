@@ -40,7 +40,7 @@ public final class Server extends Thread {
             while (!this.isInterrupted()){
                 Socket socket = serverSocket.accept();
 
-                if (clients.size() >= 2) { // accepte que deux joueurs par partie
+                if (clients.size() > 2) { // accepte que deux joueurs par partie
                     socket.close();
                     continue;
                 }

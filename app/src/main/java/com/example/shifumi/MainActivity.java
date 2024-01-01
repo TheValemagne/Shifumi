@@ -95,5 +95,6 @@ public class MainActivity extends AppCompatActivity {
         // TODO déconnexion des peers à la fin de l'application
 
         peerToPeerManager.disconnect();
+        peerToPeerManager.closeServer();
     }
 }

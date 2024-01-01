@@ -100,6 +100,10 @@ public final class PeerToPeerManager {
     }
 
     public void closeServer() {
+        if(server == null) {
+            return;
+        }
+
         server.closeConnection();
     }
 }

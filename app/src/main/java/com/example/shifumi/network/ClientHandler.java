@@ -6,32 +6,18 @@ import com.example.shifumi.game.Choice;
 import com.example.shifumi.game.Game;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public final class ClientHandler extends Thread{
+public final class ClientHandler extends ClientBase{
     private static final String TAG = "ClientHandler";
     private final int clientId;
-    private final Socket socket;
-    private final ObjectOutputStream outgoingFlow;
-    private final ObjectInputStream incomingFlow;
     private final Server server;
-    private final Game game;
-
-    private Choice ownChoice;
-    private final Object ownChoiceLock = new Object();
-    private Choice opponentChoice;
-    private final Object opponentChoiceLock = new Object();
 
     public ClientHandler(int clientId, Socket socket, Server server, Game game) throws IOException {
+        super(game, socket);
+
         this.clientId = clientId;
         this.server = server;
-        this.game = game;
-
-        this.socket = socket;
-        this.outgoingFlow = new ObjectOutputStream(socket.getOutputStream());
-        this.incomingFlow = new ObjectInputStream(socket.getInputStream());
     }
 
     @Override
@@ -46,14 +32,19 @@ public final class ClientHandler extends Thread{
                     Log.d(TAG, "Choix reçu : " + response);
 
                     server.setChoice(clientId, (Choice) response);
-                    // TODO do something with server if both choices are set
+
+                    if(server.areAllChoicesSet()) {
+                        // TODO do something with server if both choices are set
+                        server.getClient(0).setOpponentChoice(server.getChoice(1));
+                        server.getClient(1).setOpponentChoice(server.getChoice(0));
+                    }
 
                     synchronized (opponentChoiceLock) {
-                        while (opponentChoice.equals(Choice.UNSET)) {
+                        while (getOpponentChoice().equals(Choice.UNSET)) {
                             opponentChoiceLock.wait();
                         }
 
-                        this.outgoingFlow.writeObject(opponentChoice);
+                        this.outgoingFlow.writeObject(getOpponentChoice());
                     }
                 }
 
@@ -61,34 +52,5 @@ public final class ClientHandler extends Thread{
                 throw new RuntimeException(e);
             }
         }
-    }
-
-    public Choice getOwnChoice() {
-        return ownChoice;
-    }
-
-    public void setOwnChoice(Choice choice) {
-        synchronized (ownChoiceLock) {
-            ownChoice = choice;
-            ownChoiceLock.notify();
-        }
-    }
-
-    public Choice getOpponentChoice() {
-        return opponentChoice;
-    }
-
-    public void setOpponentChoice(Choice choice) {
-        synchronized (opponentChoiceLock) {
-            opponentChoice = choice;
-            opponentChoiceLock.notify();
-        }
-    }
-
-    public void close() throws IOException {
-        this.incomingFlow.close();
-        this.outgoingFlow.close();
-        this.socket.close();
-        this.interrupt();
     }
 }

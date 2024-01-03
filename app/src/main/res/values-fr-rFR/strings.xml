@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Shifumi</string>
+    <string name="startButtonLabel">Lancer</string>
+    <string name="empty_wifi_devices_list">Aucun appareil connectable trouvé</string>
+    <string name="welcome_msg">Bienvenue !</string>
+    <string name="reload_btn_description">Recharger la liste des appareils disponibles pour le Wi-Fi direct</string>
+</resources>

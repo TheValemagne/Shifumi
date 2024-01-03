@@ -3,7 +3,7 @@ package com.example.shifumi.network;
 import android.util.Log;
 
 import com.example.shifumi.game.Choice;
-import com.example.shifumi.network.listener.ClientResponseListener;
+import com.example.shifumi.network.listener.ClientListener;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -12,10 +12,10 @@ import java.net.Socket;
 public final class Client extends ClientBase {
     private static final String TAG = "Client";
     private final InetAddress groupOwnerAddress;
-    private final ClientResponseListener clientResponseListener;
+    private final ClientListener clientResponseListener;
 
     public Client(InetAddress groupOwnerAddress,
-                  ClientResponseListener clientResponseListener) throws IOException {
+                  ClientListener clientResponseListener) throws IOException {
         super(new Socket(groupOwnerAddress.getHostAddress(), Server.port));
         this.groupOwnerAddress = groupOwnerAddress;
         this.clientResponseListener = clientResponseListener;

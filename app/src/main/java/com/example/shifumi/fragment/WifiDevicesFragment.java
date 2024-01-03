@@ -19,7 +19,7 @@ import com.example.shifumi.MainActivity;
 import com.example.shifumi.R;
 import com.example.shifumi.databinding.FragmentWifiDeviceListBinding;
 import com.example.shifumi.fragment.adapter.WifiPeerListRecyclerViewAdapter;
-import com.example.shifumi.placeholder.WifiDeviceContent;
+import com.example.shifumi.fragment.placeholder.WifiDeviceContent;
 
 import java.util.ArrayList;
 import java.util.Collection;

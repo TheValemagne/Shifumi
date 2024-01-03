@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Shifumi</string>
-    <string name="startButtonLabel">Lancer</string>
+    <string name="startButtonLabel">Start</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="empty_wifi_devices_list">"No connectable devices found "</string>
+    <string name="welcome_msg">Welcome!</string>
+    <string name="reload_btn_description">Reload the list of available devices for Wi-Fi direct</string>
 </resources>

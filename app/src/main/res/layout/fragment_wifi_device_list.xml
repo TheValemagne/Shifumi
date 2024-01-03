@@ -3,10 +3,10 @@
 <ViewSwitcher xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:id="@+id/switcher"
-    >
+    tools:context=".fragment.WifiDevicesFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:id="@+id/emptyBox"
@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="VIDE" />
+            android:text="@string/empty_wifi_devices_list" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/reloadButton"
@@ -29,6 +29,7 @@
             android:layout_marginEnd="52dp"
             android:layout_marginBottom="41dp"
             android:clickable="true"
+            android:contentDescription="@string/reload_btn_description"
             android:src="@android:drawable/stat_notify_sync" />
 
     </RelativeLayout>
@@ -43,7 +44,6 @@
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
         app:layoutManager="LinearLayoutManager"
-        tools:context=".fragment.WifiDevicesFragment"
-        tools:listitem="@layout/fragment_wifi_device_item"/>
+        tools:listitem="@layout/fragment_wifi_device_item" />
 
 </ViewSwitcher>

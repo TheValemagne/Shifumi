@@ -12,7 +12,7 @@ public class ClientResponseListener implements ClientListener {
     }
 
     @Override
-    public void onReceive(Choice opponentChoice) {
+    public void onReceive(Choice choice) {
         // TODO update UI + use of game
         Game game = mainActivity.getGame();
     }

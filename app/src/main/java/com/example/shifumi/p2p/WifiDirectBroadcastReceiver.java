@@ -32,10 +32,6 @@ public final class WifiDirectBroadcastReceiver extends BroadcastReceiver {
         this.peerToPeerManager = peerToPeerManager;
         this.mainActivity = mainActivity;
 
-        initPeerToPeerListener();
-    }
-
-    private void initPeerToPeerListener() {
         this.peerListListener = new PeersListener(mainActivity);
     }
 

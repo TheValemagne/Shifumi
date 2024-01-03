@@ -1,4 +1,4 @@
-package com.example.shifumi.placeholder;
+package com.example.shifumi.fragment.placeholder;
 
 import android.net.wifi.p2p.WifiP2pDevice;
 

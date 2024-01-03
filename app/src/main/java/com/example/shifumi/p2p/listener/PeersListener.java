@@ -29,7 +29,7 @@ public class PeersListener implements WifiP2pManager.PeerListListener {
         WifiDevicesFragment wifiDevicesFragment = (WifiDevicesFragment) fragment;
 
         if(!peers.getDeviceList().equals(wifiDevicesFragment.getPeers())) {
-            ((WifiDevicesFragment) fragment).updateData(peers.getDeviceList());
+            wifiDevicesFragment.updateData(peers.getDeviceList());
         }
 
     }

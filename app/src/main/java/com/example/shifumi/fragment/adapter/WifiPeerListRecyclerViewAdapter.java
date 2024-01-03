@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.shifumi.p2p.PeerToPeerManager;
-import com.example.shifumi.placeholder.WifiDeviceContent.WifiDeviceItem;
+import com.example.shifumi.fragment.placeholder.WifiDeviceContent.WifiDeviceItem;
 import com.example.shifumi.databinding.FragmentWifiDeviceItemBinding;
 
 import java.util.List;
@@ -53,7 +53,7 @@ public final class WifiPeerListRecyclerViewAdapter extends RecyclerView.Adapter<
         return mValues.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         public final TextView mContentView;
         public WifiDeviceItem mItem;
 

@@ -3,21 +3,19 @@ package com.example.shifumi.network;
 import android.util.Log;
 
 import com.example.shifumi.game.Choice;
-import com.example.shifumi.game.Game;
+import com.example.shifumi.network.listener.ChoiceUpdateListener;
 
 import java.io.IOException;
 import java.net.Socket;
 
 public final class ClientHandler extends ClientBase{
     private static final String TAG = "ClientHandler";
-    private final int clientId;
-    private final Server server;
+    private final ChoiceUpdateListener choiceUpdateListener;
 
-    public ClientHandler(int clientId, Socket socket, Server server, Game game) throws IOException {
-        super(game, socket);
+    public ClientHandler(Socket socket, ChoiceUpdateListener choiceUpdateListener) throws IOException {
+        super(socket);
 
-        this.clientId = clientId;
-        this.server = server;
+        this.choiceUpdateListener = choiceUpdateListener;
     }
 
     @Override
@@ -31,13 +29,7 @@ public final class ClientHandler extends ClientBase{
                 if (response instanceof Choice) {
                     Log.d(TAG, "Choix reçu : " + response);
 
-                    server.setChoice(clientId, (Choice) response);
-
-                    if(server.areAllChoicesSet()) {
-                        // TODO do something with server if both choices are set
-                        server.getClient(0).setOpponentChoice(server.getChoice(1));
-                        server.getClient(1).setOpponentChoice(server.getChoice(0));
-                    }
+                    choiceUpdateListener.onReceive((Choice) response);
 
                     synchronized (opponentChoiceLock) {
                         while (getOpponentChoice().equals(Choice.UNSET)) {

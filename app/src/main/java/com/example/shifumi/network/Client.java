@@ -3,7 +3,7 @@ package com.example.shifumi.network;
 import android.util.Log;
 
 import com.example.shifumi.game.Choice;
-import com.example.shifumi.game.Game;
+import com.example.shifumi.network.listener.ClientResponseListener;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -12,10 +12,13 @@ import java.net.Socket;
 public final class Client extends ClientBase {
     private static final String TAG = "Client";
     private final InetAddress groupOwnerAddress;
+    private final ClientResponseListener clientResponseListener;
 
-    public Client(InetAddress groupOwnerAddress, Game game) throws IOException {
-        super(game, new Socket(groupOwnerAddress.getHostAddress(), Server.port));
+    public Client(InetAddress groupOwnerAddress,
+                  ClientResponseListener clientResponseListener) throws IOException {
+        super(new Socket(groupOwnerAddress.getHostAddress(), Server.port));
         this.groupOwnerAddress = groupOwnerAddress;
+        this.clientResponseListener = clientResponseListener;
     }
 
     @Override
@@ -38,8 +41,11 @@ public final class Client extends ClientBase {
 
                 if (response instanceof Choice) {
                     setOpponentChoice((Choice) response);
+                    // TODO update UI + score
+                    clientResponseListener.onReceive(getOpponentChoice());
                 }
-                // TODO update UI + score
+
+                // TODO Next or Endgame
 
             } catch (InterruptedException | IOException | ClassNotFoundException e) {
                 throw new RuntimeException(e);

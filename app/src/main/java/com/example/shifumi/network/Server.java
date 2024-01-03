@@ -3,7 +3,7 @@ package com.example.shifumi.network;
 import android.util.Log;
 
 import com.example.shifumi.game.Choice;
-import com.example.shifumi.game.Game;
+import com.example.shifumi.network.listener.ChoiceUpdateListener;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -19,11 +19,8 @@ public final class Server extends Thread {
     public static final int port = 8888;
     private final List<ClientHandler> clients;
     private final List<Choice> choices;
-    private final Game game;
 
-    public Server(Game game) {
-        this.game = game;
-
+    public Server() {
         this.clients = new ArrayList<>();
         this.choices = new ArrayList<>(Arrays.asList(Choice.UNSET, Choice.UNSET));
     }
@@ -46,7 +43,7 @@ public final class Server extends Thread {
                 }
 
                 Log.d(TAG, "Nouveau client " + clientId);
-                ClientHandler clientHandler = new ClientHandler(clientId, socket, this, game);
+                ClientHandler clientHandler = new ClientHandler(socket, new ChoiceUpdateListener(clientId, this));
                 clients.add(clientHandler);
                 clientId++;
             }

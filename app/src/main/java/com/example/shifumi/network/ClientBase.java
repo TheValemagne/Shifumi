@@ -1,7 +1,6 @@
 package com.example.shifumi.network;
 
 import com.example.shifumi.game.Choice;
-import com.example.shifumi.game.Game;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -14,15 +13,17 @@ public abstract class ClientBase extends Thread{
     protected final Socket socket;
     protected final ObjectOutputStream outgoingFlow;
     protected final ObjectInputStream incomingFlow;
-    protected final Game game;
+
+    private enum ChoiceIndex {
+        OwnChoice,
+        OpponentChoice
+    }
 
     private final Map<ChoiceIndex, Choice> choices;
     protected final Object ownChoiceLock = new Object();
     protected final Object opponentChoiceLock = new Object();
 
-    public ClientBase(Game game, Socket socket) throws IOException {
-        this.game = game;
-
+    public ClientBase(Socket socket) throws IOException {
         this.socket = socket;
         this.outgoingFlow = new ObjectOutputStream(socket.getOutputStream());
         this.incomingFlow = new ObjectInputStream(socket.getInputStream());
@@ -46,7 +47,7 @@ public abstract class ClientBase extends Thread{
         return choices.get(ChoiceIndex.OpponentChoice);
     }
 
-    protected void setOpponentChoice(Choice choice) {
+    public void setOpponentChoice(Choice choice) {
         synchronized (opponentChoiceLock) {
             choices.put(ChoiceIndex.OpponentChoice, choice);
             opponentChoiceLock.notify();

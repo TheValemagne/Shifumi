@@ -25,7 +25,7 @@ public class ConnectionInfoListener implements WifiP2pManager.ConnectionInfoList
         if(info.isGroupOwner) {
             //serveur
             Log.d("Serveur", "Addresse groupOwner " + info.groupOwnerAddress.toString());
-            peerToPeerManager.startServer(mainActivity.getGame());
+            peerToPeerManager.startServer();
         } else {
             // client
             Log.d("Client", "Address groupOwner " + info.groupOwnerAddress.toString());

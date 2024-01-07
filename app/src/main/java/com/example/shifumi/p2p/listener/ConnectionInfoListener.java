@@ -6,6 +6,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.shifumi.MainActivity;
+import com.example.shifumi.R;
+import com.example.shifumi.fragment.PlayFragment;
 import com.example.shifumi.p2p.PeerToPeerManager;
 
 public class ConnectionInfoListener implements WifiP2pManager.ConnectionInfoListener{
@@ -32,5 +34,9 @@ public class ConnectionInfoListener implements WifiP2pManager.ConnectionInfoList
         }
 
         Toast.makeText(mainActivity, "Connexion réussie", Toast.LENGTH_LONG).show();
+
+        mainActivity.getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_frame, new PlayFragment())
+                .commit();
     }
 }

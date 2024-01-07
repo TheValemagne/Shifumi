@@ -1,7 +1,5 @@
 package com.example.shifumi.fragment;
 
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.ShapeDrawable;
@@ -17,6 +15,7 @@ import android.widget.ImageView;
 import androidx.fragment.app.Fragment;
 
 import com.example.shifumi.R;
+import com.example.shifumi.fragment.listener.ChoiceButtonListener;
 
 public class PlayFragment extends Fragment {
 
@@ -39,33 +38,13 @@ public class PlayFragment extends Fragment {
 
         // Ajouter un écouteur de clic à chaque bouton
         Button btnRock = view.findViewById(R.id.btnRock);
-        btnRock.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Mettre à jour l'image de l'ImageView
-                ivSelectedChoice.setImageResource(R.drawable.rock);
-                ivSelectedChoice.setVisibility(View.VISIBLE);
-            }
-        });
+        btnRock.setOnClickListener(new ChoiceButtonListener(ivSelectedChoice, R.drawable.rock));
 
         Button btnPaper = view.findViewById(R.id.btnPaper);
-        btnPaper.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ivSelectedChoice.setImageResource(R.drawable.paper);
-                ivSelectedChoice.setVisibility(View.VISIBLE);
-            }
-        });
+        btnPaper.setOnClickListener(new ChoiceButtonListener(ivSelectedChoice, R.drawable.paper));
 
         Button btnScissors = view.findViewById(R.id.btnScissors);
-        btnScissors.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ivSelectedChoice.setImageResource(R.drawable.scissors);
-                ivSelectedChoice.setVisibility(View.VISIBLE);
-                addRedBorder(ivSelectedChoice);
-            }
-        });
+        btnScissors.setOnClickListener(new ChoiceButtonListener(ivSelectedChoice, R.drawable.scissors));
 
         Button boutonJouer = view.findViewById(R.id.playButton);
         boutonJouer.setOnClickListener(new View.OnClickListener() {

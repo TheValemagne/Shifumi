@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_frame"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <GridLayout
+        android:id="@+id/gridLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:columnCount="3"
+        android:orientation="horizontal"
+        android:rowCount="3">
+
+        <Button
+            android:id="@+id/btnRock"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_row="2"
+            android:layout_column="0"
+            android:layout_gravity="center"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/rock"
+            android:contentDescription="button for rock" />
+
+        <Button
+            android:id="@+id/btnPaper"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_row="0"
+            android:layout_column="1"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/paper"
+            android:contentDescription="button for paper" />
+
+        <Button
+            android:id="@+id/btnScissors"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_row="2"
+            android:layout_column="2"
+            android:layout_gravity="center"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/scissors"
+            android:contentDescription="button for scissors" />
+
+
+        <ImageView
+            android:id="@+id/ivSelectedChoice"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_row="1"
+            android:layout_column="1"
+            android:visibility="invisible" />
+
+    </GridLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/playButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Jouer" />
+    </LinearLayout>
+
+</LinearLayout>
+

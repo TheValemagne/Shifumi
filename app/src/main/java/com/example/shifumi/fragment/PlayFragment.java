@@ -1,9 +1,5 @@
 package com.example.shifumi.fragment;
 
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.RectShape;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,21 +52,5 @@ public class PlayFragment extends Fragment {
             }
         });
         return view;
-    }
-
-    public static void addRedBorder(ImageView imageView) {
-        // Création d'un ShapeDrawable pour le cadre rouge
-        ShapeDrawable borderDrawable = new ShapeDrawable(new RectShape());
-        borderDrawable.getPaint().setColor(0xFFFF0000);
-
-        // Création d'un LayerDrawable pour combiner l'image existante et le cadre rouge
-        Drawable[] layers = new Drawable[2];
-        layers[0] = imageView.getDrawable(); // Image existante
-        layers[1] = borderDrawable;
-
-        LayerDrawable layerDrawable = new LayerDrawable(layers);
-
-        // Appliquer le LayerDrawable à l'ImageView
-        imageView.setImageDrawable(layerDrawable);
     }
 }

@@ -3,7 +3,6 @@ package com.example.shifumi.network;
 import android.util.Log;
 
 import com.example.shifumi.game.Choice;
-import com.example.shifumi.network.listener.ClientHandlerListener;
 import com.example.shifumi.network.listener.ClientListener;
 
 import java.io.IOException;

@@ -14,7 +14,6 @@ import com.example.shifumi.MainActivity;
 import com.example.shifumi.R;
 import com.example.shifumi.fragment.listener.ChoiceButtonListener;
 import com.example.shifumi.game.Choice;
-import com.example.shifumi.game.VictoryCondition;
 
 import java.util.ArrayList;
 import java.util.Arrays;

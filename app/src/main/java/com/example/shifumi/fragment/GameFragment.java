@@ -15,7 +15,6 @@ import com.example.shifumi.game.Game;
 import com.example.shifumi.game.Result;
 
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.Map;
 
 public class GameFragment extends Fragment {
@@ -53,7 +52,7 @@ public class GameFragment extends Fragment {
         imageResult = view.findViewById(R.id.imageResult);
 
         // Récupération des choix du joueur et de l'adversaire depuis les arguments
-        Map<Choice, Integer> imageMap = new EnumMap(Choice.class);
+        EnumMap<Choice, Integer> imageMap = new EnumMap(Choice.class);
         imageMap.put(Choice.PAPER, R.drawable.paper);
         imageMap.put(Choice.ROCK, R.drawable.rock);
         imageMap.put(Choice.SCISSORS, R.drawable.scissors);

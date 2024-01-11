@@ -46,7 +46,6 @@ public abstract class ClientBase extends Thread{
 
     public void setOwnChoice(Choice choice) {
         synchronized (ownChoiceLock) {
-            Log.d(TAG, "setOwnChoice");
             choices.put(ChoiceIndex.OwnChoice, choice);
             ownChoiceLock.notifyAll();
         }

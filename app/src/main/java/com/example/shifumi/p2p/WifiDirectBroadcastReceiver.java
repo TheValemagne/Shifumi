@@ -5,7 +5,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.NetworkInfo;
-import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -20,7 +19,7 @@ public final class WifiDirectBroadcastReceiver extends BroadcastReceiver {
     private final WifiP2pManager.Channel channel;
     private final MainActivity mainActivity;
     private final PeerToPeerManager peerToPeerManager;
-    private WifiP2pManager.PeerListListener peerListListener;
+    private final WifiP2pManager.PeerListListener peerListListener;
 
     public WifiDirectBroadcastReceiver(WifiP2pManager manager,
                                        WifiP2pManager.Channel channel,
@@ -54,16 +53,9 @@ public final class WifiDirectBroadcastReceiver extends BroadcastReceiver {
                 if (wifiP2pManager != null) {
                     wifiP2pManager.requestPeers(channel, peerListListener);
                 }
-
                 break;
             case WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION:
                 onConnectionChangedAction(intent);
-                break;
-            case WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION:
-                Log.d(TAG, "this device");
-                // Respond to this device's wifi state changing
-                // For example, obtain the device's details
-                WifiP2pDevice device = intent.getParcelableExtra(WifiP2pManager.EXTRA_WIFI_P2P_DEVICE);
                 break;
         }
     }

@@ -17,6 +17,8 @@ import com.example.shifumi.p2p.listener.DisconnectListener;
 import com.example.shifumi.p2p.listener.DiscoverPeersListener;
 import com.example.shifumi.p2p.listener.PeerConnectionListener;
 
+import java.io.IOException;
+
 public final class PeerToPeerManager {
     private final static String TAG = "P2P Manager";
     private final WifiP2pManager wifiP2pManager;
@@ -66,21 +68,6 @@ public final class PeerToPeerManager {
         wifiP2pManager.connect(channel, config, new PeerConnectionListener(mainActivity));
     }
 
-    @SuppressLint("MissingPermission")
-    public void createGroup() {
-        wifiP2pManager.createGroup(channel, new WifiP2pManager.ActionListener() {
-            @Override
-            public void onSuccess() {
-                // Group created successfully
-            }
-
-            @Override
-            public void onFailure(int reason) {
-                // Group creation failed
-            }
-        });
-    }
-
     public void disconnect() {
         if (wifiP2pManager != null && channel != null) {
             if (ActivityCompat.checkSelfPermission(mainActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -92,6 +79,24 @@ public final class PeerToPeerManager {
                 channel.close();
             }
 
+            closeClient();
+            closeServer();
+        }
+    }
+
+    private void closeClient() {
+        if(mainActivity.getSendObjectHandler() != null){
+            mainActivity.getSendObjectHandler().interrupt();
+        }
+
+        if(mainActivity.getClient() == null) {
+            return;
+        }
+
+        try {
+            mainActivity.getClient().close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -100,7 +105,7 @@ public final class PeerToPeerManager {
         server.start();
     }
 
-    public void closeServer() {
+    private void closeServer() {
         if(server == null) {
             return;
         }

@@ -13,12 +13,6 @@ public class GameManagementListener {
     }
 
     public void onNext() throws IOException {
-        server.getClients().forEach(clientHandler -> {
-            try {
-                clientHandler.sendObject(new RequestNextRound());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        server.sendToAll(new RequestNextRound());
     }
 }

@@ -48,21 +48,19 @@ public class GameFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_game, container, false);
 
-        ImageView imagePlayer = view.findViewById(R.id.imagePlayer);
-        ImageView imageOpponent = view.findViewById(R.id.imageOpponent);
-        imageResult = view.findViewById(R.id.imageResult);
-
-        MainActivity mainActivity = (MainActivity) requireActivity();
-        Game game = mainActivity.getGame();
-
-        // Récupération des choix du joueur et de l'adversaire depuis les arguments
         EnumMap<Choice, Integer> imageMap = new EnumMap<>(Choice.class);
         imageMap.put(Choice.PAPER, R.drawable.paper);
         imageMap.put(Choice.ROCK, R.drawable.rock);
         imageMap.put(Choice.SCISSORS, R.drawable.scissors);
 
+        MainActivity mainActivity = (MainActivity) requireActivity();
+        Game game = mainActivity.getGame();
+
         // Définir les images du joueur et de l'adversaire
+        ImageView imagePlayer = view.findViewById(R.id.imagePlayer);
         imagePlayer.setImageResource(imageMap.get(ownChoice));
+
+        ImageView imageOpponent = view.findViewById(R.id.imageOpponent);
         imageOpponent.setImageResource(imageMap.get(opponentChoice));
         imageOpponent.setRotation(180);
 
@@ -72,18 +70,18 @@ public class GameFragment extends Fragment {
         TextView gameScore = view.findViewById(R.id.gameScore);
         gameScore.setText(MessageFormat.format("Score : {0} : {1}", game.getPlayerScore(), game.getOpponentScore()));
 
-        afficherResultat(result);
+        imageResult = view.findViewById(R.id.imageResult);
+        showResultImage(result);
 
         Button nextBtn = view.findViewById(R.id.nextBtn);
-
         nextBtn.setOnClickListener(new NextButtonListener(mainActivity.getSendObjectHandler()));
 
         return view;
     }
 
     // Méthode pour afficher la croix rouge, la coche ou la croix orange en fonction du résultat
-    private void afficherResultat(Result resultat) {
-        switch (resultat) {
+    private void showResultImage(Result result) {
+        switch (result) {
             case WIN:
                 imageResult.setImageResource(R.drawable.coche);
                 break;

@@ -51,7 +51,7 @@ public final class Client extends ClientBase {
                 if (response instanceof Choice) {
                     Log.d(TAG, "Choix adversaire reçu");
                     setOpponentChoice((Choice) response);
-                    // TODO update UI + score
+
                     clientResponseListener.onReceive(getOwnChoice(), getOpponentChoice());
                     this.resetChoices();
                 }
@@ -63,7 +63,7 @@ public final class Client extends ClientBase {
                     Log.d(TAG, "NEXT");
                     clientRoundListener.onNext();
                 }
-                // TODO Next or Endgame
+                // TODO Endgame
 
             } catch (InterruptedException | IOException | ClassNotFoundException e) {
                 throw new RuntimeException(e);

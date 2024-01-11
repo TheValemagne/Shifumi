@@ -13,7 +13,6 @@ public final class Game {
         OPPONENT
     }
 
-    private static final Random random = new Random();
     private final Map<ScoreKey, Integer> scores;
 
     /**
@@ -47,15 +46,6 @@ public final class Game {
                         new VictoryCondition(Choice.ROCK, Choice.PAPER),
                         new VictoryCondition(Choice.PAPER, Choice.SCISSORS),
                         new VictoryCondition(Choice.SCISSORS, Choice.ROCK)));
-    }
-
-    /**
-     * Return un choix aléatoire (mode solitaire)
-     *
-     * @return choix alléatoire
-     */
-    public static Choice getRandomChoice() {
-        return Choice.values()[random.nextInt(Choice.values().length)];
     }
 
     /**

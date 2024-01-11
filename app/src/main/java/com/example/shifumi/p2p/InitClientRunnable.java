@@ -24,8 +24,8 @@ public class InitClientRunnable implements Runnable {
                     new ClientResponseListener(mainActivity),
                     new ClientRoundListener(mainActivity));
             client.start();
-
             mainActivity.setClient(client);
+
             SendObjectHandler sendObjectHandler = new SendObjectHandler(client);
             sendObjectHandler.start();
             mainActivity.setSendObjectHandler(sendObjectHandler);

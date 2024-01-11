@@ -88,8 +88,14 @@ public final class Server extends Thread {
         }
     }
 
-    public List<ClientHandler> getClients() {
-        return clients;
+    public void sendToAll(Object object) {
+        this.clients.forEach(clientHandler -> {
+            try {
+                clientHandler.sendObject(object);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     public ClientHandler getClient(int index) {

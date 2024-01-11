@@ -1,5 +1,7 @@
 package com.example.shifumi.network;
 
+import android.util.Log;
+
 import com.example.shifumi.game.Choice;
 
 import java.io.IOException;
@@ -36,10 +38,11 @@ public abstract class ClientBase extends Thread{
         return choices.get(ChoiceIndex.OwnChoice);
     }
 
-    protected void setOwnChoice(Choice choice) {
+    public void setOwnChoice(Choice choice) {
         synchronized (ownChoiceLock) {
+            Log.d("ClientBase", "setOwnChoice");
             choices.put(ChoiceIndex.OwnChoice, choice);
-            ownChoiceLock.notify();
+            ownChoiceLock.notifyAll();
         }
     }
 

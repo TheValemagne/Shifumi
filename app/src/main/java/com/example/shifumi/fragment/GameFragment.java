@@ -7,8 +7,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.fragment.app.Fragment;
+
+import com.example.shifumi.MainActivity;
 import com.example.shifumi.R;
+import com.example.shifumi.game.Choice;
+import com.example.shifumi.game.Game;
 import com.example.shifumi.game.Result;
+
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GameFragment extends Fragment {
 
@@ -16,8 +24,23 @@ public class GameFragment extends Fragment {
     private ImageView imageOpponent;
     private ImageView imageResult;
 
+    private Choice ownChoice;
+    private Choice opponentChoice;
+    public static final String ARG_PARAM1 = "ownChoice";
+    public static final String ARG_PARAM2 = "opponentChoice";
+
     public GameFragment() {
         // Constructeur vide requis par Android
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (getArguments() != null) {
+            ownChoice = (Choice) getArguments().getSerializable(ARG_PARAM1);
+            opponentChoice = (Choice) getArguments().getSerializable(ARG_PARAM2);
+        }
     }
 
     @Override
@@ -30,32 +53,24 @@ public class GameFragment extends Fragment {
         imageResult = view.findViewById(R.id.imageResult);
 
         // Récupération des choix du joueur et de l'adversaire depuis les arguments
-        Bundle args = getArguments();
-        if (args != null) {
-            int choixJoueur = args.getInt("choixJoueur", R.drawable.ic_launcher_foreground);
-            int choixAdversaire = args.getInt("choixAdversaire", R.drawable.ic_launcher_foreground);
+        Map<Choice, Integer> imageMap = new EnumMap(Choice.class);
+        imageMap.put(Choice.PAPER, R.drawable.paper);
+        imageMap.put(Choice.ROCK, R.drawable.rock);
+        imageMap.put(Choice.SCISSORS, R.drawable.scissors);
 
-            // Définir les images du joueur et de l'adversaire
-            imagePlayer.setImageResource(choixJoueur);
-            imageOpponent.setImageResource(choixAdversaire);
+        // Définir les images du joueur et de l'adversaire
+        imagePlayer.setImageResource(imageMap.get(ownChoice));
+        imageOpponent.setImageResource(imageMap.get(opponentChoice));
 
-            Result resultat = determinerResultat(choixJoueur, choixAdversaire);
+        MainActivity mainActivity = (MainActivity) requireActivity();
+        Game game = mainActivity.getGame();
 
-            afficherResultat(resultat);
-        }
+        Result result = game.hasWon(ownChoice, opponentChoice);
+        game.updateScore(result);
+
+        afficherResultat(result);
 
         return view;
-    }
-
-    // Méthode pour déterminer le résultat du jeu
-    private Result determinerResultat(int choixJoueur, int choixAdversaire) {
-
-        if (choixJoueur == choixAdversaire) {
-            return Result.DRAW;
-        } else {
-            // Logique pour déterminer si le joueur a gagné ou perdu
-            return Result.WIN;
-        }
     }
 
     // Méthode pour afficher la croix rouge, la coche ou la croix orange en fonction du résultat

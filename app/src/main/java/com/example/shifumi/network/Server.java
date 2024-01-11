@@ -19,10 +19,12 @@ public final class Server extends Thread {
     public static final int port = 8888;
     private final List<ClientHandler> clients;
     private final List<Choice> choices;
+    private final List<Object> choiceLocks;
 
     public Server() {
         this.clients = new ArrayList<>();
         this.choices = new ArrayList<>(Arrays.asList(Choice.UNSET, Choice.UNSET));
+        this.choiceLocks = new ArrayList<>(Arrays.asList(new Object(), new Object()));
     }
 
     @Override
@@ -44,6 +46,7 @@ public final class Server extends Thread {
 
                 Log.d(TAG, "Nouveau client " + clientId);
                 ClientHandler clientHandler = new ClientHandler(socket, new ChoiceUpdateListener(clientId, this));
+                clientHandler.start();
                 clients.add(clientHandler);
                 clientId++;
             }
@@ -62,9 +65,9 @@ public final class Server extends Thread {
 
     public void setChoice(int index, Choice choice) {
         synchronized (this) {
-            synchronized (choices.get(index)) {
+            synchronized (choiceLocks.get(index)) {
                 choices.set(index, choice);
-                choices.get(index).notify();
+                choiceLocks.get(index).notify();
             }
         }
     }

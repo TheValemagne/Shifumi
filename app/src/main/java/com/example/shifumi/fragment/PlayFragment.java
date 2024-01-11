@@ -10,12 +10,25 @@ import android.widget.ImageView;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.shifumi.MainActivity;
 import com.example.shifumi.R;
 import com.example.shifumi.fragment.listener.ChoiceButtonListener;
+import com.example.shifumi.game.Choice;
+import com.example.shifumi.game.VictoryCondition;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class PlayFragment extends Fragment {
 
     private ImageView ivSelectedChoice;
+
+    public void setSelectedChoice(Choice selectedChoice) {
+        this.selectedChoice = selectedChoice;
+    }
+
+    private Choice selectedChoice;
     private LayoutInflater inflater;
     private ViewGroup container;
     private Bundle savedInstanceState;
@@ -34,21 +47,31 @@ public class PlayFragment extends Fragment {
 
         // Ajouter un écouteur de clic à chaque bouton
         Button btnRock = view.findViewById(R.id.btnRock);
-        btnRock.setOnClickListener(new ChoiceButtonListener(ivSelectedChoice, R.drawable.rock));
+        btnRock.setOnClickListener(new ChoiceButtonListener(this, ivSelectedChoice, R.drawable.rock, Choice.ROCK));
 
         Button btnPaper = view.findViewById(R.id.btnPaper);
-        btnPaper.setOnClickListener(new ChoiceButtonListener(ivSelectedChoice, R.drawable.paper));
+        btnPaper.setOnClickListener(new ChoiceButtonListener(this, ivSelectedChoice, R.drawable.paper, Choice.PAPER));
 
         Button btnScissors = view.findViewById(R.id.btnScissors);
-        btnScissors.setOnClickListener(new ChoiceButtonListener(ivSelectedChoice, R.drawable.scissors));
+        btnScissors.setOnClickListener(new ChoiceButtonListener(this, ivSelectedChoice, R.drawable.scissors, Choice.SCISSORS));
 
-        Button boutonJouer = view.findViewById(R.id.playButton);
-        boutonJouer.setOnClickListener(new View.OnClickListener() {
+        Button btnValidate = view.findViewById(R.id.playButton);
+
+        List<Button> buttons = new ArrayList<>(Arrays.asList(
+                btnRock,
+                btnPaper,
+                btnScissors,
+                btnValidate
+        ));
+
+        btnValidate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Créer et afficher le fragment GameFragment
-                GameFragment gameFragment = new GameFragment();
-                //.replace(R.id.main_frame, gameFragment)
+                MainActivity mainActivity = (MainActivity) requireActivity();
+                System.out.println("Selected choice player : " + selectedChoice);
+
+                mainActivity.getClient().setOwnChoice(selectedChoice);
+                buttons.forEach(button -> button.setEnabled(false));
             }
         });
         return view;

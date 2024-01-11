@@ -3,7 +3,7 @@ package com.example.shifumi.network.listener;
 import com.example.shifumi.game.Choice;
 import com.example.shifumi.network.Server;
 
-public class ChoiceUpdateListener implements ClientListener {
+public class ChoiceUpdateListener implements ClientHandlerListener {
     private final int clientId;
     private final Server server;
 

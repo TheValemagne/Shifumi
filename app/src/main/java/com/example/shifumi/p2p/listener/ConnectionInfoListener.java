@@ -8,7 +8,12 @@ import android.widget.Toast;
 import com.example.shifumi.MainActivity;
 import com.example.shifumi.R;
 import com.example.shifumi.fragment.PlayFragment;
+import com.example.shifumi.network.Client;
+import com.example.shifumi.network.listener.ClientResponseListener;
+import com.example.shifumi.p2p.InitClientRunnable;
 import com.example.shifumi.p2p.PeerToPeerManager;
+
+import java.io.IOException;
 
 public class ConnectionInfoListener implements WifiP2pManager.ConnectionInfoListener{
     private final MainActivity mainActivity;
@@ -32,6 +37,9 @@ public class ConnectionInfoListener implements WifiP2pManager.ConnectionInfoList
             // client
             Log.d("Client", "Address groupOwner " + info.groupOwnerAddress.toString());
         }
+
+        Thread thread = new Thread(new InitClientRunnable(info.groupOwnerAddress, mainActivity));
+        thread.start();
 
         Toast.makeText(mainActivity, "Connexion réussie", Toast.LENGTH_LONG).show();
 

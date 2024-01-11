@@ -8,10 +8,13 @@ import android.content.Context;
 import android.content.IntentFilter;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.Toast;
 
 import com.example.shifumi.fragment.StartScreenFragment;
 import com.example.shifumi.game.Game;
+import com.example.shifumi.network.Client;
 import com.example.shifumi.p2p.PeerToPeerManager;
 import com.example.shifumi.p2p.WifiDirectBroadcastReceiver;
 
@@ -28,12 +31,28 @@ public class MainActivity extends AppCompatActivity {
         return game;
     }
 
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    private Client client;
+
+    public Handler getHandler() {
+        return handler;
+    }
+    private Handler handler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         game = new Game();
+        handler = new Handler(Looper.getMainLooper());
 
         intentFilter = new IntentFilter();
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);

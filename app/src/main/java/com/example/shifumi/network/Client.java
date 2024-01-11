@@ -3,6 +3,7 @@ package com.example.shifumi.network;
 import android.util.Log;
 
 import com.example.shifumi.game.Choice;
+import com.example.shifumi.network.listener.ClientHandlerListener;
 import com.example.shifumi.network.listener.ClientListener;
 
 import java.io.IOException;
@@ -32,19 +33,26 @@ public final class Client extends ClientBase {
                 // TODO game management
                 synchronized (ownChoiceLock) {
                     while (getOwnChoice().equals(Choice.UNSET)) {
+                        Log.d(TAG, "Is waiting");
                         ownChoiceLock.wait();
                     }
+                    Log.d(TAG, "Choix joueur actuel");
                     this.outgoingFlow.writeObject(getOwnChoice());
+                    Log.d(TAG, "Choix envoyé");
                 }
 
                 Object response = this.incomingFlow.readObject(); // wait for server response
 
                 if (response instanceof Choice) {
+                    Log.d(TAG, "Choix adversaire reçu");
                     setOpponentChoice((Choice) response);
                     // TODO update UI + score
-                    clientResponseListener.onReceive(getOpponentChoice());
+                    clientResponseListener.onReceive(getOwnChoice(), getOpponentChoice());
                 }
 
+                Object nextResponse = this.incomingFlow.readObject();
+
+                this.resetChoices();
                 // TODO Next or Endgame
 
             } catch (InterruptedException | IOException | ClassNotFoundException e) {

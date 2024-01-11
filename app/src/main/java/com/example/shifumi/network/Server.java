@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.shifumi.game.Choice;
 import com.example.shifumi.network.listener.ChoiceUpdateListener;
+import com.example.shifumi.network.listener.GameManagementListener;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -45,7 +46,10 @@ public final class Server extends Thread {
                 }
 
                 Log.d(TAG, "Nouveau client " + clientId);
-                ClientHandler clientHandler = new ClientHandler(socket, new ChoiceUpdateListener(clientId, this));
+                ClientHandler clientHandler = new ClientHandler(socket,
+                        new ChoiceUpdateListener(clientId, this),
+                        new GameManagementListener(this));
+
                 clientHandler.start();
                 clients.add(clientHandler);
                 clientId++;
@@ -82,6 +86,10 @@ public final class Server extends Thread {
         synchronized (this) {
             Collections.fill(choices, Choice.UNSET);
         }
+    }
+
+    public List<ClientHandler> getClients() {
+        return clients;
     }
 
     public ClientHandler getClient(int index) {

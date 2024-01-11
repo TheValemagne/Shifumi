@@ -4,8 +4,10 @@ import android.util.Log;
 
 import com.example.shifumi.game.Choice;
 import com.example.shifumi.network.listener.ClientListener;
+import com.example.shifumi.network.listener.ClientRoundListener;
 
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 
@@ -13,12 +15,16 @@ public final class Client extends ClientBase {
     private static final String TAG = "Client";
     private final InetAddress groupOwnerAddress;
     private final ClientListener clientResponseListener;
+    private final ClientRoundListener clientRoundListener;
 
     public Client(InetAddress groupOwnerAddress,
-                  ClientListener clientResponseListener) throws IOException {
+                  ClientListener clientResponseListener,
+                  ClientRoundListener clientRoundListener) throws IOException {
         super(new Socket(groupOwnerAddress.getHostAddress(), Server.port));
+
         this.groupOwnerAddress = groupOwnerAddress;
         this.clientResponseListener = clientResponseListener;
+        this.clientRoundListener = clientRoundListener;
     }
 
     @Override
@@ -47,11 +53,16 @@ public final class Client extends ClientBase {
                     setOpponentChoice((Choice) response);
                     // TODO update UI + score
                     clientResponseListener.onReceive(getOwnChoice(), getOpponentChoice());
+                    this.resetChoices();
                 }
 
+                Log.d(TAG, "Attente suite");
                 Object nextResponse = this.incomingFlow.readObject();
 
-                this.resetChoices();
+                if (nextResponse instanceof RequestNextRound) {
+                    Log.d(TAG, "NEXT");
+                    clientRoundListener.onNext();
+                }
                 // TODO Next or Endgame
 
             } catch (InterruptedException | IOException | ClassNotFoundException e) {
@@ -60,5 +71,9 @@ public final class Client extends ClientBase {
         }
 
         Log.d(TAG, "Client déconnecté");
+    }
+
+    public ObjectOutputStream getOutgoingFlow() {
+        return this.outgoingFlow;
     }
 }

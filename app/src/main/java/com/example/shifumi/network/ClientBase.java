@@ -12,6 +12,7 @@ import java.util.EnumMap;
 import java.util.Map;
 
 public abstract class ClientBase extends Thread{
+    private static final String TAG = "ClientBase";
     protected final Socket socket;
     protected final ObjectOutputStream outgoingFlow;
     protected final ObjectInputStream incomingFlow;
@@ -34,13 +35,18 @@ public abstract class ClientBase extends Thread{
         resetChoices();
     }
 
+    public void sendObject(Object object) throws IOException {
+        Log.d(TAG, "sending : " + object);
+        this.outgoingFlow.writeObject(object);
+    }
+
     public Choice getOwnChoice() {
         return choices.get(ChoiceIndex.OwnChoice);
     }
 
     public void setOwnChoice(Choice choice) {
         synchronized (ownChoiceLock) {
-            Log.d("ClientBase", "setOwnChoice");
+            Log.d(TAG, "setOwnChoice");
             choices.put(ChoiceIndex.OwnChoice, choice);
             ownChoiceLock.notifyAll();
         }

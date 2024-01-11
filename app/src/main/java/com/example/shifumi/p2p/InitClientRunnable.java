@@ -3,12 +3,12 @@ package com.example.shifumi.p2p;
 import com.example.shifumi.MainActivity;
 import com.example.shifumi.network.Client;
 import com.example.shifumi.network.listener.ClientResponseListener;
+import com.example.shifumi.network.listener.ClientRoundListener;
 
 import java.io.IOException;
 import java.net.InetAddress;
 
-public class InitClientRunnable implements Runnable{
-    private Client client;
+public class InitClientRunnable implements Runnable {
     private final InetAddress groupOwnerAddress;
     private final MainActivity mainActivity;
 
@@ -20,9 +20,15 @@ public class InitClientRunnable implements Runnable{
     @Override
     public void run() {
         try {
-            client = new Client(groupOwnerAddress, new ClientResponseListener(mainActivity));
+            Client client = new Client(groupOwnerAddress,
+                    new ClientResponseListener(mainActivity),
+                    new ClientRoundListener(mainActivity));
             client.start();
+
             mainActivity.setClient(client);
+            SendObjectHandler sendObjectHandler = new SendObjectHandler(client);
+            sendObjectHandler.start();
+            mainActivity.setSendObjectHandler(sendObjectHandler);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

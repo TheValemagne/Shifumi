@@ -8,14 +8,13 @@ import android.content.Context;
 import android.content.IntentFilter;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.widget.Toast;
 
 import com.example.shifumi.fragment.StartScreenFragment;
 import com.example.shifumi.game.Game;
 import com.example.shifumi.network.Client;
 import com.example.shifumi.p2p.PeerToPeerManager;
+import com.example.shifumi.p2p.SendObjectHandler;
 import com.example.shifumi.p2p.WifiDirectBroadcastReceiver;
 
 public class MainActivity extends AppCompatActivity {
@@ -41,10 +40,15 @@ public class MainActivity extends AppCompatActivity {
 
     private Client client;
 
-    public Handler getHandler() {
-        return handler;
+    public SendObjectHandler getSendObjectHandler() {
+        return sendObjectHandler;
     }
-    private Handler handler;
+
+    public void setSendObjectHandler(SendObjectHandler sendObjectHandler) {
+        this.sendObjectHandler = sendObjectHandler;
+    }
+
+    private SendObjectHandler sendObjectHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         game = new Game();
-        handler = new Handler(Looper.getMainLooper());
 
         intentFilter = new IntentFilter();
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
@@ -113,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         // TODO déconnexion des peers à la fin de l'application
 
-        peerToPeerManager.disconnect();
-        peerToPeerManager.closeServer();
+        //peerToPeerManager.disconnect();
+        //peerToPeerManager.closeServer();
     }
 }

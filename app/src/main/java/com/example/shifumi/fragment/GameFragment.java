@@ -4,23 +4,24 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
 import com.example.shifumi.MainActivity;
 import com.example.shifumi.R;
+import com.example.shifumi.fragment.listener.NextButtonListener;
 import com.example.shifumi.game.Choice;
 import com.example.shifumi.game.Game;
 import com.example.shifumi.game.Result;
 
+import java.text.MessageFormat;
 import java.util.EnumMap;
-import java.util.Map;
 
 public class GameFragment extends Fragment {
 
-    private ImageView imagePlayer;
-    private ImageView imageOpponent;
     private ImageView imageResult;
 
     private Choice ownChoice;
@@ -47,12 +48,15 @@ public class GameFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_game, container, false);
 
-        imagePlayer = view.findViewById(R.id.imagePlayer);
-        imageOpponent = view.findViewById(R.id.imageOpponent);
+        ImageView imagePlayer = view.findViewById(R.id.imagePlayer);
+        ImageView imageOpponent = view.findViewById(R.id.imageOpponent);
         imageResult = view.findViewById(R.id.imageResult);
 
+        MainActivity mainActivity = (MainActivity) requireActivity();
+        Game game = mainActivity.getGame();
+
         // Récupération des choix du joueur et de l'adversaire depuis les arguments
-        EnumMap<Choice, Integer> imageMap = new EnumMap(Choice.class);
+        EnumMap<Choice, Integer> imageMap = new EnumMap<>(Choice.class);
         imageMap.put(Choice.PAPER, R.drawable.paper);
         imageMap.put(Choice.ROCK, R.drawable.rock);
         imageMap.put(Choice.SCISSORS, R.drawable.scissors);
@@ -60,14 +64,19 @@ public class GameFragment extends Fragment {
         // Définir les images du joueur et de l'adversaire
         imagePlayer.setImageResource(imageMap.get(ownChoice));
         imageOpponent.setImageResource(imageMap.get(opponentChoice));
-
-        MainActivity mainActivity = (MainActivity) requireActivity();
-        Game game = mainActivity.getGame();
+        imageOpponent.setRotation(180);
 
         Result result = game.hasWon(ownChoice, opponentChoice);
         game.updateScore(result);
 
+        TextView gameScore = view.findViewById(R.id.gameScore);
+        gameScore.setText(MessageFormat.format("Score : {0} : {1}", game.getPlayerScore(), game.getOpponentScore()));
+
         afficherResultat(result);
+
+        Button nextBtn = view.findViewById(R.id.nextBtn);
+
+        nextBtn.setOnClickListener(new NextButtonListener(mainActivity.getSendObjectHandler()));
 
         return view;
     }

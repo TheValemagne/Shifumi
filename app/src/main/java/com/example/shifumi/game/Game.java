@@ -5,8 +5,10 @@ import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
+/**
+ * Classe de gestion du jeu
+ */
 public final class Game {
     private enum ScoreKey {
         PLAYER,
@@ -79,6 +81,11 @@ public final class Game {
         return Result.LOST;
     }
 
+    /**
+     * Mise à jour des scores des deux jouers de la partie
+     *
+     * @param result
+     */
     public void updateScore(Result result) {
         if (result.equals(Result.DRAW)) {
             return;
@@ -88,6 +95,9 @@ public final class Game {
         scores.put(key, scores.get(key) + 1);
     }
 
+    /**
+     * Remise à zéro des scores des deux joueurs
+     */
     public void resetScores() {
         for (ScoreKey key : ScoreKey.values()) {
             scores.put(key, 0);

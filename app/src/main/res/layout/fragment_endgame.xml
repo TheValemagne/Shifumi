@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.StartScreenFragment">
-    
+    tools:context=".fragment.EndgameFragment">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -13,16 +13,23 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/welcome_msg"
+            android:text="@string/endgameMsg"
             android:textAlignment="center"
-            android:textSize="60sp" />
+            android:textSize="34sp" />
 
-        <Button
-            android:id="@+id/startButton"
+        <TextView
+            android:id="@+id/endgameScore"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:text="@string/startButtonLabel" />
+            android:text="TextView"
+            android:textAlignment="center"
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/quitAppBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/exitApp" />
     </LinearLayout>
 
 </FrameLayout>

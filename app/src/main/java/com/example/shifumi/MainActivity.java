@@ -17,6 +17,8 @@ import com.example.shifumi.p2p.PeerToPeerManager;
 import com.example.shifumi.p2p.SendObjectHandler;
 import com.example.shifumi.p2p.WifiDirectBroadcastReceiver;
 
+import java.text.MessageFormat;
+
 public class MainActivity extends AppCompatActivity {
     private IntentFilter intentFilter;
     public static final int PERMISSIONS_REQUEST_CODE = 1001;
@@ -28,6 +30,10 @@ public class MainActivity extends AppCompatActivity {
     private Game game;
     public Game getGame() {
         return game;
+    }
+
+    public String getScoreMsg() {
+        return MessageFormat.format("Score : {0} - {1}", game.getPlayerScore(), game.getOpponentScore());
     }
 
     public Client getClient() {
@@ -111,12 +117,4 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        // TODO déconnexion des peers à la fin de l'application
-
-        //peerToPeerManager.disconnect();
-        //peerToPeerManager.closeServer();
-    }
 }

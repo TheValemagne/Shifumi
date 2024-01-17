@@ -44,16 +44,10 @@ public class WifiDevicesFragment extends Fragment {
     public WifiDevicesFragment() {
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static WifiDevicesFragment newInstance(int columnCount) {
-        WifiDevicesFragment fragment = new WifiDevicesFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
+    /**
+     *
+     * @param peers
+     */
     public void updateData(Collection<WifiP2pDevice> peers) {
         ViewSwitcher viewSwitcher = (ViewSwitcher) getView();
         switchView(viewSwitcher, peers.size());
@@ -74,6 +68,11 @@ public class WifiDevicesFragment extends Fragment {
         this.peers.addAll(peers);
     }
 
+    /**
+     *
+     * @param viewSwitcher
+     * @param devicesCount
+     */
     private void switchView(ViewSwitcher viewSwitcher, int devicesCount) {
         if (devicesCount == 0 && viewSwitcher.getCurrentView().getId() == R.id.devices_list) {
             viewSwitcher.showNext();
@@ -100,9 +99,10 @@ public class WifiDevicesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         FragmentWifiDeviceListBinding binding = FragmentWifiDeviceListBinding.inflate(inflater, container, false);
-        ViewSwitcher view = binding.getRoot();
 
         binding.reloadButton.setOnClickListener(v -> ((MainActivity) requireActivity()).getPeerToPeerManager().discoverPeers());
+
+        ViewSwitcher view = binding.getRoot();
 
         initRecyclerView(view);
 
@@ -130,7 +130,7 @@ public class WifiDevicesFragment extends Fragment {
         if (viewSwitcher.getCurrentView() instanceof RecyclerView) {
             return (RecyclerView) viewSwitcher.getCurrentView();
         }
-
+        
         return (RecyclerView) viewSwitcher.getNextView();
     }
 }

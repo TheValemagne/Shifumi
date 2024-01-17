@@ -5,4 +5,6 @@
     <string name="empty_wifi_devices_list">Aucun appareil connectable trouvé</string>
     <string name="welcome_msg">Bienvenue !</string>
     <string name="reload_btn_description">Recharger la liste des appareils disponibles pour le Wi-Fi direct</string>
+    <string name="exitApp">Quitter</string>
+    <string name="endgameMsg">Fin de la partie !</string>
 </resources>

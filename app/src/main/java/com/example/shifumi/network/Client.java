@@ -5,11 +5,14 @@ import android.util.Log;
 import com.example.shifumi.game.Choice;
 import com.example.shifumi.network.listener.ClientListener;
 import com.example.shifumi.network.listener.ClientRoundListener;
+import com.example.shifumi.network.request.RequestEndgame;
+import com.example.shifumi.network.request.RequestNextRound;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.SocketException;
 
 public final class Client extends ClientBase {
     private static final String TAG = "Client";
@@ -20,7 +23,7 @@ public final class Client extends ClientBase {
     public Client(InetAddress groupOwnerAddress,
                   ClientListener clientResponseListener,
                   ClientRoundListener clientRoundListener) throws IOException {
-        super(new Socket(groupOwnerAddress.getHostAddress(), Server.port));
+        super(new Socket(groupOwnerAddress.getHostAddress(), Server.PORT));
 
         this.groupOwnerAddress = groupOwnerAddress;
         this.clientResponseListener = clientResponseListener;
@@ -35,26 +38,7 @@ public final class Client extends ClientBase {
 
         while (!this.isInterrupted()) {
             try {
-                // TODO game management
-                synchronized (ownChoiceLock) {
-                    while (getOwnChoice().equals(Choice.UNSET)) {
-                        Log.d(TAG, "Is waiting");
-                        ownChoiceLock.wait();
-                    }
-                    Log.d(TAG, "Choix joueur actuel");
-                    this.outgoingFlow.writeObject(getOwnChoice());
-                    Log.d(TAG, "Choix envoyé");
-                }
-
-                Object response = this.incomingFlow.readObject(); // wait for server response
-
-                if (response instanceof Choice) {
-                    Log.d(TAG, "Choix adversaire reçu");
-                    setOpponentChoice((Choice) response);
-
-                    clientResponseListener.onReceive(getOwnChoice(), getOpponentChoice());
-                    this.resetChoices();
-                }
+                playRound();
 
                 Log.d(TAG, "Attente suite");
                 Object nextResponse = this.incomingFlow.readObject();
@@ -62,15 +46,41 @@ public final class Client extends ClientBase {
                 if (nextResponse instanceof RequestNextRound) {
                     Log.d(TAG, "NEXT");
                     clientRoundListener.onNext();
+                } else if (nextResponse instanceof RequestEndgame) {
+                    Log.d(TAG, "Endgame");
+                    clientRoundListener.onEnd();
                 }
-                // TODO Endgame
 
-            } catch (InterruptedException | IOException | ClassNotFoundException e) {
+            } catch (SocketException | InterruptedException e) {
+                Log.e(TAG, e.toString());
+            } catch (IOException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
         }
 
         Log.d(TAG, "Client déconnecté");
+    }
+
+    private void playRound() throws InterruptedException, IOException, ClassNotFoundException {
+        synchronized (ownChoiceLock) {
+            while (getOwnChoice().equals(Choice.UNSET)) {
+                Log.d(TAG, "Is waiting");
+                ownChoiceLock.wait();
+            }
+            Log.d(TAG, "Choix joueur actuel");
+            this.outgoingFlow.writeObject(getOwnChoice());
+            Log.d(TAG, "Choix envoyé");
+        }
+
+        Object response = this.incomingFlow.readObject(); // wait for server response
+
+        if (response instanceof Choice) {
+            Log.d(TAG, "Choix adversaire reçu");
+            setOpponentChoice((Choice) response);
+
+            clientResponseListener.onReceive(getOwnChoice(), getOpponentChoice());
+            this.resetChoices();
+        }
     }
 
     public ObjectOutputStream getOutgoingFlow() {

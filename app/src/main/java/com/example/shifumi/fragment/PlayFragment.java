@@ -5,20 +5,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.GridLayout;
-import android.widget.ImageView;
-import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.shifumi.MainActivity;
 import com.example.shifumi.R;
+import com.example.shifumi.databinding.FragmentPlayBinding;
 import com.example.shifumi.fragment.listener.ChoiceButtonListener;
 import com.example.shifumi.fragment.listener.ValidateButtonListener;
+import com.example.shifumi.fragment.placeholder.ChoiceButtonContent;
 import com.example.shifumi.game.Choice;
-import com.example.shifumi.game.Game;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -40,39 +38,33 @@ public class PlayFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_play, container, false);
+        FragmentPlayBinding binding = FragmentPlayBinding.inflate(inflater, container, false);
 
-        ImageView ivSelectedChoice = view.findViewById(R.id.ivSelectedChoice);
-        GridLayout gridLayout = view.findViewById(R.id.gridLayout);
+        List<ChoiceButtonContent> choiceButtonContents = new ArrayList<>(Arrays.asList(
+                new ChoiceButtonContent(binding.btnRock, R.drawable.rock, Choice.ROCK),
+                new ChoiceButtonContent(binding.btnPaper, R.drawable.paper, Choice.PAPER),
+                new ChoiceButtonContent(binding.btnScissors, R.drawable.scissors, Choice.SCISSORS)
+        ));
 
-        // Ajouter un écouteur de clic à chaque bouton
-        Button btnRock = view.findViewById(R.id.btnRock);
-        btnRock.setOnClickListener(new ChoiceButtonListener(this, ivSelectedChoice, R.drawable.rock, Choice.ROCK));
-
-        Button btnPaper = view.findViewById(R.id.btnPaper);
-        btnPaper.setOnClickListener(new ChoiceButtonListener(this, ivSelectedChoice, R.drawable.paper, Choice.PAPER));
-
-        Button btnScissors = view.findViewById(R.id.btnScissors);
-        btnScissors.setOnClickListener(new ChoiceButtonListener(this, ivSelectedChoice, R.drawable.scissors, Choice.SCISSORS));
-
-        Button btnValidate = view.findViewById(R.id.playButton);
+        // Ajouter un écouteur de clic à chaque bouton choix
+        for (ChoiceButtonContent content : choiceButtonContents) {
+            content.getButton().setOnClickListener(new ChoiceButtonListener(this, binding.ivSelectedChoice, content.getDrawableId(), content.getChoice()));
+        }
 
         List<Button> buttons = new ArrayList<>(Arrays.asList(
-                btnRock,
-                btnPaper,
-                btnScissors,
-                btnValidate
+                binding.btnRock,
+                binding.btnPaper,
+                binding.btnScissors,
+                binding.playButton
         ));
 
         MainActivity mainActivity = (MainActivity) requireActivity();
-        btnValidate.setOnClickListener(new ValidateButtonListener(this, mainActivity, buttons));
+        binding.playButton.setOnClickListener(new ValidateButtonListener(this, mainActivity, buttons));
 
-        TextView playScore = view.findViewById(R.id.playScore);
-        Game game = mainActivity.getGame();
-        playScore.setText(MessageFormat.format("Score : {0} : {1}", game.getPlayerScore(), game.getOpponentScore()));
+        binding.playScore.setText(mainActivity.getScoreMsg());
 
-        return view;
+        return binding.getRoot();
     }
 }

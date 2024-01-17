@@ -42,7 +42,6 @@ public final class WifiPeerListRecyclerViewAdapter extends RecyclerView.Adapter<
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
         holder.mContentView.setText(mValues.get(position).content);
 
         holder.itemView.setOnClickListener(v -> peerToPeerManager.connectToPeer(mValues.get(position).wifiP2pDevice.deviceAddress));
@@ -55,7 +54,6 @@ public final class WifiPeerListRecyclerViewAdapter extends RecyclerView.Adapter<
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public final TextView mContentView;
-        public WifiDeviceItem mItem;
 
         public ViewHolder(FragmentWifiDeviceItemBinding binding) {
             super(binding.getRoot());

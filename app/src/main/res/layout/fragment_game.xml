@@ -48,12 +48,6 @@
                 android:gravity="top|end"
                 android:text="Score" />
 
-            <Button
-                android:id="@+id/button2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="end"
-                android:text="Button" />
         </LinearLayout>
 
     </LinearLayout>
@@ -61,14 +55,25 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:baselineAligned="false"
         android:gravity="bottom|center"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/nextBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="15dp"
             android:text="Suivant" />
+
+        <Button
+            android:id="@+id/leaveBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:gravity="end"
+            android:text="@string/exitApp" />
+
     </LinearLayout>
 
 </RelativeLayout>

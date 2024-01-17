@@ -80,10 +80,8 @@ public final class WifiDirectBroadcastReceiver extends BroadcastReceiver {
 
         if (state == WifiP2pManager.WIFI_P2P_STATE_ENABLED) {
             Toast.makeText(mainActivity, "WiFi Direct activé", Toast.LENGTH_LONG).show();
-            // Wi-Fi P2P is enabled
         } else {
             Toast.makeText(mainActivity, "WiFi Direct déactivé", Toast.LENGTH_LONG).show();
-            // Wi-Fi P2P is not enabled
         }
     }
 }

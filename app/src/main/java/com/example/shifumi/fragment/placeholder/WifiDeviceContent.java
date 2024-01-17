@@ -15,14 +15,10 @@ public final class WifiDeviceContent {
         List<WifiDeviceItem> results = new ArrayList<>();
 
         for (WifiP2pDevice wifiP2pDevice : wifiP2pDevices) {
-            results.add(createPlaceholderItem(wifiP2pDevice));
+            results.add(new WifiDeviceItem(wifiP2pDevice));
         }
 
         return results;
-    }
-
-    private static WifiDeviceItem createPlaceholderItem(WifiP2pDevice wifiP2pDevice) {
-        return new WifiDeviceItem(wifiP2pDevice);
     }
 
     public static class WifiDeviceItem {

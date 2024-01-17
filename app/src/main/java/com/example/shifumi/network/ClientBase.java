@@ -68,9 +68,9 @@ public abstract class ClientBase extends Thread{
     }
 
     public void close() throws IOException {
+        this.interrupt();
         this.incomingFlow.close();
         this.outgoingFlow.close();
         this.socket.close();
-        this.interrupt();
     }
 }

@@ -17,7 +17,7 @@ import java.util.List;
 public final class Server extends Thread {
     private static final String TAG = "Server";
     private ServerSocket serverSocket;
-    public static final int port = 8888;
+    public static final int PORT = 8888;
     private final List<ClientHandler> clients;
     private final List<Choice> choices;
     private final List<Object> choiceLocks;
@@ -34,7 +34,7 @@ public final class Server extends Thread {
 
         try {
             Log.d(TAG, "Lancement du serveur");
-            serverSocket = new ServerSocket(port);
+            serverSocket = new ServerSocket(PORT);
             int clientId = 0;
 
             while (!this.isInterrupted()){

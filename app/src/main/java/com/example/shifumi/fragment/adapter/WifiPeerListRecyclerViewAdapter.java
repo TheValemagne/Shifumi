@@ -34,6 +34,11 @@ public final class WifiPeerListRecyclerViewAdapter extends RecyclerView.Adapter<
 
     }
 
+    /**
+     * Actualisation de la liste de donées
+     *
+     * @param items la nouvelle liste d'appareils wifi
+     */
     public void updateData(List<WifiDeviceItem> items) {
         this.mValues.clear();
         this.mValues.addAll(items);
@@ -52,6 +57,9 @@ public final class WifiPeerListRecyclerViewAdapter extends RecyclerView.Adapter<
         return mValues.size();
     }
 
+    /**
+     * Element d'affichage de la WifiPeerList
+     */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public final TextView mContentView;
 

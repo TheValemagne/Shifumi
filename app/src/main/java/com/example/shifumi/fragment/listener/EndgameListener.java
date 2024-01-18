@@ -5,6 +5,9 @@ import android.view.View;
 import com.example.shifumi.network.request.RequestEndgame;
 import com.example.shifumi.p2p.SendObjectHandler;
 
+/**
+ * Ecouteur de fin de jeu
+ */
 public class EndgameListener implements View.OnClickListener {
     private final SendObjectHandler sendObjectHandler;
 

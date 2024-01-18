@@ -19,6 +19,7 @@ import com.example.shifumi.MainActivity;
 import com.example.shifumi.R;
 import com.example.shifumi.databinding.FragmentWifiDeviceListBinding;
 import com.example.shifumi.fragment.adapter.WifiPeerListRecyclerViewAdapter;
+import com.example.shifumi.fragment.listener.ReloadButtonListener;
 import com.example.shifumi.fragment.placeholder.WifiDeviceContent;
 
 import java.util.ArrayList;
@@ -37,16 +38,14 @@ public class WifiDevicesFragment extends Fragment {
 
     private Collection<WifiP2pDevice> peers;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
     public WifiDevicesFragment() {
+        // Required empty public constructor
     }
 
     /**
+     * Actualisation de la liste
      *
-     * @param peers
+     * @param peers nouvelle liste d'appareils wifi direct
      */
     public void updateData(Collection<WifiP2pDevice> peers) {
         ViewSwitcher viewSwitcher = (ViewSwitcher) getView();
@@ -69,17 +68,20 @@ public class WifiDevicesFragment extends Fragment {
     }
 
     /**
+     * Changement de la vue principale affiché
      *
-     * @param viewSwitcher
-     * @param devicesCount
+     * @param viewSwitcher l'élément viewSwitcher du fragment
+     * @param devicesCount nombre d'appareilles wifi disponibles
      */
     private void switchView(ViewSwitcher viewSwitcher, int devicesCount) {
         if (devicesCount == 0 && viewSwitcher.getCurrentView().getId() == R.id.devices_list) {
+            // Affichage de la page vide
             viewSwitcher.showNext();
             return;
         }
 
         if (devicesCount > 0 && viewSwitcher.getCurrentView().getId() == R.id.emptyBox) {
+            // Affichage de la liste d'appareils
             viewSwitcher.showNext();
         }
     }
@@ -96,11 +98,12 @@ public class WifiDevicesFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container,
                              Bundle savedInstanceState) {
         FragmentWifiDeviceListBinding binding = FragmentWifiDeviceListBinding.inflate(inflater, container, false);
 
-        binding.reloadButton.setOnClickListener(v -> ((MainActivity) requireActivity()).getPeerToPeerManager().discoverPeers());
+        binding.reloadButton.setOnClickListener(new ReloadButtonListener((MainActivity) requireActivity()));
 
         ViewSwitcher view = binding.getRoot();
 
@@ -109,6 +112,11 @@ public class WifiDevicesFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Initialisation de la liste d'apapreils wifi disponibles
+     *
+     * @param view l'élément viewSwitcher de la page
+     */
     private void initRecyclerView(ViewSwitcher view) {
         // Set the adapter
         Context context = view.getContext();
@@ -122,10 +130,17 @@ public class WifiDevicesFragment extends Fragment {
 
         MainActivity mainActivity = (MainActivity) getActivity();
         assert mainActivity != null;
-        recyclerView.setAdapter(new WifiPeerListRecyclerViewAdapter(WifiDeviceContent.placeholderItemsMapper(peers),
+        recyclerView.setAdapter(new WifiPeerListRecyclerViewAdapter(
+                WifiDeviceContent.placeholderItemsMapper(peers),
                 mainActivity.getPeerToPeerManager()));
     }
 
+    /**
+     * Récupère la vue de la liste
+     *
+     * @param viewSwitcher l'élément viewSwitcher de la page
+     * @return la vue liée à la liste
+     */
     private static RecyclerView getRecyclerView(ViewSwitcher viewSwitcher) {
         if (viewSwitcher.getCurrentView() instanceof RecyclerView) {
             return (RecyclerView) viewSwitcher.getCurrentView();

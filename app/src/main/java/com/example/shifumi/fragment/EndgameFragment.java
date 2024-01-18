@@ -29,7 +29,8 @@ public class EndgameFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         FragmentEndgameBinding binding = FragmentEndgameBinding.inflate(inflater, container, false);

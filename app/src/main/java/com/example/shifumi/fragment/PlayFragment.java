@@ -38,7 +38,8 @@ public class PlayFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container,
                              Bundle savedInstanceState) {
         FragmentPlayBinding binding = FragmentPlayBinding.inflate(inflater, container, false);
 

@@ -6,6 +6,9 @@ import android.widget.ImageView;
 import com.example.shifumi.fragment.PlayFragment;
 import com.example.shifumi.game.Choice;
 
+/**
+ * Ecouteur de sélection de choix
+ */
 public class ChoiceButtonListener implements View.OnClickListener{
     private final PlayFragment fragment;
     private final int drawableId;

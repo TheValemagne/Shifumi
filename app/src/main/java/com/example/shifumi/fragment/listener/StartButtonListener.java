@@ -7,6 +7,9 @@ import com.example.shifumi.MainActivity;
 import com.example.shifumi.R;
 import com.example.shifumi.fragment.WifiDevicesFragment;
 
+/**
+ * Ecouteur de lancement de la recherche d'appareil
+ */
 public class StartButtonListener implements Button.OnClickListener {
     private final MainActivity mainActivity;
 

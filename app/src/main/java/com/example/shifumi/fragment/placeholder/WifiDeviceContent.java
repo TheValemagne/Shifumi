@@ -8,8 +8,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Conteneur d'information pour appareil wifi
+ */
 public final class WifiDeviceContent {
 
+    /**
+     * Convertisseur de WifiP2pDevice en WifiDeviceItem
+     *
+     * @param peers la liste d'appareils wifi disponibles
+     * @return liste de WifiDeviceItem
+     */
     public static List<WifiDeviceItem> placeholderItemsMapper(Collection<WifiP2pDevice> peers) {
         List<WifiP2pDevice> wifiP2pDevices = new ArrayList<>(peers);
         List<WifiDeviceItem> results = new ArrayList<>();

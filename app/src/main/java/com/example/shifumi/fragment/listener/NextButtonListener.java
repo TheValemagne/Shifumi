@@ -5,6 +5,9 @@ import android.view.View;
 import com.example.shifumi.network.request.RequestNextRound;
 import com.example.shifumi.p2p.SendObjectHandler;
 
+/**
+ * Ecouteur tour suivant
+ */
 public class NextButtonListener implements View.OnClickListener {
     private final SendObjectHandler sendObjectHandler;
 

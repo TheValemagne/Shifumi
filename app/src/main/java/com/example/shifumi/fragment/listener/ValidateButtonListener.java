@@ -8,6 +8,9 @@ import com.example.shifumi.fragment.PlayFragment;
 
 import java.util.List;
 
+/**
+ * Ecouteur de validation du choix
+ */
 public class ValidateButtonListener implements View.OnClickListener {
     private final PlayFragment fragment;
     private final MainActivity mainActivity;

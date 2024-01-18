@@ -24,7 +24,8 @@ public class StartScreenFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         FragmentStartScreenBinding binding = FragmentStartScreenBinding.inflate(inflater, container, false);

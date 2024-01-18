@@ -44,7 +44,8 @@ public class GameFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container,
                              Bundle savedInstanceState) {
         FragmentGameBinding binding = FragmentGameBinding.inflate(inflater, container, false);
 

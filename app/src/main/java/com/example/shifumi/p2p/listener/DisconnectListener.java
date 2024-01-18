@@ -4,6 +4,9 @@ import android.net.wifi.p2p.WifiP2pGroup;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.util.Log;
 
+/**
+ * Ecouteur de connexion au group wifi direct
+ */
 public class DisconnectListener implements WifiP2pManager.GroupInfoListener {
     private final WifiP2pManager wifiP2pManager;
     private final WifiP2pManager.Channel channel;

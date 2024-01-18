@@ -9,6 +9,9 @@ import java.io.ObjectOutputStream;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
+/**
+ * Gestion d'envoi de données
+ */
 public class SendObjectHandler extends Thread{
     private final ObjectOutputStream outgoingFlow;
     private final Queue<Object> toSend = new PriorityQueue<>();
@@ -38,11 +41,16 @@ public class SendObjectHandler extends Thread{
         }
     }
 
-    public void send(Object obj){
+    /**
+     * Envoi de données au serveur
+     *
+     * @param object données à envoyer
+     */
+    public void send(Object object){
         synchronized (this) {
-            toSend.add(obj);
+            toSend.add(object);
             this.notifyAll();
-            Log.d("SendObjectHandler", "Sended : " + obj.toString());
+            Log.d("SendObjectHandler", "Sended : " + object.toString());
         }
     }
 

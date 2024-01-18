@@ -6,6 +6,9 @@ import android.widget.Toast;
 
 import com.example.shifumi.MainActivity;
 
+/**
+ * Ecouteur de connexion au pair
+ */
 public class PeerConnectionListener implements WifiP2pManager.ActionListener {
     private final MainActivity mainActivity;
 

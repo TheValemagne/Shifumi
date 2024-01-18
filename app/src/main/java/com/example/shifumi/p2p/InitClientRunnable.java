@@ -2,7 +2,6 @@ package com.example.shifumi.p2p;
 
 import com.example.shifumi.MainActivity;
 import com.example.shifumi.network.Client;
-import com.example.shifumi.network.listener.ClientResponseListener;
 import com.example.shifumi.network.listener.ClientRoundListener;
 
 import java.io.IOException;
@@ -21,7 +20,6 @@ public class InitClientRunnable implements Runnable {
     public void run() {
         try {
             Client client = new Client(groupOwnerAddress,
-                    new ClientResponseListener(mainActivity),
                     new ClientRoundListener(mainActivity));
             client.start();
             mainActivity.setClient(client);

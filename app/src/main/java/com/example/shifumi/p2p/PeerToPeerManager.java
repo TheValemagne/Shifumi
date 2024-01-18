@@ -19,6 +19,9 @@ import com.example.shifumi.p2p.listener.PeerConnectionListener;
 
 import java.io.IOException;
 
+/**
+ * Gestionnaire des échanges wifi direct
+ */
 public final class PeerToPeerManager {
     private final static String TAG = "P2P Manager";
     private final WifiP2pManager wifiP2pManager;
@@ -53,12 +56,20 @@ public final class PeerToPeerManager {
         }
     }
 
+    /**
+     * Lancement de la découverte des pairs disponibles
+     */
     @SuppressLint("MissingPermission")
     public void discoverPeers() {
         requestPermissions();
         wifiP2pManager.discoverPeers(channel, new DiscoverPeersListener());
     }
 
+    /**
+     * Connexion à une pair en wifi direct
+     *
+     * @param ipAddress adresse de l'appareil à connecter
+     */
     @SuppressLint("MissingPermission")
     public void connectToPeer(String ipAddress) {
         WifiP2pConfig config = new WifiP2pConfig();
@@ -68,6 +79,9 @@ public final class PeerToPeerManager {
         wifiP2pManager.connect(channel, config, new PeerConnectionListener(mainActivity));
     }
 
+    /**
+     * Déconnexion du group wifi direct
+     */
     public void disconnect() {
         if (wifiP2pManager != null && channel != null) {
             if (ActivityCompat.checkSelfPermission(mainActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -84,6 +98,9 @@ public final class PeerToPeerManager {
         }
     }
 
+    /**
+     * Fermeture du client joueur
+     */
     private void closeClient() {
         if(mainActivity.getSendObjectHandler() != null){
             mainActivity.getSendObjectHandler().interrupt();
@@ -100,11 +117,17 @@ public final class PeerToPeerManager {
         }
     }
 
+    /**
+     * Lancement du serveur
+     */
     public void startServer() {
         server = new Server();
         server.start();
     }
 
+    /**
+     * Fermeture du serveur
+     */
     private void closeServer() {
         if(server == null) {
             return;

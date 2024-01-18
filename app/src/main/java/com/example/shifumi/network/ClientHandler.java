@@ -3,7 +3,6 @@ package com.example.shifumi.network;
 import android.util.Log;
 
 import com.example.shifumi.game.Choice;
-import com.example.shifumi.network.listener.ClientHandlerListener;
 import com.example.shifumi.network.listener.GameManagementListener;
 import com.example.shifumi.network.request.RequestEndgame;
 import com.example.shifumi.network.request.RequestNextRound;
@@ -15,15 +14,12 @@ import java.net.SocketException;
 
 public final class ClientHandler extends ClientBase {
     private static final String TAG = "ClientHandler";
-    private final ClientHandlerListener choiceUpdateListener;
     private final GameManagementListener gameManagementListener;
 
     public ClientHandler(Socket socket,
-                         ClientHandlerListener choiceUpdateListener,
                          GameManagementListener gameManagementListener) throws IOException {
         super(socket);
 
-        this.choiceUpdateListener = choiceUpdateListener;
         this.gameManagementListener = gameManagementListener;
     }
 
@@ -39,7 +35,7 @@ public final class ClientHandler extends ClientBase {
                 if (response instanceof Choice) {
                     Log.d(TAG, "Choix reçu : " + response);
 
-                    choiceUpdateListener.onReceive((Choice) response);
+                    gameManagementListener.onReceive((Choice) response);
 
                     synchronized (opponentChoiceLock) {
                         while (getOpponentChoice().equals(Choice.UNSET)) {

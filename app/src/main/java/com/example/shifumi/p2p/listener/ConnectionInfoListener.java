@@ -11,6 +11,9 @@ import com.example.shifumi.fragment.PlayFragment;
 import com.example.shifumi.p2p.InitClientRunnable;
 import com.example.shifumi.p2p.PeerToPeerManager;
 
+/**
+ * Ecouteur pour les informations de connexion
+ */
 public class ConnectionInfoListener implements WifiP2pManager.ConnectionInfoListener{
     private final MainActivity mainActivity;
     private final PeerToPeerManager peerToPeerManager;

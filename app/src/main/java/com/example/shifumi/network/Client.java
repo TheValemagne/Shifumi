@@ -3,7 +3,6 @@ package com.example.shifumi.network;
 import android.util.Log;
 
 import com.example.shifumi.game.Choice;
-import com.example.shifumi.network.listener.ClientListener;
 import com.example.shifumi.network.listener.ClientRoundListener;
 import com.example.shifumi.network.request.RequestEndgame;
 import com.example.shifumi.network.request.RequestNextRound;
@@ -14,19 +13,19 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
 
+/**
+ * Classe pour la communication client joueur
+ */
 public final class Client extends ClientBase {
     private static final String TAG = "Client";
     private final InetAddress groupOwnerAddress;
-    private final ClientListener clientResponseListener;
     private final ClientRoundListener clientRoundListener;
 
     public Client(InetAddress groupOwnerAddress,
-                  ClientListener clientResponseListener,
                   ClientRoundListener clientRoundListener) throws IOException {
         super(new Socket(groupOwnerAddress.getHostAddress(), Server.PORT));
 
         this.groupOwnerAddress = groupOwnerAddress;
-        this.clientResponseListener = clientResponseListener;
         this.clientRoundListener = clientRoundListener;
     }
 
@@ -78,7 +77,7 @@ public final class Client extends ClientBase {
             Log.d(TAG, "Choix adversaire reçu");
             setOpponentChoice((Choice) response);
 
-            clientResponseListener.onReceive(getOwnChoice(), getOpponentChoice());
+            clientRoundListener.onReceive(getOwnChoice(), getOpponentChoice());
             this.resetChoices();
         }
     }

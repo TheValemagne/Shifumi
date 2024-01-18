@@ -3,7 +3,6 @@ package com.example.shifumi.network;
 import android.util.Log;
 
 import com.example.shifumi.game.Choice;
-import com.example.shifumi.network.listener.ChoiceUpdateListener;
 import com.example.shifumi.network.listener.GameManagementListener;
 
 import java.io.IOException;
@@ -47,8 +46,7 @@ public final class Server extends Thread {
 
                 Log.d(TAG, "Nouveau client " + clientId);
                 ClientHandler clientHandler = new ClientHandler(socket,
-                        new ChoiceUpdateListener(clientId, this),
-                        new GameManagementListener(this));
+                        new GameManagementListener(clientId, this));
 
                 clientHandler.start();
                 clients.add(clientHandler);
@@ -61,12 +59,24 @@ public final class Server extends Thread {
         }
     }
 
+    /**
+     * Return le choix d'un joueur
+     *
+     * @param index index du joueur
+     * @return choix du joueur
+     */
     public Choice getChoice(int index) {
         synchronized (this) {
             return choices.get(index);
         }
     }
 
+    /**
+     * Modifier le choix d'un joueur
+     *
+     * @param index index du joueur
+     * @param choice nouveau choix
+     */
     public void setChoice(int index, Choice choice) {
         synchronized (this) {
             synchronized (choiceLocks.get(index)) {
@@ -76,18 +86,31 @@ public final class Server extends Thread {
         }
     }
 
+    /**
+     * Vérifie si tous les jouers ont définis leur choix
+     *
+     * @return vrai si tous les joueurs ont valider leur choix, sinon faux
+     */
     public boolean areAllChoicesSet() {
         synchronized (this) {
             return choices.stream().noneMatch(choice -> choice.equals(Choice.UNSET));
         }
     }
 
+    /**
+     * Remise à zéro des choix
+     */
     public void resetChoices() {
         synchronized (this) {
             Collections.fill(choices, Choice.UNSET);
         }
     }
 
+    /**
+     * Envoi un objet à tous les clients connectés
+     *
+     * @param object données à envoyer
+     */
     public void sendToAll(Object object) {
         this.clients.forEach(clientHandler -> {
             try {
@@ -98,10 +121,21 @@ public final class Server extends Thread {
         });
     }
 
+    /**
+     * Retourne un client
+     *
+     * @param index index du client voulue
+     * @return intercepteur d'un client
+     */
     public ClientHandler getClient(int index) {
         return clients.get(index);
     }
 
+    /**
+     * Fermeture du client
+     *
+     * @param clientHandler client à fermer
+     */
     private void closeClient(ClientHandler clientHandler) {
         try {
             clientHandler.close();
@@ -110,6 +144,9 @@ public final class Server extends Thread {
         }
     }
 
+    /**
+     * Fermeture des connexions du serveur
+     */
     public void closeConnection() {
         try {
             clients.forEach(this::closeClient);

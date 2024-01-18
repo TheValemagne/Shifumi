@@ -9,6 +9,9 @@ import com.example.shifumi.MainActivity;
 import com.example.shifumi.R;
 import com.example.shifumi.fragment.WifiDevicesFragment;
 
+/**
+ * Ecouteur de réception des pairs disponibles
+ */
 public class PeersListener implements WifiP2pManager.PeerListListener {
     private final MainActivity mainActivity;
 

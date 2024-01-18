@@ -26,8 +26,8 @@ public class GameFragment extends Fragment {
 
     private Choice ownChoice;
     private Choice opponentChoice;
-    public static final String ARG_PARAM1 = "ownChoice";
-    public static final String ARG_PARAM2 = "opponentChoice";
+    public static final String OWN_CHOICE = "ownChoice";
+    public static final String OPPONENT_CHOICE = "opponentChoice";
 
     public GameFragment() {
         // Constructeur vide requis par Android
@@ -38,8 +38,8 @@ public class GameFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            ownChoice = (Choice) getArguments().getSerializable(ARG_PARAM1);
-            opponentChoice = (Choice) getArguments().getSerializable(ARG_PARAM2);
+            ownChoice = (Choice) getArguments().getSerializable(OWN_CHOICE);
+            opponentChoice = (Choice) getArguments().getSerializable(OPPONENT_CHOICE);
         }
     }
 
@@ -79,7 +79,7 @@ public class GameFragment extends Fragment {
     /**
      * Méthode pour afficher la croix rouge, la coche ou la croix orange en fonction du résultat
      *
-     * @param result
+     * @param result résultat de la manche actuelle
      */
     private void showResultImage(Result result) {
         switch (result) {

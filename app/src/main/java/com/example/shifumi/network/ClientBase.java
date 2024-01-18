@@ -35,15 +35,31 @@ public abstract class ClientBase extends Thread{
         resetChoices();
     }
 
+    /**
+     * Envoi des données au serveur
+     *
+     * @param object données à envoyer
+     * @throws IOException erreur lors de l'envoi
+     */
     public void sendObject(Object object) throws IOException {
         Log.d(TAG, "sending : " + object);
         this.outgoingFlow.writeObject(object);
     }
 
+    /**
+     * Retourne le choix du joueur actuel
+     *
+     * @return choix du joueur
+     */
     public Choice getOwnChoice() {
         return choices.get(ChoiceIndex.OwnChoice);
     }
 
+    /**
+     * Modifier le choix du joueur actuel
+     *
+     * @param choice nouveau choix du joueur
+     */
     public void setOwnChoice(Choice choice) {
         synchronized (ownChoiceLock) {
             choices.put(ChoiceIndex.OwnChoice, choice);
@@ -51,10 +67,20 @@ public abstract class ClientBase extends Thread{
         }
     }
 
+    /**
+     * Retourne le choix du joueur opposant
+     *
+     * @return choix du joueur
+     */
     public Choice getOpponentChoice() {
         return choices.get(ChoiceIndex.OpponentChoice);
     }
 
+    /**
+     * Modifier le choix du joueur actuel
+     *
+     * @param choice nouveau choix du joueur
+     */
     public void setOpponentChoice(Choice choice) {
         synchronized (opponentChoiceLock) {
             choices.put(ChoiceIndex.OpponentChoice, choice);
@@ -62,11 +88,19 @@ public abstract class ClientBase extends Thread{
         }
     }
 
+    /**
+     * Remise à zéro des choix
+     */
     protected void resetChoices() {
         setOwnChoice(Choice.UNSET);
         setOpponentChoice(Choice.UNSET);
     }
 
+    /**
+     * Fermeture de la connexion
+     *
+     * @throws IOException problèmes lors de la fermeture
+     */
     public void close() throws IOException {
         this.interrupt();
         this.incomingFlow.close();

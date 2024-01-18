@@ -1,8 +1,6 @@
-package com.example.shifumi.p2p;
+package com.example.shifumi.network;
 
 import android.util.Log;
-
-import com.example.shifumi.network.Client;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -12,11 +10,11 @@ import java.util.Queue;
 /**
  * Gestion d'envoi de données
  */
-public class SendObjectHandler extends Thread{
+public final class SendObjectHandler extends Thread{
     private final ObjectOutputStream outgoingFlow;
     private final Queue<Object> toSend = new PriorityQueue<>();
 
-    public SendObjectHandler(Client client) throws IOException {
+    public SendObjectHandler(Client client) {
         outgoingFlow = client.getOutgoingFlow();
     }
     public void run(){

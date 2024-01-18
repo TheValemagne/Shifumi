@@ -20,6 +20,7 @@ public final class Client extends ClientBase {
     private static final String TAG = "Client";
     private final InetAddress groupOwnerAddress;
     private final ClientRoundListener clientRoundListener;
+    private final SendObjectHandler sendObjectHandler;
 
     public Client(InetAddress groupOwnerAddress,
                   ClientRoundListener clientRoundListener) throws IOException {
@@ -27,6 +28,19 @@ public final class Client extends ClientBase {
 
         this.groupOwnerAddress = groupOwnerAddress;
         this.clientRoundListener = clientRoundListener;
+        this.sendObjectHandler = new SendObjectHandler(this);
+    }
+
+    @Override
+    public synchronized void start() {
+        super.start();
+        this.sendObjectHandler.start();
+    }
+
+    @Override
+    public void close() throws IOException {
+        super.close();
+        this.sendObjectHandler.interrupt();
     }
 
     @Override
@@ -84,5 +98,14 @@ public final class Client extends ClientBase {
 
     public ObjectOutputStream getOutgoingFlow() {
         return this.outgoingFlow;
+    }
+
+    /**
+     * Envoi de données au serveur
+     *
+     * @param object données à envoyer
+     */
+    public void send(Object object) {
+        this.sendObjectHandler.send(object);
     }
 }

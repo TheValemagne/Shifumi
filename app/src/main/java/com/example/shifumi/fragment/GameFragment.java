@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 import com.example.shifumi.MainActivity;
 import com.example.shifumi.R;
 import com.example.shifumi.databinding.FragmentGameBinding;
-import com.example.shifumi.fragment.listener.EndgameListener;
+import com.example.shifumi.fragment.listener.EndgameButtonListener;
 import com.example.shifumi.fragment.listener.NextButtonListener;
 import com.example.shifumi.game.Choice;
 import com.example.shifumi.game.Game;
@@ -71,8 +71,8 @@ public class GameFragment extends Fragment {
         imageResult = binding.imageResult;
         showResultImage(result);
 
-        binding.nextBtn.setOnClickListener(new NextButtonListener(mainActivity.getSendObjectHandler()));
-        binding.leaveBtn.setOnClickListener(new EndgameListener(mainActivity.getSendObjectHandler()));
+        binding.nextBtn.setOnClickListener(new NextButtonListener(mainActivity.getClient()));
+        binding.leaveBtn.setOnClickListener(new EndgameButtonListener(mainActivity.getClient()));
 
         return binding.getRoot();
     }

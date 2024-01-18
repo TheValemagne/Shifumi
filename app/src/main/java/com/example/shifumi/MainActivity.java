@@ -14,7 +14,6 @@ import com.example.shifumi.fragment.StartScreenFragment;
 import com.example.shifumi.game.Game;
 import com.example.shifumi.network.Client;
 import com.example.shifumi.p2p.PeerToPeerManager;
-import com.example.shifumi.p2p.SendObjectHandler;
 import com.example.shifumi.p2p.WifiDirectBroadcastReceiver;
 
 import java.text.MessageFormat;
@@ -45,16 +44,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private Client client;
-
-    public SendObjectHandler getSendObjectHandler() {
-        return sendObjectHandler;
-    }
-
-    public void setSendObjectHandler(SendObjectHandler sendObjectHandler) {
-        this.sendObjectHandler = sendObjectHandler;
-    }
-
-    private SendObjectHandler sendObjectHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         WifiP2pManager.Channel wifiChannel = wifiP2pManager.initialize(this, getMainLooper(), null);
         peerToPeerManager = new PeerToPeerManager(wifiP2pManager, wifiChannel, this);
 
-        wifiReceiver = new WifiDirectBroadcastReceiver(wifiP2pManager, wifiChannel, peerToPeerManager, this);
+        wifiReceiver = new WifiDirectBroadcastReceiver(wifiP2pManager, wifiChannel, this);
     }
 
     @Override

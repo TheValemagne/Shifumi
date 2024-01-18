@@ -1,7 +1,6 @@
-package com.example.shifumi.p2p;
+package com.example.shifumi.network;
 
 import com.example.shifumi.MainActivity;
-import com.example.shifumi.network.Client;
 import com.example.shifumi.network.listener.ClientRoundListener;
 
 import java.io.IOException;
@@ -22,11 +21,8 @@ public class InitClientRunnable implements Runnable {
             Client client = new Client(groupOwnerAddress,
                     new ClientRoundListener(mainActivity));
             client.start();
-            mainActivity.setClient(client);
 
-            SendObjectHandler sendObjectHandler = new SendObjectHandler(client);
-            sendObjectHandler.start();
-            mainActivity.setSendObjectHandler(sendObjectHandler);
+            mainActivity.setClient(client);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

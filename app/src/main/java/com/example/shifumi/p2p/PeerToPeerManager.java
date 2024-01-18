@@ -102,10 +102,6 @@ public final class PeerToPeerManager {
      * Fermeture du client joueur
      */
     private void closeClient() {
-        if(mainActivity.getSendObjectHandler() != null){
-            mainActivity.getSendObjectHandler().interrupt();
-        }
-
         if(mainActivity.getClient() == null) {
             return;
         }

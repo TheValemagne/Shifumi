@@ -8,7 +8,7 @@ import android.widget.Toast;
 import com.example.shifumi.MainActivity;
 import com.example.shifumi.R;
 import com.example.shifumi.fragment.PlayFragment;
-import com.example.shifumi.p2p.InitClientRunnable;
+import com.example.shifumi.network.InitClientRunnable;
 import com.example.shifumi.p2p.PeerToPeerManager;
 
 /**

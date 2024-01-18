@@ -2,25 +2,37 @@ package com.example.shifumi.network;
 
 import android.util.Log;
 
-import com.example.shifumi.game.Choice;
-import com.example.shifumi.network.listener.GameManagementListener;
-import com.example.shifumi.network.request.RequestEndgame;
-import com.example.shifumi.network.request.RequestNextRound;
+import com.example.shifumi.network.handler.ChoiceHandler;
+import com.example.shifumi.network.handler.RequestEndgameHandler;
+import com.example.shifumi.network.handler.RequestHandler;
+import com.example.shifumi.network.handler.RequestNextRoundHandler;
 
 import java.io.EOFException;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public final class ClientHandler extends ClientBase {
     private static final String TAG = "ClientHandler";
-    private final GameManagementListener gameManagementListener;
+    private final List<RequestHandler> handlers;
 
-    public ClientHandler(Socket socket,
-                         GameManagementListener gameManagementListener) throws IOException {
+    public ClientHandler(int clientId,
+                         Socket socket,
+                         Server server) throws IOException {
         super(socket);
 
-        this.gameManagementListener = gameManagementListener;
+        handlers = new ArrayList<>(Arrays.asList(
+                new ChoiceHandler(server, this, clientId),
+                new RequestNextRoundHandler(server),
+                new RequestEndgameHandler(server)
+        ));
+
+        for (int index = 0; index < handlers.size() - 1; index++) {
+            handlers.get(index).setNextHandler(handlers.get(index + 1));
+        }
     }
 
     @Override
@@ -30,29 +42,8 @@ public final class ClientHandler extends ClientBase {
         while (!this.isInterrupted()) {
             try {
                 Object response = this.incomingFlow.readObject();
-                Log.d(TAG, "reçu : " + response);
 
-                if (response instanceof Choice) {
-                    Log.d(TAG, "Choix reçu : " + response);
-
-                    gameManagementListener.onReceive((Choice) response);
-
-                    synchronized (opponentChoiceLock) {
-                        while (getOpponentChoice().equals(Choice.UNSET)) {
-                            Log.d(TAG, "waiting opponent choice : request - " + response);
-                            opponentChoiceLock.wait();
-                        }
-                        Log.d(TAG, "opponent ready to send - " + response);
-
-                        this.outgoingFlow.writeObject(getOpponentChoice());
-                    }
-                    this.resetChoices();
-                } else if (response instanceof RequestNextRound) {
-                    gameManagementListener.onNext();
-                } else if (response instanceof RequestEndgame) {
-                    gameManagementListener.onEnd();
-                }
-
+                this.handlers.get(0).handle(response);
             } catch (SocketException | InterruptedException | EOFException e) {
                 Log.e(TAG, e.toString());
             } catch (ClassNotFoundException | IOException e) {

@@ -14,6 +14,11 @@ import java.util.Map;
 public abstract class ClientBase extends Thread{
     private static final String TAG = "ClientBase";
     protected final Socket socket;
+
+    public ObjectOutputStream getOutgoingFlow() {
+        return outgoingFlow;
+    }
+
     protected final ObjectOutputStream outgoingFlow;
     protected final ObjectInputStream incomingFlow;
 
@@ -25,6 +30,10 @@ public abstract class ClientBase extends Thread{
     private final Map<ChoiceIndex, Choice> choices;
     protected final Object ownChoiceLock = new Object();
     protected final Object opponentChoiceLock = new Object();
+
+    public Object getOpponentChoiceLock() {
+        return opponentChoiceLock;
+    }
 
     public ClientBase(Socket socket) throws IOException {
         this.socket = socket;
@@ -91,7 +100,7 @@ public abstract class ClientBase extends Thread{
     /**
      * Remise à zéro des choix
      */
-    protected void resetChoices() {
+    public void resetChoices() {
         setOwnChoice(Choice.UNSET);
         setOpponentChoice(Choice.UNSET);
     }

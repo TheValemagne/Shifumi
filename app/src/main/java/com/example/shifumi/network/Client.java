@@ -8,7 +8,6 @@ import com.example.shifumi.network.request.RequestEndgame;
 import com.example.shifumi.network.request.RequestNextRound;
 
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
@@ -29,6 +28,15 @@ public final class Client extends ClientBase {
         this.groupOwnerAddress = groupOwnerAddress;
         this.clientRoundListener = clientRoundListener;
         this.sendObjectHandler = new SendObjectHandler(this);
+    }
+
+    /**
+     * Envoi de données au serveur
+     *
+     * @param object données à envoyer
+     */
+    public void send(Object object) {
+        this.sendObjectHandler.send(object);
     }
 
     @Override
@@ -96,16 +104,4 @@ public final class Client extends ClientBase {
         }
     }
 
-    public ObjectOutputStream getOutgoingFlow() {
-        return this.outgoingFlow;
-    }
-
-    /**
-     * Envoi de données au serveur
-     *
-     * @param object données à envoyer
-     */
-    public void send(Object object) {
-        this.sendObjectHandler.send(object);
-    }
 }

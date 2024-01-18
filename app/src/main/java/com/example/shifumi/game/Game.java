@@ -84,7 +84,7 @@ public final class Game {
     /**
      * Mise à jour des scores des deux jouers de la partie
      *
-     * @param result
+     * @param result résultat de la manche
      */
     public void updateScore(Result result) {
         if (result.equals(Result.DRAW)) {

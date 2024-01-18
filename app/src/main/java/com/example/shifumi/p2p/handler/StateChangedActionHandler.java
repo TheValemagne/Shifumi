@@ -8,7 +8,7 @@ import com.example.shifumi.MainActivity;
 
 import java.util.Objects;
 
-public class StateChangedActionHandler extends P2pHandler{
+public final class StateChangedActionHandler extends P2pHandler{
 
     public StateChangedActionHandler(MainActivity mainActivity) {
         super(mainActivity);

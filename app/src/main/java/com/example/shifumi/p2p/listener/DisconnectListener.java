@@ -8,6 +8,7 @@ import android.util.Log;
  * Ecouteur de connexion au group wifi direct
  */
 public class DisconnectListener implements WifiP2pManager.GroupInfoListener {
+    private final static String TAG = "Disconnect WIFI direct";
     private final WifiP2pManager wifiP2pManager;
     private final WifiP2pManager.Channel channel;
     public DisconnectListener(WifiP2pManager wifiP2pManager, WifiP2pManager.Channel channel) {
@@ -22,12 +23,12 @@ public class DisconnectListener implements WifiP2pManager.GroupInfoListener {
 
                 @Override
                 public void onSuccess() {
-                    Log.d("Disconnect WIFI direct", "removeGroup onSuccess -");
+                    Log.d(TAG, "removeGroup onSuccess -");
                 }
 
                 @Override
                 public void onFailure(int reason) {
-                    Log.d("Disconnect WIFI direct", "removeGroup onFailure -" + reason);
+                    Log.d(TAG, "removeGroup onFailure -" + reason);
                 }
             });
         }

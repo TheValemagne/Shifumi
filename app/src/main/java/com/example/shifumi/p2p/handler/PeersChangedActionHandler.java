@@ -9,7 +9,7 @@ import com.example.shifumi.p2p.listener.PeersListener;
 
 import java.util.Objects;
 
-public class PeersChangedActionHandler extends P2pHandler{
+public final class PeersChangedActionHandler extends P2pHandler{
     private final WifiP2pManager wifiP2pManager;
     private final WifiP2pManager.Channel channel;
     private final WifiP2pManager.PeerListListener peerListListener;

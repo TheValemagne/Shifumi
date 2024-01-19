@@ -11,6 +11,7 @@ import java.util.Queue;
  * Gestion d'envoi de données
  */
 public final class SendObjectHandler extends Thread{
+    private static final String TAG = "SendObjectHandler";
     private final ObjectOutputStream outgoingFlow;
     private final Queue<Object> toSend = new PriorityQueue<>();
 
@@ -32,7 +33,7 @@ public final class SendObjectHandler extends Thread{
                 try {
                     this.wait();
                 } catch (InterruptedException e) {
-                    Log.e("SendObjectHandler", "is interrupted");
+                    Log.e(TAG, "is interrupted");
                 }
             }
 
@@ -48,7 +49,7 @@ public final class SendObjectHandler extends Thread{
         synchronized (this) {
             toSend.add(object);
             this.notifyAll();
-            Log.d("SendObjectHandler", "Sended : " + object.toString());
+            Log.d(TAG, "Sended : " + object.toString());
         }
     }
 

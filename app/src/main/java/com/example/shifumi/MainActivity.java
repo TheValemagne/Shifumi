@@ -2,7 +2,6 @@ package com.example.shifumi;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 
 import android.content.Context;
 import android.content.IntentFilter;
@@ -69,9 +68,8 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        Fragment startScreen = new StartScreenFragment();
         this.getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_frame, startScreen)
+                .replace(R.id.main_frame, new StartScreenFragment())
                 .commit();
     }
 
@@ -100,8 +98,6 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PERMISSIONS_REQUEST_CODE) {
-            // Handle the result of the permission request
-            // For simplicity, you can assume that the permissions are granted, but in a real app, you should check each permission.
             Toast.makeText(this, "Permissions granted", Toast.LENGTH_SHORT).show();
         }
     }

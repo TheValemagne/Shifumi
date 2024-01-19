@@ -61,14 +61,11 @@ public final class Client extends ClientBase {
             try {
                 playRound();
 
-                Log.d(TAG, "Attente suite");
                 Object nextResponse = this.incomingFlow.readObject();
 
                 if (nextResponse instanceof RequestNextRound) {
-                    Log.d(TAG, "NEXT");
                     clientRoundListener.onNext();
                 } else if (nextResponse instanceof RequestEndgame) {
-                    Log.d(TAG, "Endgame");
                     clientRoundListener.onEnd();
                 }
 
@@ -85,18 +82,15 @@ public final class Client extends ClientBase {
     private void playRound() throws InterruptedException, IOException, ClassNotFoundException {
         synchronized (ownChoiceLock) {
             while (getOwnChoice().equals(Choice.UNSET)) {
-                Log.d(TAG, "Is waiting");
                 ownChoiceLock.wait();
             }
-            Log.d(TAG, "Choix joueur actuel");
+
             this.outgoingFlow.writeObject(getOwnChoice());
-            Log.d(TAG, "Choix envoyé");
         }
 
         Object response = this.incomingFlow.readObject(); // wait for server response
 
         if (response instanceof Choice) {
-            Log.d(TAG, "Choix adversaire reçu");
             setOpponentChoice((Choice) response);
 
             clientRoundListener.onReceive(getOwnChoice(), getOpponentChoice());

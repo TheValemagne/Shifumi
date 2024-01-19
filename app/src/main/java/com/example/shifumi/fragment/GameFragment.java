@@ -22,8 +22,6 @@ import java.util.EnumMap;
 
 public class GameFragment extends Fragment {
 
-    private ImageView imageResult;
-
     private Choice ownChoice;
     private Choice opponentChoice;
     public static final String OWN_CHOICE = "ownChoice";
@@ -68,8 +66,7 @@ public class GameFragment extends Fragment {
 
         binding.gameScore.setText(mainActivity.getScoreMsg());
 
-        imageResult = binding.imageResult;
-        showResultImage(result);
+        showResultImage(result, binding.imageResult);
 
         binding.nextBtn.setOnClickListener(new NextButtonListener(mainActivity.getClient()));
         binding.leaveBtn.setOnClickListener(new EndgameButtonListener(mainActivity.getClient()));
@@ -82,7 +79,7 @@ public class GameFragment extends Fragment {
      *
      * @param result résultat de la manche actuelle
      */
-    private void showResultImage(Result result) {
+    private void showResultImage(Result result, ImageView imageResult) {
         switch (result) {
             case WIN:
                 imageResult.setImageResource(R.drawable.coche);

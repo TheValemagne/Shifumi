@@ -7,4 +7,5 @@
     <string name="reload_btn_description">Recharger la liste des appareils disponibles pour le Wi-Fi direct</string>
     <string name="exitApp">Quitter</string>
     <string name="endgameMsg">Fin de la partie !</string>
+    <string name="next">Suivant</string>
 </resources>

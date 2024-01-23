@@ -6,4 +6,5 @@
     <string name="reload_btn_description">Reload the list of available devices for Wi-Fi direct</string>
     <string name="exitApp">Leave</string>
     <string name="endgameMsg">Game over!</string>
+    <string name="next">Next</string>
 </resources>

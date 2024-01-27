@@ -8,4 +8,5 @@
     <string name="exitApp">Quitter</string>
     <string name="endgameMsg">Fin de la partie !</string>
     <string name="next">Suivant</string>
+    <string name="score">Score : {0} - {1}</string>
 </resources>

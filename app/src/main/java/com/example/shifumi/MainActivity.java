@@ -31,7 +31,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public String getScoreMsg() {
-        return MessageFormat.format("Score : {0} - {1}", game.getPlayerScore(), game.getOpponentScore());
+        getBaseContext().getString(R.string.score);
+        return MessageFormat.format(getBaseContext().getString(R.string.score),
+                game.getPlayerScore(), game.getOpponentScore());
     }
 
     public Client getClient() {

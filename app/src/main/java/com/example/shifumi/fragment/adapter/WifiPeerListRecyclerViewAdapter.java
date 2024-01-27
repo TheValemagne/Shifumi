@@ -14,6 +14,7 @@ import com.example.shifumi.databinding.FragmentWifiDeviceItemBinding;
 import java.util.List;
 
 /**
+ * Adaptater pour la liste d'appareils WiFi direct accessibles
  * {@link RecyclerView.Adapter} that can display a {@link WifiDeviceItem}.
  */
 public final class WifiPeerListRecyclerViewAdapter extends RecyclerView.Adapter<WifiPeerListRecyclerViewAdapter.ViewHolder> {

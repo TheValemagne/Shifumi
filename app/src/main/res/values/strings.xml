@@ -7,4 +7,5 @@
     <string name="exitApp">Leave</string>
     <string name="endgameMsg">Game over!</string>
     <string name="next">Next</string>
+    <string name="score">Score: {0} - {1}</string>
 </resources>

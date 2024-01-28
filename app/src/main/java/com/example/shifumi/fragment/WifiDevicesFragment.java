@@ -31,6 +31,8 @@ import java.util.Collection;
 public class WifiDevicesFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
+    private FragmentWifiDeviceListBinding binding;
+    private WifiPeerListRecyclerViewAdapter adapter;
 
     public Collection<WifiP2pDevice> getPeers() {
         return peers;
@@ -48,20 +50,12 @@ public class WifiDevicesFragment extends Fragment {
      * @param peers nouvelle liste d'appareils wifi direct
      */
     public void updateData(Collection<WifiP2pDevice> peers) {
-        ViewSwitcher viewSwitcher = (ViewSwitcher) getView();
-        switchView(viewSwitcher, peers.size());
+        switchView(binding.switcher, peers.size());
 
-        assert viewSwitcher != null;
-        View displayedView = viewSwitcher.getCurrentView();
-
-        if (!(displayedView instanceof RecyclerView)) {
+        if (peers.isEmpty()) {
             return;
         }
 
-        RecyclerView recyclerView = (RecyclerView) displayedView;
-        WifiPeerListRecyclerViewAdapter adapter = (WifiPeerListRecyclerViewAdapter) recyclerView.getAdapter();
-
-        assert adapter != null;
         adapter.updateData(WifiDeviceContent.placeholderItemsMapper(peers));
         this.peers.clear();
         this.peers.addAll(peers);
@@ -74,7 +68,7 @@ public class WifiDevicesFragment extends Fragment {
      * @param devicesCount nombre d'appareilles wifi disponibles
      */
     private void switchView(ViewSwitcher viewSwitcher, int devicesCount) {
-        if (devicesCount == 0 && viewSwitcher.getCurrentView().getId() == R.id.devices_list) {
+        if (devicesCount == 0 && viewSwitcher.getCurrentView().getId() == R.id.devices_list_scroll) {
             // Affichage de la page vide
             viewSwitcher.showNext();
             return;
@@ -101,26 +95,23 @@ public class WifiDevicesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
-        FragmentWifiDeviceListBinding binding = FragmentWifiDeviceListBinding.inflate(inflater, container, false);
+        binding = FragmentWifiDeviceListBinding.inflate(inflater, container, false);
 
         binding.reloadButton.setOnClickListener(new ReloadButtonListener((MainActivity) requireActivity()));
 
-        ViewSwitcher view = binding.getRoot();
+        initRecyclerView(binding.devicesList);
 
-        initRecyclerView(view);
-
-        return view;
+        return binding.getRoot();
     }
 
     /**
      * Initialisation de la liste d'apapreils wifi disponibles
      *
-     * @param view l'élément viewSwitcher de la page
+     * @param recyclerView l'élément recyclerView de la page
      */
-    private void initRecyclerView(ViewSwitcher view) {
+    private void initRecyclerView(RecyclerView recyclerView) {
         // Set the adapter
-        Context context = view.getContext();
-        RecyclerView recyclerView = getRecyclerView(view);
+        Context context = recyclerView.getContext();
 
         if (mColumnCount <= 1) {
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
@@ -130,22 +121,10 @@ public class WifiDevicesFragment extends Fragment {
 
         MainActivity mainActivity = (MainActivity) getActivity();
         assert mainActivity != null;
-        recyclerView.setAdapter(new WifiPeerListRecyclerViewAdapter(
+        adapter = new WifiPeerListRecyclerViewAdapter(
                 WifiDeviceContent.placeholderItemsMapper(peers),
-                mainActivity.getPeerToPeerManager()));
+                mainActivity.getPeerToPeerManager());
+        recyclerView.setAdapter(adapter);
     }
 
-    /**
-     * Récupère la vue de la liste
-     *
-     * @param viewSwitcher l'élément viewSwitcher de la page
-     * @return la vue liée à la liste
-     */
-    private static RecyclerView getRecyclerView(ViewSwitcher viewSwitcher) {
-        if (viewSwitcher.getCurrentView() instanceof RecyclerView) {
-            return (RecyclerView) viewSwitcher.getCurrentView();
-        }
-        
-        return (RecyclerView) viewSwitcher.getNextView();
-    }
 }

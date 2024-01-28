@@ -82,13 +82,13 @@ public class GameFragment extends Fragment {
     private void showResultImage(Result result, ImageView imageResult) {
         switch (result) {
             case WIN:
-                imageResult.setImageResource(R.drawable.coche);
+                imageResult.setImageResource(R.drawable.check_mark);
                 break;
             case LOST:
-                imageResult.setImageResource(R.drawable.croix_rouge);
+                imageResult.setImageResource(R.drawable.red_cross);
                 break;
             case DRAW:
-                imageResult.setImageResource(R.drawable.croix_orange);
+                imageResult.setImageResource(R.drawable.orange_cross);
                 break;
         }
         // Rendre l'image visible

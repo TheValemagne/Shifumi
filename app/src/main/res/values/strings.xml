@@ -8,4 +8,9 @@
     <string name="endgameMsg">Game over!</string>
     <string name="next">Next</string>
     <string name="score">Score: {0} - {1}</string>
+    <string name="wifiDirectIsOn">WiFi direct is activated</string>
+    <string name="wifiDirectIsOff">WiFi direct is deactivated</string>
+    <string name="connectionSuccessful">Connection successful</string>
+    <string name="connectionFailure">Connection failed</string>
+    <string name="permissionGranted">Permissions granted</string>
 </resources>

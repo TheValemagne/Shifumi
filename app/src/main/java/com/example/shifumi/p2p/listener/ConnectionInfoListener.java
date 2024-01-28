@@ -40,7 +40,7 @@ public class ConnectionInfoListener implements WifiP2pManager.ConnectionInfoList
         Thread thread = new Thread(new InitClientRunnable(info.groupOwnerAddress, mainActivity));
         thread.start();
 
-        Toast.makeText(mainActivity, "Connexion réussie", Toast.LENGTH_LONG).show();
+        Toast.makeText(mainActivity, mainActivity.getBaseContext().getString(R.string.connectionSuccessful), Toast.LENGTH_LONG).show();
 
         mainActivity.getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_frame, new PlayFragment())

@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public String getScoreMsg() {
-        getBaseContext().getString(R.string.score);
         return MessageFormat.format(getBaseContext().getString(R.string.score),
                 game.getPlayerScore(), game.getOpponentScore());
     }
@@ -100,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PERMISSIONS_REQUEST_CODE) {
-            Toast.makeText(this, "Permissions granted", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getBaseContext().getString(R.string.permissionGranted), Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="top|end"
-            android:text="Score"
+            android:text=""
             android:textSize="24sp" />
 
     </LinearLayout>
@@ -45,7 +45,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/rock"
-                android:contentDescription="button for rock" />
+                android:contentDescription="@string/button_for_rock" />
 
             <Button
                 android:id="@+id/btnPaper"
@@ -56,7 +56,7 @@
                 android:layout_gravity="center"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/paper"
-                android:contentDescription="button for paper" />
+                android:contentDescription="@string/button_for_paper" />
 
 
             <Button
@@ -69,7 +69,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/scissors"
-                android:contentDescription="button for scissors" />
+                android:contentDescription="@string/button_for_scissors" />
 
             <ImageView
                 android:id="@+id/ivSelectedChoice"
@@ -77,7 +77,8 @@
                 android:layout_height="150dp"
                 android:layout_row="1"
                 android:layout_column="1"
-                android:visibility="invisible" />
+                android:visibility="invisible"
+                android:contentDescription="@string/your_selected_choice" />
 
         </GridLayout>
 
@@ -95,10 +96,11 @@
 
                 <Button
                     android:id="@+id/playButton"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_margin="35dp"
                     android:layout_weight="1"
-                    android:text="Jouer" />
+                    android:text="@string/validate_msg" />
 
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

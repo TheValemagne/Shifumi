@@ -13,4 +13,11 @@
     <string name="connectionSuccessful">Connection successful</string>
     <string name="connectionFailure">Connection failed</string>
     <string name="permissionGranted">Permissions granted</string>
+    <string name="validate_msg">Validate</string>
+    <string name="button_for_paper">button for paper choice</string>
+    <string name="button_for_rock">button for rock choice</string>
+    <string name="button_for_scissors">button for scissors choice</string>
+    <string name="your_selected_choice">your selected choice</string>
+    <string name="opponent_choice">opponent choice</string>
+    <string name="round_result">round result</string>
 </resources>

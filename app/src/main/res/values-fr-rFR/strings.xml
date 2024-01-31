@@ -14,4 +14,11 @@
     <string name="connectionSuccessful">Connexion réussie</string>
     <string name="connectionFailure">Erreur de connexion</string>
     <string name="permissionGranted">Permissions accordées</string>
+    <string name="validate_msg">Valider</string>
+    <string name="button_for_paper">bouton de choix pour feuille</string>
+    <string name="button_for_rock">bouton de choix pour pierre</string>
+    <string name="button_for_scissors">bouton de choix pour cisseaux</string>
+    <string name="your_selected_choice">votre choix</string>
+    <string name="opponent_choice">choix de l\'adversaire</string>
+    <string name="round_result">résultat de la manche</string>
 </resources>

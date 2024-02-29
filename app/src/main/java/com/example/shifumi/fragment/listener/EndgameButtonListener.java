@@ -11,6 +11,11 @@ import com.example.shifumi.network.request.RequestEndgame;
 public class EndgameButtonListener implements View.OnClickListener {
     private final Client client;
 
+    /**
+     * Ecouteur de fin de jeu
+     *
+     * @param client client joueur
+     */
     public EndgameButtonListener(Client client) {
         this.client = client;
     }

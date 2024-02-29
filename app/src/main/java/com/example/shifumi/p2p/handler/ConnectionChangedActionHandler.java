@@ -10,11 +10,21 @@ import com.example.shifumi.p2p.listener.ConnectionInfoListener;
 
 import java.util.Objects;
 
+/**
+ * Gestionnaire WiFi direct lorsque l'état de la connectivité Wi-Fi p2p a changé
+ */
 public final class ConnectionChangedActionHandler extends P2pHandler{
     private final WifiP2pManager wifiP2pManager;
     private final WifiP2pManager.Channel channel;
     private final PeerToPeerManager peerToPeerManager;
 
+    /**
+     * Gestionnaire WiFi direct lorsque l'état de la connectivité Wi-Fi p2p a changé
+     *
+     * @param mainActivity activité principale
+     * @param wifiP2pManager gestionnaire de la connexion WiFi direct
+     * @param channel cannal WiFi direct
+     */
     public ConnectionChangedActionHandler(MainActivity mainActivity, WifiP2pManager wifiP2pManager, WifiP2pManager.Channel channel) {
         super(mainActivity);
 
@@ -30,15 +40,9 @@ public final class ConnectionChangedActionHandler extends P2pHandler{
             return;
         }
 
-        // Respond to new connection or disconnections
-        if (wifiP2pManager == null) {
-            return;
-        }
-
         NetworkInfo networkInfo = intent.getParcelableExtra(WifiP2pManager.EXTRA_NETWORK_INFO);
-        assert networkInfo != null;
 
-        if (!networkInfo.isConnected()){
+        if (wifiP2pManager == null || networkInfo == null || !networkInfo.isConnected()){
             return;
         }
 

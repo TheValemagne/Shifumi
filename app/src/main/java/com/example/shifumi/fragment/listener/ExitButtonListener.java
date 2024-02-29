@@ -10,6 +10,11 @@ import com.example.shifumi.MainActivity;
 public class ExitButtonListener implements View.OnClickListener{
     private final MainActivity mainActivity;
 
+    /**
+     * Ecouteur pour quitter l'application
+     *
+     * @param mainActivity activité principale
+     */
     public ExitButtonListener(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
     }
@@ -17,7 +22,7 @@ public class ExitButtonListener implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         mainActivity.finish();
-        System.exit(0);
+        System.exit(0); // fermeture de l'application
     }
 }
 

@@ -14,8 +14,7 @@ import com.example.shifumi.databinding.FragmentStartScreenBinding;
 import com.example.shifumi.fragment.listener.StartButtonListener;
 
 /**
- * A simple {@link Fragment} subclass.
- * create an instance of this fragment.
+ * Ecran de démarrage du jeu
  */
 public class StartScreenFragment extends Fragment {
 

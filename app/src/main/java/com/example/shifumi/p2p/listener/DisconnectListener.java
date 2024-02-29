@@ -2,15 +2,20 @@ package com.example.shifumi.p2p.listener;
 
 import android.net.wifi.p2p.WifiP2pGroup;
 import android.net.wifi.p2p.WifiP2pManager;
-import android.util.Log;
 
 /**
  * Ecouteur de connexion au group wifi direct
  */
 public class DisconnectListener implements WifiP2pManager.GroupInfoListener {
-    private final static String TAG = "Disconnect WIFI direct";
     private final WifiP2pManager wifiP2pManager;
     private final WifiP2pManager.Channel channel;
+
+    /**
+     * Ecouteur de connexion au group wifi direct
+     *
+     * @param wifiP2pManager gestionnaire de la connexion WiFi direct
+     * @param channel cannal WiFi direct
+     */
     public DisconnectListener(WifiP2pManager wifiP2pManager, WifiP2pManager.Channel channel) {
         this.wifiP2pManager = wifiP2pManager;
         this.channel = channel;
@@ -18,19 +23,11 @@ public class DisconnectListener implements WifiP2pManager.GroupInfoListener {
 
     @Override
     public void onGroupInfoAvailable(WifiP2pGroup group) {
-        if (group != null && wifiP2pManager != null && channel != null) {
-            wifiP2pManager.removeGroup(channel, new WifiP2pManager.ActionListener() {
-
-                @Override
-                public void onSuccess() {
-                    Log.d(TAG, "removeGroup onSuccess -");
-                }
-
-                @Override
-                public void onFailure(int reason) {
-                    Log.d(TAG, "removeGroup onFailure -" + reason);
-                }
-            });
+        if (group == null || wifiP2pManager == null || channel == null) {
+            return;
         }
+
+        // demande de suppression du groupe WiFi direct
+        wifiP2pManager.removeGroup(channel, new RemoveGroupListener());
     }
 }

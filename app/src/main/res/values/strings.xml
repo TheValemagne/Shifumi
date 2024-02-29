@@ -20,4 +20,5 @@
     <string name="your_selected_choice">your selected choice</string>
     <string name="opponent_choice">opponent choice</string>
     <string name="round_result">round result</string>
+    <string name="please_make_a_choice_before_validation">Please make a choice before validation.</string>
 </resources>

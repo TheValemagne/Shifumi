@@ -30,6 +30,9 @@ public final class WifiDeviceContent {
         return results;
     }
 
+    /**
+     * Classe conteneur de wifiP2pDevice pour l'affichage dans une liste
+     */
     public static class WifiDeviceItem {
         public final String content;
         public final WifiP2pDevice wifiP2pDevice;

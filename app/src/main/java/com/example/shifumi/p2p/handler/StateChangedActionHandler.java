@@ -9,8 +9,16 @@ import com.example.shifumi.R;
 
 import java.util.Objects;
 
+/**
+ * Gestionnaire WiFi direct lorsque le Wi-Fi peer to peer est activé ou désactivé
+ */
 public final class StateChangedActionHandler extends P2pHandler{
 
+    /**
+     * Gestionnaire WiFi direct lorsque le Wi-Fi peer to peer est activé ou désactivé
+     *
+     * @param mainActivity activité principale
+     */
     public StateChangedActionHandler(MainActivity mainActivity) {
         super(mainActivity);
     }
@@ -25,9 +33,9 @@ public final class StateChangedActionHandler extends P2pHandler{
         int state = intent.getIntExtra(WifiP2pManager.EXTRA_WIFI_STATE, -1);
 
         if (state == WifiP2pManager.WIFI_P2P_STATE_ENABLED) {
-            Toast.makeText(mainActivity, mainActivity.getBaseContext().getString(R.string.wifiDirectIsOn), Toast.LENGTH_LONG).show();
+            Toast.makeText(mainActivity, R.string.wifiDirectIsOn, Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(mainActivity, mainActivity.getBaseContext().getString(R.string.wifiDirectIsOff), Toast.LENGTH_LONG).show();
+            Toast.makeText(mainActivity, R.string.wifiDirectIsOff, Toast.LENGTH_LONG).show();
         }
     }
 }

@@ -16,10 +16,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Broadcast pour la gestion du réseau WiFi direct / peer to peer
+ */
 public final class WifiDirectBroadcastReceiver extends BroadcastReceiver {
 
     private final List<P2pHandler> handlers;
 
+    /**
+     * Broadcast pour la gestion du réseau WiFi direct / peer to peer
+     *
+     * @param wifiP2pManager gestionnaire de la connexion WiFi direct
+     * @param channel        cannal WiFi direct
+     * @param mainActivity   activité principale
+     */
     public WifiDirectBroadcastReceiver(WifiP2pManager wifiP2pManager,
                                        WifiP2pManager.Channel channel,
                                        MainActivity mainActivity) {
@@ -31,15 +41,15 @@ public final class WifiDirectBroadcastReceiver extends BroadcastReceiver {
                 new ConnectionChangedActionHandler(mainActivity, wifiP2pManager, channel)
         ));
 
-        for (int index = 0; index < handlers.size() - 1; index++) {
-            handlers.get(index).setNextHandler(handlers.get(index+1));
+        for (int index = 0; index < handlers.size() - 1; index++) { // initialisation des maillons de la chaine de responsabilité
+            handlers.get(index).setNextHandler(handlers.get(index + 1));
         }
     }
 
     @SuppressLint("MissingPermission")
     @Override
     public void onReceive(Context context, Intent intent) {
-        if(intent.getAction() == null) {
+        if (intent.getAction() == null) {
             return;
         }
 

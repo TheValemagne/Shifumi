@@ -11,12 +11,17 @@ import com.example.shifumi.network.request.RequestNextRound;
 public class NextButtonListener implements View.OnClickListener {
     private final Client client;
 
+    /**
+     * Ecouteur tour suivant
+     *
+     * @param client client joueur
+     */
     public NextButtonListener(Client client) {
         this.client = client;
     }
 
     @Override
     public void onClick(View v) {
-        client.send(new RequestNextRound());
+        client.send(new RequestNextRound()); // envoit de la requête au serveur
     }
 }

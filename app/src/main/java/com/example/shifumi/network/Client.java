@@ -3,7 +3,7 @@ package com.example.shifumi.network;
 import android.util.Log;
 
 import com.example.shifumi.game.Choice;
-import com.example.shifumi.network.listener.ClientRoundListener;
+import com.example.shifumi.network.manager.ClientRoundManager;
 import com.example.shifumi.network.request.RequestEndgame;
 import com.example.shifumi.network.request.RequestNextRound;
 
@@ -13,20 +13,26 @@ import java.net.Socket;
 import java.net.SocketException;
 
 /**
- * Classe pour la communication client joueur
+ * Classe pour la communication coté client / joueur
  */
 public final class Client extends ClientBase {
     private static final String TAG = "Client";
     private final InetAddress groupOwnerAddress;
-    private final ClientRoundListener clientRoundListener;
+    private final ClientRoundManager clientRoundManager;
     private final SendObjectHandler sendObjectHandler;
 
+    /**
+     * Classe pour la communication coté client / joueur
+     * @param groupOwnerAddress adresse de l'hôte de la partie
+     * @param clientRoundManager gestionnaire de manche coté joueur
+     * @throws IOException erreur lors de la création du socket
+     */
     public Client(InetAddress groupOwnerAddress,
-                  ClientRoundListener clientRoundListener) throws IOException {
+                  ClientRoundManager clientRoundManager) throws IOException {
         super(new Socket(groupOwnerAddress.getHostAddress(), Server.PORT));
 
         this.groupOwnerAddress = groupOwnerAddress;
-        this.clientRoundListener = clientRoundListener;
+        this.clientRoundManager = clientRoundManager;
         this.sendObjectHandler = new SendObjectHandler(this);
     }
 
@@ -63,10 +69,11 @@ public final class Client extends ClientBase {
 
                 Object nextResponse = this.incomingFlow.readObject();
 
+                // gestion de l'après manche
                 if (nextResponse instanceof RequestNextRound) {
-                    clientRoundListener.onNext();
+                    clientRoundManager.onNext();
                 } else if (nextResponse instanceof RequestEndgame) {
-                    clientRoundListener.onEnd();
+                    clientRoundManager.onEnd();
                 }
 
             } catch (SocketException | InterruptedException e) {
@@ -79,23 +86,32 @@ public final class Client extends ClientBase {
         Log.d(TAG, "Client déconnecté");
     }
 
+    /**
+     * Réalisation d'une manche coté joueur
+     *
+     * @throws InterruptedException erreur liée à l'attente ou arrêt d'un thread
+     * @throws IOException erreur lors de l'envoi de données
+     * @throws ClassNotFoundException erreur si classe inexistante
+     */
     private void playRound() throws InterruptedException, IOException, ClassNotFoundException {
         synchronized (ownChoiceLock) {
-            while (getOwnChoice().equals(Choice.UNSET)) {
+            while (getOwnChoice().equals(Choice.UNSET)) { // attente du choix du joueur actuel
                 ownChoiceLock.wait();
             }
 
             this.outgoingFlow.writeObject(getOwnChoice());
         }
 
-        Object response = this.incomingFlow.readObject(); // wait for server response
+        Object response;
 
-        if (response instanceof Choice) {
-            setOpponentChoice((Choice) response);
+        do {
+            response = this.incomingFlow.readObject(); // attente du choix de l'adversaire
+        } while (!(response instanceof Choice));
 
-            clientRoundListener.onReceive(getOwnChoice(), getOpponentChoice());
-            this.resetChoices();
-        }
+        setOpponentChoice((Choice) response); // actuaisation du choix de l'adversaire
+
+        clientRoundManager.onReceive(getOwnChoice(), getOpponentChoice()); // actualisation su score et affichage de l'écran de fin de manche
+        this.resetChoices();
     }
 
 }

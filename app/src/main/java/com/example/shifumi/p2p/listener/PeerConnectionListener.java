@@ -12,18 +12,22 @@ import com.example.shifumi.R;
 public class PeerConnectionListener implements WifiP2pManager.ActionListener {
     private final MainActivity mainActivity;
 
+    /**
+     * Ecouteur de connexion au pair
+     * @param mainActivity activité principale
+     */
     public PeerConnectionListener(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
     }
 
     @Override
     public void onSuccess() {
-        // Connection initiated successfully
+        // vide
     }
 
     @Override
     public void onFailure(int reason) {
-        // Connection failed
-        Toast.makeText(mainActivity, mainActivity.getBaseContext().getString(R.string.connectionFailure), Toast.LENGTH_LONG).show();
+        // erreur de connexion
+        Toast.makeText(mainActivity, R.string.connectionFailure, Toast.LENGTH_LONG).show();
     }
 }

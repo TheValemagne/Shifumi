@@ -20,7 +20,7 @@ import com.example.shifumi.p2p.listener.PeerConnectionListener;
 import java.io.IOException;
 
 /**
- * Gestionnaire des échanges wifi direct
+ * Gestionnaire des échanges WiFi direct
  */
 public final class PeerToPeerManager {
     private final static String TAG = "P2P Manager";
@@ -30,10 +30,17 @@ public final class PeerToPeerManager {
 
     private Server server;
 
-    public PeerToPeerManager(WifiP2pManager manager,
+    /**
+     * Gestionnaire des échanges WiFi direct
+     *
+     * @param wifiP2pManager gestionnaire de la connexion WiFi direct
+     * @param channel cannal WiFi direct
+     * @param mainActivity activité principale
+     */
+    public PeerToPeerManager(WifiP2pManager wifiP2pManager,
                              WifiP2pManager.Channel channel,
                              MainActivity mainActivity) {
-        this.wifiP2pManager = manager;
+        this.wifiP2pManager = wifiP2pManager;
         this.channel = channel;
         this.mainActivity = mainActivity;
     }
@@ -82,20 +89,19 @@ public final class PeerToPeerManager {
     /**
      * Déconnexion du group wifi direct
      */
+    @SuppressLint("MissingPermission")
     public void disconnect() {
-        if (wifiP2pManager != null && channel != null) {
-            if (ActivityCompat.checkSelfPermission(mainActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                return;
-            }
-
-            wifiP2pManager.requestGroupInfo(channel, new DisconnectListener(wifiP2pManager, channel));
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
-                channel.close();
-            }
-
-            closeClient();
-            closeServer();
+        if (wifiP2pManager == null || channel == null) {
+            return;
         }
+
+        wifiP2pManager.requestGroupInfo(channel, new DisconnectListener(wifiP2pManager, channel));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+            channel.close();
+        }
+
+        closeClient();
+        closeServer();
     }
 
     /**

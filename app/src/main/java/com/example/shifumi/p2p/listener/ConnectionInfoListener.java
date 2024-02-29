@@ -18,30 +18,37 @@ public class ConnectionInfoListener implements WifiP2pManager.ConnectionInfoList
     private final MainActivity mainActivity;
     private final PeerToPeerManager peerToPeerManager;
 
+    /**
+     * Ecouteur pour les informations de connexion
+     *
+     * @param mainActivity  activité principale
+     * @param peerToPeerManager gestionnaire des échanges WiFi direct
+     */
     public ConnectionInfoListener(MainActivity mainActivity, PeerToPeerManager peerToPeerManager) {
         this.mainActivity = mainActivity;
         this.peerToPeerManager = peerToPeerManager;
     }
+
     @Override
     public void onConnectionInfoAvailable(WifiP2pInfo info) {
         if (!info.groupFormed){
             return;
         }
 
-        if(info.isGroupOwner) {
-            //serveur
+        if(info.isGroupOwner) { // action supplémentaire coté serveur
             Log.d("Serveur", "Addresse groupOwner " + info.groupOwnerAddress.toString());
             peerToPeerManager.startServer();
-        } else {
-            // client
+        } else { // coté client
             Log.d("Client", "Address groupOwner " + info.groupOwnerAddress.toString());
         }
 
+        // initialisation du client du joueur
         Thread thread = new Thread(new InitClientRunnable(info.groupOwnerAddress, mainActivity));
         thread.start();
 
-        Toast.makeText(mainActivity, mainActivity.getBaseContext().getString(R.string.connectionSuccessful), Toast.LENGTH_LONG).show();
+        Toast.makeText(mainActivity, R.string.connectionSuccessful, Toast.LENGTH_LONG).show();
 
+        // affichage de l'écran de jeu
         mainActivity.getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_frame, new PlayFragment())
                 .commit();

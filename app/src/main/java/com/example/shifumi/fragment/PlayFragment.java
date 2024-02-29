@@ -19,8 +19,13 @@ import com.example.shifumi.game.Choice;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
+/**
+ * Fragment de gestion de jeu avec le triangle de sélection des choix
+ */
 public class PlayFragment extends Fragment {
 
     public void setSelectedChoice(Choice selectedChoice) {
@@ -31,7 +36,7 @@ public class PlayFragment extends Fragment {
         return selectedChoice;
     }
 
-    private Choice selectedChoice;
+    private Choice selectedChoice = Choice.UNSET;
 
     public PlayFragment() {
         // Required empty public constructor
@@ -54,17 +59,18 @@ public class PlayFragment extends Fragment {
             content.getButton().setOnClickListener(new ChoiceButtonListener(this, binding.ivSelectedChoice, content.getDrawableId(), content.getChoice()));
         }
 
-        List<Button> buttons = new ArrayList<>(Arrays.asList(
-                binding.btnRock,
-                binding.btnPaper,
-                binding.btnScissors,
+        List<Button> buttons = new ArrayList<>(Collections.singletonList(
                 binding.playButton
         ));
+
+        buttons.addAll(choiceButtonContents.stream()
+                .map(ChoiceButtonContent::getButton)
+                .collect(Collectors.toList())); // ajout des boutons de sélections des choix
 
         MainActivity mainActivity = (MainActivity) requireActivity();
         binding.playButton.setOnClickListener(new ValidateButtonListener(this, mainActivity, buttons));
 
-        binding.playScore.setText(mainActivity.getScoreMsg());
+        binding.playScore.setText(mainActivity.getScoreMsg()); // affichage du score
 
         return binding.getRoot();
     }

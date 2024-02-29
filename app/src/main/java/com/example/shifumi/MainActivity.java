@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.IntentFilter;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.example.shifumi.fragment.StartScreenFragment;
@@ -50,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); // déactivier le mode veille
+
         game = new Game();
 
         intentFilter = new IntentFilter();
@@ -74,11 +77,14 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
+    /**
+     * Initialisation de la onnexion WiFi directe
+     */
     private void initWifiDirectConnection() {
         WifiP2pManager wifiP2pManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         WifiP2pManager.Channel wifiChannel = wifiP2pManager.initialize(this, getMainLooper(), null);
-        peerToPeerManager = new PeerToPeerManager(wifiP2pManager, wifiChannel, this);
 
+        peerToPeerManager = new PeerToPeerManager(wifiP2pManager, wifiChannel, this);
         wifiReceiver = new WifiDirectBroadcastReceiver(wifiP2pManager, wifiChannel, this);
     }
 
@@ -94,12 +100,19 @@ public class MainActivity extends AppCompatActivity {
         unregisterReceiver(wifiReceiver);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); // nétoyage des paramètres d'écran
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
         if (requestCode == PERMISSIONS_REQUEST_CODE) {
-            Toast.makeText(this, getBaseContext().getString(R.string.permissionGranted), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.permissionGranted, Toast.LENGTH_SHORT).show();
         }
     }
 

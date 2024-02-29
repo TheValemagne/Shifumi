@@ -1,7 +1,5 @@
 package com.example.shifumi.network;
 
-import android.util.Log;
-
 import com.example.shifumi.game.Choice;
 
 import java.io.IOException;
@@ -11,8 +9,10 @@ import java.net.Socket;
 import java.util.EnumMap;
 import java.util.Map;
 
+/**
+ * Classe abtraite des clients et interlocuteurs
+ */
 public abstract class ClientBase extends Thread{
-    private static final String TAG = "ClientBase";
     protected final Socket socket;
 
     public ObjectOutputStream getOutgoingFlow() {
@@ -35,6 +35,12 @@ public abstract class ClientBase extends Thread{
         return opponentChoiceLock;
     }
 
+    /**
+     * Classe abtraite des clients et interlocuteurs
+     *
+     * @param socket socket de la communication client / serveur
+     * @throws IOException erreur lors de l'ouverture des cannaux de communication
+     */
     public ClientBase(Socket socket) throws IOException {
         this.socket = socket;
         this.outgoingFlow = new ObjectOutputStream(socket.getOutputStream());
@@ -42,17 +48,6 @@ public abstract class ClientBase extends Thread{
 
         this.choices = new EnumMap<>(ChoiceIndex.class);
         resetChoices();
-    }
-
-    /**
-     * Envoi des données au serveur
-     *
-     * @param object données à envoyer
-     * @throws IOException erreur lors de l'envoi
-     */
-    public void sendObject(Object object) throws IOException {
-        Log.d(TAG, "sending : " + object);
-        this.outgoingFlow.writeObject(object);
     }
 
     /**

@@ -1,25 +1,26 @@
-package com.example.shifumi.network.listener;
+package com.example.shifumi.network.manager;
 
 import android.os.Bundle;
 
 import com.example.shifumi.MainActivity;
 import com.example.shifumi.R;
 import com.example.shifumi.fragment.EndgameFragment;
-import com.example.shifumi.fragment.GameFragment;
+import com.example.shifumi.fragment.GameRoundResultFragment;
 import com.example.shifumi.fragment.PlayFragment;
 import com.example.shifumi.game.Choice;
 
 /**
  * Gestion d'une partie de Shifumi coté client
  */
-public class ClientRoundListener {
+public class ClientRoundManager {
     private final MainActivity mainActivity;
 
     /**
+     * Gestion d'une partie de Shifumi coté client
      *
      * @param mainActivity activité principale de l'application
      */
-    public ClientRoundListener(MainActivity mainActivity) {
+    public ClientRoundManager(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
     }
 
@@ -49,10 +50,10 @@ public class ClientRoundListener {
      */
     public void onReceive(Choice ownChoice, Choice opponentChoice) {
         Bundle bundle = new Bundle();
-        bundle.putSerializable(GameFragment.OWN_CHOICE, ownChoice);
-        bundle.putSerializable(GameFragment.OPPONENT_CHOICE, opponentChoice);
+        bundle.putSerializable(GameRoundResultFragment.OWN_CHOICE, ownChoice);
+        bundle.putSerializable(GameRoundResultFragment.OPPONENT_CHOICE, opponentChoice);
 
-        GameFragment fragment = new GameFragment();
+        GameRoundResultFragment fragment = new GameRoundResultFragment();
         fragment.setArguments(bundle);
 
         mainActivity.getSupportFragmentManager().beginTransaction()

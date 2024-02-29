@@ -12,6 +12,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Serveur gérant une partie multijoueur
+ */
 public final class Server extends Thread {
     private static final String TAG = "Server";
     private ServerSocket serverSocket;
@@ -20,6 +23,9 @@ public final class Server extends Thread {
     private final List<Choice> choices;
     private final List<Object> choiceLocks;
 
+    /**
+     * Serveur gérant une partie multijoueur
+     */
     public Server() {
         this.clients = new ArrayList<>();
         this.choices = new ArrayList<>(Arrays.asList(Choice.UNSET, Choice.UNSET));
@@ -32,7 +38,7 @@ public final class Server extends Thread {
 
         try {
             Log.d(TAG, "Lancement du serveur");
-            serverSocket = new ServerSocket(PORT);
+            serverSocket = new ServerSocket(PORT); // lancement du serveur
             int clientId = 0;
 
             while (!this.isInterrupted()){
@@ -44,7 +50,7 @@ public final class Server extends Thread {
                 }
 
                 Log.d(TAG, "Nouveau client " + clientId);
-                ClientHandler clientHandler = new ClientHandler(clientId, socket, this);
+                ClientHandler clientHandler = new ClientHandler(clientId, socket, this); // création d'un interlocuteur
 
                 clientHandler.start();
                 clients.add(clientHandler);
@@ -58,7 +64,7 @@ public final class Server extends Thread {
     }
 
     /**
-     * Return le choix d'un joueur
+     * Retourne le choix d'un joueur
      *
      * @param index index du joueur
      * @return choix du joueur

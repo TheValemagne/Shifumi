@@ -14,8 +14,7 @@ import com.example.shifumi.databinding.FragmentEndgameBinding;
 import com.example.shifumi.fragment.listener.ExitButtonListener;
 
 /**
- * A simple {@link Fragment} subclass.
- * create an instance of this fragment.
+ * Fragment pour l'écran de fin de jeu
  */
 public class EndgameFragment extends Fragment {
 
@@ -36,9 +35,9 @@ public class EndgameFragment extends Fragment {
         FragmentEndgameBinding binding = FragmentEndgameBinding.inflate(inflater, container, false);
 
         MainActivity mainActivity = (MainActivity) requireActivity();
-        mainActivity.getPeerToPeerManager().disconnect();
+        mainActivity.getPeerToPeerManager().disconnect(); // déconnexion au wifi direct et à l'autre appareil
 
-        binding.endgameScore.setText(mainActivity.getScoreMsg());
+        binding.endgameScore.setText(mainActivity.getScoreMsg()); // affichage du score
         binding.quitAppBtn.setOnClickListener(new ExitButtonListener(mainActivity));
 
         return binding.getRoot();

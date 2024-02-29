@@ -35,6 +35,17 @@ public final class ClientHandler extends ClientBase {
         }
     }
 
+    /**
+     * Envoi des données au client
+     *
+     * @param object données à envoyer
+     * @throws IOException erreur lors de l'envoi des données
+     */
+    public void sendObject(Object object) throws IOException {
+        Log.d(TAG, "sending : " + object);
+        this.outgoingFlow.writeObject(object);
+    }
+
     @Override
     public void run() {
         super.run();

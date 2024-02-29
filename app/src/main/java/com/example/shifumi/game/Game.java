@@ -10,6 +10,9 @@ import java.util.Map;
  * Classe de gestion du jeu
  */
 public final class Game {
+    /**
+     * Enum de gestion des deux joueurs
+     */
     private enum ScoreKey {
         PLAYER,
         OPPONENT
@@ -47,7 +50,8 @@ public final class Game {
         victoryConditions = new ArrayList<>(Arrays.asList(
                         new VictoryCondition(Choice.ROCK, Choice.PAPER),
                         new VictoryCondition(Choice.PAPER, Choice.SCISSORS),
-                        new VictoryCondition(Choice.SCISSORS, Choice.ROCK)));
+                        new VictoryCondition(Choice.SCISSORS, Choice.ROCK)
+        ));
     }
 
     /**

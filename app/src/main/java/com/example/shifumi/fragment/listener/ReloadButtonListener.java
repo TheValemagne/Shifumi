@@ -10,6 +10,11 @@ import com.example.shifumi.MainActivity;
 public class ReloadButtonListener implements View.OnClickListener{
     private final MainActivity mainActivity;
 
+    /**
+     * Ecouteur de rechargement de la liste d'appareils wifi disponibles
+     *
+     * @param mainActivity activité principale
+     */
     public ReloadButtonListener(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
     }

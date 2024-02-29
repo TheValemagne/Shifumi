@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * A fragment representing a list of Items.
+ * Fragment d'affichage de la liste des appareils disponibles pour une connexion en wifi direct
  */
 public class WifiDevicesFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -34,6 +34,10 @@ public class WifiDevicesFragment extends Fragment {
     private FragmentWifiDeviceListBinding binding;
     private WifiPeerListRecyclerViewAdapter adapter;
 
+    /**
+     * Retourne la liste des pairs disponibles
+     * @return liste des pairs
+     */
     public Collection<WifiP2pDevice> getPeers() {
         return peers;
     }
@@ -56,7 +60,7 @@ public class WifiDevicesFragment extends Fragment {
             return;
         }
 
-        adapter.updateData(WifiDeviceContent.placeholderItemsMapper(peers));
+        adapter.updateData(WifiDeviceContent.placeholderItemsMapper(peers)); // actualisation de l'adapteur
         this.peers.clear();
         this.peers.addAll(peers);
     }
@@ -119,8 +123,7 @@ public class WifiDevicesFragment extends Fragment {
             recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
 
-        MainActivity mainActivity = (MainActivity) getActivity();
-        assert mainActivity != null;
+        MainActivity mainActivity = (MainActivity) requireActivity();
         adapter = new WifiPeerListRecyclerViewAdapter(
                 WifiDeviceContent.placeholderItemsMapper(peers),
                 mainActivity.getPeerToPeerManager());

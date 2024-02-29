@@ -13,14 +13,20 @@ import com.example.shifumi.fragment.WifiDevicesFragment;
 public class StartButtonListener implements Button.OnClickListener {
     private final MainActivity mainActivity;
 
+    /**
+     * Ecouteur de lancement de la recherche d'appareil
+     *
+     * @param mainActivity activité principale
+     */
     public StartButtonListener(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
     }
 
     @Override
     public void onClick(View v) {
-        mainActivity.getPeerToPeerManager().discoverPeers();
+        mainActivity.getPeerToPeerManager().discoverPeers(); // lancement de la découverte des pairs
 
+        // affichage du fragment avec la lsite de sélection des appareils disponibles
         mainActivity.getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_frame, new WifiDevicesFragment())
                 .commit();

@@ -15,6 +15,14 @@ public class ChoiceButtonListener implements View.OnClickListener{
     private final ImageView ivSelectedChoice;
     private final Choice choice;
 
+    /**
+     * Ecouteur de sélection de choix
+     *
+     * @param fragment fragment gérant la sélection des choix
+     * @param ivSelectedChoice image de choix sélectionnée
+     * @param drawableId identifiant de la ressource accossiée au choix
+     * @param choice choix sélectionné
+     */
     public ChoiceButtonListener(PlayFragment fragment, ImageView ivSelectedChoice, int drawableId, Choice choice) {
         this.fragment = fragment;
         this.ivSelectedChoice = ivSelectedChoice;

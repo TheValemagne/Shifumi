@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.shifumi.MainActivity;
 import com.example.shifumi.R;
-import com.example.shifumi.databinding.FragmentGameBinding;
+import com.example.shifumi.databinding.FragmentGameRoundResultBinding;
 import com.example.shifumi.fragment.listener.EndgameButtonListener;
 import com.example.shifumi.fragment.listener.NextButtonListener;
 import com.example.shifumi.game.Choice;
@@ -20,14 +20,17 @@ import com.example.shifumi.game.Result;
 
 import java.util.EnumMap;
 
-public class GameFragment extends Fragment {
+/**
+ * Fragment d'affichage du résultat de la manche terminée
+ */
+public class GameRoundResultFragment extends Fragment {
 
     private Choice ownChoice;
     private Choice opponentChoice;
     public static final String OWN_CHOICE = "ownChoice";
     public static final String OPPONENT_CHOICE = "opponentChoice";
 
-    public GameFragment() {
+    public GameRoundResultFragment() {
         // Constructeur vide requis par Android
     }
 
@@ -35,7 +38,7 @@ public class GameFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
+        if (getArguments() != null) { // récupération des choix des deux joueurs
             ownChoice = (Choice) getArguments().getSerializable(OWN_CHOICE);
             opponentChoice = (Choice) getArguments().getSerializable(OPPONENT_CHOICE);
         }
@@ -45,7 +48,7 @@ public class GameFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
-        FragmentGameBinding binding = FragmentGameBinding.inflate(inflater, container, false);
+        FragmentGameRoundResultBinding binding = FragmentGameRoundResultBinding.inflate(inflater, container, false);
 
         EnumMap<Choice, Integer> imageMap = new EnumMap<>(Choice.class);
         imageMap.put(Choice.PAPER, R.drawable.paper);
@@ -60,6 +63,7 @@ public class GameFragment extends Fragment {
         binding.imageOpponent.setImageResource(imageMap.get(opponentChoice));
         binding.imageOpponent.setRotation(180);
 
+        // calcule des scores
         Game game = mainActivity.getGame();
         Result result = game.hasWon(ownChoice, opponentChoice);
         game.updateScore(result);

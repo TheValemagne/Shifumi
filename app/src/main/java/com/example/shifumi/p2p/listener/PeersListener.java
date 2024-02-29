@@ -21,7 +21,7 @@ public class PeersListener implements WifiP2pManager.PeerListListener {
 
     @Override
     public void onPeersAvailable(WifiP2pDeviceList peers) {
-        // Handle the list of available peers
+        // récupération du fragment actuel
         Fragment fragment = mainActivity.getSupportFragmentManager()
                 .findFragmentById(R.id.main_frame);
 
@@ -31,6 +31,7 @@ public class PeersListener implements WifiP2pManager.PeerListListener {
 
         WifiDevicesFragment wifiDevicesFragment = (WifiDevicesFragment) fragment;
 
+        // actualisation de la liste d'appareils disponibles
         if(!peers.getDeviceList().equals(wifiDevicesFragment.getPeers())) {
             wifiDevicesFragment.updateData(peers.getDeviceList());
         }

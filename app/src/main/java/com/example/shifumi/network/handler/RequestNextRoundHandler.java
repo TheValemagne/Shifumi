@@ -5,7 +5,15 @@ import com.example.shifumi.network.request.RequestNextRound;
 
 import java.io.IOException;
 
+/**
+ * Traitement coté serveur de la demande pour la prochaine manche
+ */
 public class RequestNextRoundHandler extends RequestHandler{
+    /**
+     * Traitement coté serveur d'ne requête manche suivante
+     *
+     * @param server serveur gérant la partie
+     */
     public RequestNextRoundHandler(Server server) {
         super(server);
     }
@@ -17,6 +25,6 @@ public class RequestNextRoundHandler extends RequestHandler{
             return;
         }
 
-        server.sendToAll(new RequestNextRound());
+        server.sendToAll(new RequestNextRound()); // envoi de la requête pour passer à la manche suivante
     }
 }

@@ -3,7 +3,6 @@ package com.example.shifumi.p2p;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
-import android.net.wifi.WpsInfo;
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Build;
@@ -81,7 +80,6 @@ public final class PeerToPeerManager {
     public void connectToPeer(String ipAddress) {
         WifiP2pConfig config = new WifiP2pConfig();
         config.deviceAddress = ipAddress;
-        config.wps.setup = WpsInfo.PBC;
 
         wifiP2pManager.connect(channel, config, new PeerConnectionListener(mainActivity));
     }

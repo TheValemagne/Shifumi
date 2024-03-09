@@ -44,6 +44,7 @@ public final class PeersChangedActionHandler extends P2pHandler{
             return;
         }
 
+        // lancement du scan d'appareils disponibles
         wifiP2pManager.requestPeers(channel, peerListListener);
     }
 }

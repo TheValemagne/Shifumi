@@ -21,6 +21,6 @@ public class ReloadButtonListener implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        mainActivity.getPeerToPeerManager().discoverPeers();
+        mainActivity.getPeerToPeerManager().discoverPeers(); // relance de l'écouteur d'appareils en WiFi direct
     }
 }

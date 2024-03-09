@@ -23,7 +23,8 @@ public final class Client extends ClientBase {
 
     /**
      * Classe pour la communication coté client / joueur
-     * @param groupOwnerAddress adresse de l'hôte de la partie
+     *
+     * @param groupOwnerAddress  adresse de l'hôte de la partie
      * @param clientRoundManager gestionnaire de manche coté joueur
      * @throws IOException erreur lors de la création du socket
      */
@@ -65,15 +66,15 @@ public final class Client extends ClientBase {
 
         while (!this.isInterrupted()) {
             try {
-                playRound();
+                playRound(); // réalisation d'une manche de jeu
 
-                Object nextResponse = this.incomingFlow.readObject();
+                Object nextResponse = this.incomingFlow.readObject(); // lecture des instruction pour la suite de la partie
 
                 // gestion de l'après manche
                 if (nextResponse instanceof RequestNextRound) {
-                    clientRoundManager.onNext();
+                    clientRoundManager.onNext(); // passer à la prochaine manche
                 } else if (nextResponse instanceof RequestEndgame) {
-                    clientRoundManager.onEnd();
+                    clientRoundManager.onEnd(); // fin de partie
                 }
 
             } catch (SocketException | InterruptedException e) {
@@ -89,29 +90,29 @@ public final class Client extends ClientBase {
     /**
      * Réalisation d'une manche coté joueur
      *
-     * @throws InterruptedException erreur liée à l'attente ou arrêt d'un thread
-     * @throws IOException erreur lors de l'envoi de données
+     * @throws InterruptedException   erreur liée à l'attente ou arrêt d'un thread
+     * @throws IOException            erreur lors de l'envoi de données
      * @throws ClassNotFoundException erreur si classe inexistante
      */
     private void playRound() throws InterruptedException, IOException, ClassNotFoundException {
         synchronized (ownChoiceLock) {
-            while (getOwnChoice().equals(Choice.UNSET)) { // attente du choix du joueur actuel
+            while (getOwnChoice().equals(Choice.UNSET)) { // attente de la validation du choix du joueur
                 ownChoiceLock.wait();
             }
 
-            this.outgoingFlow.writeObject(getOwnChoice());
+            this.outgoingFlow.writeObject(getOwnChoice()); // envoit du choix au serveur
         }
 
         Object response;
 
         do {
             response = this.incomingFlow.readObject(); // attente du choix de l'adversaire
-        } while (!(response instanceof Choice));
+        } while (!(response instanceof Choice)); // tant que l'objet obtenu n'est pas un choix
 
-        setOpponentChoice((Choice) response); // actuaisation du choix de l'adversaire
+        setOpponentChoice((Choice) response); // actualisation du choix de l'adversaire
 
-        clientRoundManager.onReceive(getOwnChoice(), getOpponentChoice()); // actualisation su score et affichage de l'écran de fin de manche
-        this.resetChoices();
+        clientRoundManager.onReceive(getOwnChoice(), getOpponentChoice()); // actualisation du score et affichage de l'écran de fin de manche
+        this.resetChoices(); // réinitialisation des choix des deux joueurs
     }
 
 }

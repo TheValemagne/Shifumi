@@ -46,6 +46,7 @@ public final class ConnectionChangedActionHandler extends P2pHandler{
             return;
         }
 
+        // demmande d'information pour la connexion
         this.wifiP2pManager.requestConnectionInfo(channel, new ConnectionInfoListener(mainActivity, peerToPeerManager));
     }
 }

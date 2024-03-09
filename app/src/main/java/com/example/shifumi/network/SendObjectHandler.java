@@ -29,7 +29,7 @@ public final class SendObjectHandler extends Thread{
                 while (waitingQueue.peek() != null){ // envoi des données dans la liste d'attente
                     try {
                         Log.d(TAG, "Sending : " + waitingQueue.peek());
-                        outgoingFlow.writeObject(waitingQueue.remove());
+                        outgoingFlow.writeObject(waitingQueue.remove()); // envoi d'une donnée au serveur
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }

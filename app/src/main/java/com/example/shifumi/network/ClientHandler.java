@@ -15,10 +15,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Interlocuteur coté serveur pour la gestion des demandes des joueurs
+ */
 public final class ClientHandler extends ClientBase {
     private static final String TAG = "ClientHandler";
     private final List<RequestHandler> handlers;
 
+    /**
+     * Interlocuteur coté serveur pour la gestion des demandes des joueurs
+     *
+     * @param clientId identifiant du client à traiter
+     * @param socket socket pour la communication avec le client
+     * @param server serveur gérant la partie
+     * @throws IOException erreur lors de l'ouverture des cannaux de communication
+     */
     public ClientHandler(int clientId,
                          Socket socket,
                          Server server) throws IOException {
@@ -52,9 +63,9 @@ public final class ClientHandler extends ClientBase {
 
         while (!this.isInterrupted()) {
             try {
-                Object response = this.incomingFlow.readObject();
+                Object response = this.incomingFlow.readObject(); // lecture du message entrant
 
-                this.handlers.get(0).handle(response);
+                this.handlers.get(0).handle(response); // traitement du message reçu
             } catch (SocketException | InterruptedException | EOFException e) {
                 Log.e(TAG, e.toString());
             } catch (ClassNotFoundException | IOException e) {

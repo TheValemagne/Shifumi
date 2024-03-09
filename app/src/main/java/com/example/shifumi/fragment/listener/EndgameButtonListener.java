@@ -22,6 +22,6 @@ public class EndgameButtonListener implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        client.send(new RequestEndgame());
+        client.send(new RequestEndgame()); // envoit de la requête de fin de jeu au serveur
     }
 }

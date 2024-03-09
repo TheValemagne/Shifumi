@@ -28,10 +28,18 @@ import java.util.stream.Collectors;
  */
 public class PlayFragment extends Fragment {
 
+    /**
+     * Modifier le choix sélectionnée
+     * @param selectedChoice nouveau choix sélectionné
+     */
     public void setSelectedChoice(Choice selectedChoice) {
         this.selectedChoice = selectedChoice;
     }
 
+    /**
+     * Retourne le choix sélectionné du joueur
+     * @return choix du joueur
+     */
     public Choice getSelectedChoice() {
         return selectedChoice;
     }

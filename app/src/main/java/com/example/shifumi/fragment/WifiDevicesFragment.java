@@ -114,7 +114,6 @@ public class WifiDevicesFragment extends Fragment {
      * @param recyclerView l'élément recyclerView de la page
      */
     private void initRecyclerView(RecyclerView recyclerView) {
-        // Set the adapter
         Context context = recyclerView.getContext();
 
         if (mColumnCount <= 1) {
@@ -126,7 +125,7 @@ public class WifiDevicesFragment extends Fragment {
         MainActivity mainActivity = (MainActivity) requireActivity();
         adapter = new WifiPeerListRecyclerViewAdapter(
                 WifiDeviceContent.placeholderItemsMapper(peers),
-                mainActivity.getPeerToPeerManager());
+                mainActivity.getPeerToPeerManager()); // initialisation de l'adapteur de la liste
         recyclerView.setAdapter(adapter);
     }
 

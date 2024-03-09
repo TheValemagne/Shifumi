@@ -22,6 +22,6 @@ public class NextButtonListener implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        client.send(new RequestNextRound()); // envoit de la requête au serveur
+        client.send(new RequestNextRound()); // envoit de la requête manche suivante au serveur
     }
 }

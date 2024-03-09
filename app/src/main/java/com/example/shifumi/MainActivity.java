@@ -31,15 +31,27 @@ public class MainActivity extends AppCompatActivity {
         return game;
     }
 
+    /**
+     * Retourne le message pour l'affichage du score
+     * @return message pour l'affichage du score
+     */
     public String getScoreMsg() {
         return MessageFormat.format(getBaseContext().getString(R.string.score),
                 game.getPlayerScore(), game.getOpponentScore());
     }
 
+    /**
+     * Retourne le client joueur
+     * @return client joueur
+     */
     public Client getClient() {
         return client;
     }
 
+    /**
+     * Modification du client joueur
+     * @param client nouveau client joueur
+     */
     public void setClient(Client client) {
         this.client = client;
     }
@@ -67,6 +79,9 @@ public class MainActivity extends AppCompatActivity {
         showFragment();
     }
 
+    /**
+     * Affichage du fragment de démarrage
+     */
     private void showFragment() {
         if (this.getSupportFragmentManager().findFragmentById(R.id.main_frame) != null) {
             return;

@@ -15,6 +15,10 @@ import java.util.Map;
 public abstract class ClientBase extends Thread{
     protected final Socket socket;
 
+    /**
+     * Retourne le flux sortant
+     * @return flux sortant
+     */
     public ObjectOutputStream getOutgoingFlow() {
         return outgoingFlow;
     }
@@ -22,15 +26,22 @@ public abstract class ClientBase extends Thread{
     protected final ObjectOutputStream outgoingFlow;
     protected final ObjectInputStream incomingFlow;
 
+    /**
+     * indexes des joueurs de la partie
+     */
     private enum ChoiceIndex {
-        OwnChoice,
-        OpponentChoice
+        OwnChoice, // joueur
+        OpponentChoice // adversaire du joueur
     }
 
     private final Map<ChoiceIndex, Choice> choices;
     protected final Object ownChoiceLock = new Object();
     protected final Object opponentChoiceLock = new Object();
 
+    /**
+     * Retourne le verrou pour le choix de l'opposant
+     * @return verrou pour le choix de l'opposant
+     */
     public Object getOpponentChoiceLock() {
         return opponentChoiceLock;
     }
@@ -47,11 +58,11 @@ public abstract class ClientBase extends Thread{
         this.incomingFlow = new ObjectInputStream(socket.getInputStream());
 
         this.choices = new EnumMap<>(ChoiceIndex.class);
-        resetChoices();
+        resetChoices(); // initialisation des choix des deux joueurs
     }
 
     /**
-     * Retourne le choix du joueur actuel
+     * Retourne le choix du joueur
      *
      * @return choix du joueur
      */
@@ -60,7 +71,7 @@ public abstract class ClientBase extends Thread{
     }
 
     /**
-     * Modifier le choix du joueur actuel
+     * Modifier le choix du joueur
      *
      * @param choice nouveau choix du joueur
      */
@@ -81,7 +92,7 @@ public abstract class ClientBase extends Thread{
     }
 
     /**
-     * Modifier le choix du joueur actuel
+     * Modifier le choix du joueur opposant
      *
      * @param choice nouveau choix du joueur
      */
@@ -93,7 +104,7 @@ public abstract class ClientBase extends Thread{
     }
 
     /**
-     * Remise à zéro des choix
+     * Remise à zéro des choix des joueurs
      */
     public void resetChoices() {
         setOwnChoice(Choice.UNSET);

@@ -32,6 +32,7 @@ public final class StateChangedActionHandler extends P2pHandler{
 
         int state = intent.getIntExtra(WifiP2pManager.EXTRA_WIFI_STATE, -1);
 
+        // affichage de l'état du WiFi direct
         if (state == WifiP2pManager.WIFI_P2P_STATE_ENABLED) {
             Toast.makeText(mainActivity, R.string.wifiDirectIsOn, Toast.LENGTH_LONG).show();
         } else {

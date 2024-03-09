@@ -85,13 +85,13 @@ public class GameRoundResultFragment extends Fragment {
      */
     private void showResultImage(Result result, ImageView imageResult) {
         switch (result) {
-            case WIN:
+            case WIN: // manche gangnée
                 imageResult.setImageResource(R.drawable.check_mark);
                 break;
-            case LOST:
+            case LOST: // manche perdue
                 imageResult.setImageResource(R.drawable.red_cross);
                 break;
-            case DRAW:
+            case DRAW: // ex æquo
                 imageResult.setImageResource(R.drawable.orange_cross);
                 break;
         }

@@ -44,6 +44,9 @@ public final class PeerToPeerManager {
         this.mainActivity = mainActivity;
     }
 
+    /**
+     * Demande des permissions pour le wifi direct et la localisation
+     */
     private void requestPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ActivityCompat.checkSelfPermission(mainActivity, Manifest.permission.NEARBY_WIFI_DEVICES) != PackageManager.PERMISSION_GRANTED &&
@@ -118,7 +121,7 @@ public final class PeerToPeerManager {
     }
 
     /**
-     * Lancement du serveur
+     * Lancement du serveur du jeu
      */
     public void startServer() {
         server = new Server();

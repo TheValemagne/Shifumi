@@ -32,9 +32,9 @@ public class ChoiceButtonListener implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        ivSelectedChoice.setImageResource(drawableId);
-        ivSelectedChoice.setVisibility(View.VISIBLE);
-        fragment.setSelectedChoice(choice);
+        ivSelectedChoice.setImageResource(drawableId); // actualisation de image de confirmation de sélection
+        ivSelectedChoice.setVisibility(View.VISIBLE); // affichage de l'image de confirmation de sélection
+        fragment.setSelectedChoice(choice); // enregistrement du choix effectué
     }
 
 }

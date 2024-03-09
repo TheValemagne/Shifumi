@@ -39,7 +39,7 @@ public final class WifiDirectBroadcastReceiver extends BroadcastReceiver {
                 new StateChangedActionHandler(mainActivity),
                 new PeersChangedActionHandler(mainActivity, wifiP2pManager, channel),
                 new ConnectionChangedActionHandler(mainActivity, wifiP2pManager, channel)
-        ));
+        )); // gestionnaire des événements du broadcast
 
         for (int index = 0; index < handlers.size() - 1; index++) { // initialisation des maillons de la chaine de responsabilité
             handlers.get(index).setNextHandler(handlers.get(index + 1));
@@ -53,6 +53,6 @@ public final class WifiDirectBroadcastReceiver extends BroadcastReceiver {
             return;
         }
 
-        handlers.get(0).handle(intent);
+        handlers.get(0).handle(intent); // traitement de l'évènement
     }
 }

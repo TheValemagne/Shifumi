@@ -126,12 +126,12 @@ public final class Server extends Thread {
     }
 
     /**
-     * Retourne un client
+     * Retourne un interlocuteur client
      *
      * @param index index du client voulue
      * @return intercepteur d'un client
      */
-    public ClientHandler getClient(int index) {
+    public ClientHandler getClientHandler(int index) {
         return clients.get(index);
     }
 

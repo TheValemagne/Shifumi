@@ -5,7 +5,7 @@ import android.widget.Button;
 import com.example.shifumi.game.Choice;
 
 /**
- * Conteneur d'information d'un choix de jeu
+ * Conteneur d'information d'un choix du jeu
  */
 public class ChoiceButtonContent {
     private final Button button;

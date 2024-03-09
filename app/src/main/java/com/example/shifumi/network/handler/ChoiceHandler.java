@@ -7,7 +7,7 @@ import com.example.shifumi.network.Server;
 import java.io.IOException;
 
 /**
- * Traitement coté serveur d'un choix envoyé par un client
+ * Traitement coté serveur d'un choix envoyé par un client joueur
  */
 public final class ChoiceHandler extends RequestHandler{
 
@@ -15,11 +15,11 @@ public final class ChoiceHandler extends RequestHandler{
     private final int clientId;
 
     /**
-     * Traitement coté serveur d'un choix envoyé par un client
+     * Traitement coté serveur d'un choix envoyé par un client joueur
      *
      * @param server serveur gérant la partie
      * @param clientHandler interlocuteur du client à l'origine du message
-     * @param clientId identifiant du lcient à l'origine du message
+     * @param clientId identifiant du client à l'origine du message
      */
     public ChoiceHandler(Server server, ClientHandler clientHandler, int clientId) {
         super(server);
@@ -39,11 +39,11 @@ public final class ChoiceHandler extends RequestHandler{
 
         server.setChoice(clientId, choice); // mise à jour des données du serveur
 
-        if(server.areAllChoicesSet()) { // lorsque que tous les joueurs ont réalisé leur choix
-            // Mise à jour des choix des adversaires pour les deux joueurs pour chaque interlocuteur client
-            server.getClient(0).setOpponentChoice(server.getChoice(1));
-            server.getClient(1).setOpponentChoice(server.getChoice(0));
-            server.resetChoices();
+        if(server.areAllChoicesSet()) { // lorsque que tous les joueurs ont validé leur choix
+            // Mise à jour des choix des adversaires pour les deux interlocuteurs clients
+            server.getClientHandler(0).setOpponentChoice(server.getChoice(1));
+            server.getClientHandler(1).setOpponentChoice(server.getChoice(0));
+            server.resetChoices(); // réinitialisation des choix des joueurs
         }
 
         synchronized (clientHandler.getOpponentChoiceLock()) { // envoie du choix de l'adversaire après actualisation par le serveur
@@ -51,8 +51,8 @@ public final class ChoiceHandler extends RequestHandler{
                 clientHandler.getOpponentChoiceLock().wait();
             }
 
-            clientHandler.getOutgoingFlow().writeObject(clientHandler.getOpponentChoice());
+            clientHandler.getOutgoingFlow().writeObject(clientHandler.getOpponentChoice()); // envoit du choix de l'adversaire au joueur correspondant
         }
-        clientHandler.resetChoices();
+        clientHandler.resetChoices(); // réinitialisation des choix des deux joueurs
     }
 }
